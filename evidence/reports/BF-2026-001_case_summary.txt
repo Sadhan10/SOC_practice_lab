@@ -1,0 +1,17 @@
+BLACK FALCON BANK
+CASE TRANSFER SUMMARY
+
+Case:
+BF-2026-001
+
+Investigation Category:
+External Reconnaissance
+
+Summary:
+Network monitoring identified systematic scanning activity
+against externally exposed Black Falcon Bank services.
+
+The source address, targeted ports and event sequence must be
+reviewed in the original Suricata and Zeek evidence.
+
+This summary does not replace the original evidence.

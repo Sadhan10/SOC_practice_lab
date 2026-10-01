@@ -1,0 +1,257 @@
+{% extends "base.html" %}
+
+{% block title %}Operation Black Falcon | Select Level{% endblock %}
+
+{% block content %}
+<div class="soc-page">
+    <section class="soc-hero level-hero">
+        <div>
+            <p class="soc-eyebrow">OPERATION BLACK FALCON</p>
+            <h1>SOC Investigation Training</h1>
+            <p>
+                Select an investigation track based on your current
+                SOC analysis experience.
+            </p>
+        </div>
+
+        <div class="threat-card">
+            <span>Training Environment</span>
+            <strong>3 LEVELS</strong>
+            <small>15 investigations</small>
+        </div>
+    </section>
+
+    <section class="level-selection-grid" aria-label="Training levels">
+        <article class="level-card">
+            <div class="level-card-top">
+                <span class="level-number">LEVEL 01</span>
+                <span class="status-tag open">AVAILABLE</span>
+            </div>
+
+            <div class="level-icon" aria-hidden="true">01</div>
+            <h2>Beginner</h2>
+            <h3>SOC Foundation</h3>
+            <p>
+                Learn how SOC analysts investigate alerts using prepared
+                security telemetry and guided evidence.
+            </p>
+
+            <div class="level-details">
+                <span>5 Investigations</span>
+                <span>Guided Analysis</span>
+                <span>Evidence Viewer</span>
+            </div>
+
+            <div class="level-tools">
+                <span>Suricata</span>
+                <span>Zeek</span>
+                <span>Wazuh</span>
+                <span>Cowrie</span>
+            </div>
+
+            <div class="level-progress-summary">
+                <div class="level-progress-numbers">
+                    <span>Progress</span>
+                    <strong>
+                        {{ beginner_progress.completed }}
+                        /
+                        {{ beginner_progress.total }}
+                    </strong>
+                </div>
+
+                <div class="level-mini-progress">
+                    <div
+                        class="level-mini-progress-fill"
+                        style="width: {{ beginner_progress.percentage }}%;"
+                    ></div>
+                </div>
+            </div>
+
+            <a
+                href="{{ url_for('dashboard.select_level', level_name='beginner') }}"
+                class="level-button"
+            >
+                ENTER BEGINNER LEVEL
+                <span aria-hidden="true">&rarr;</span>
+            </a>
+        </article>
+
+        <article class="level-card">
+            <div class="level-card-top">
+                <span class="level-number">LEVEL 02</span>
+                <span class="status-tag open">AVAILABLE</span>
+            </div>
+
+            <div class="level-icon" aria-hidden="true">02</div>
+            <h2>Medium</h2>
+            <h3>SOC Analyst</h3>
+            <p>
+                Perform practical investigations using real SOC telemetry,
+                command-line analysis and packet captures.
+            </p>
+
+            <div class="level-details">
+                <span>5 Investigations</span>
+                <span>Practical Analysis</span>
+                <span>Terminal Required</span>
+            </div>
+
+            <div class="level-tools">
+                <span>Suricata</span>
+                <span>Zeek</span>
+                <span>Wazuh</span>
+                <span>PCAP</span>
+            </div>
+
+            <div class="level-progress-summary">
+                <div class="level-progress-numbers">
+                    <span>Progress</span>
+                    <strong>
+                        {{ medium_progress.completed }}
+                        /
+                        {{ medium_progress.total }}
+                    </strong>
+                </div>
+
+                <div class="level-mini-progress">
+                    <div
+                        class="level-mini-progress-fill"
+                        style="width: {{ medium_progress.percentage }}%;"
+                    ></div>
+                </div>
+            </div>
+
+            <a
+                href="{{ url_for('dashboard.select_level', level_name='medium') }}"
+                class="level-button secondary"
+            >
+                ENTER MEDIUM LEVEL
+                <span aria-hidden="true">&rarr;</span>
+            </a>
+        </article>
+
+        <article class="level-card">
+            <div class="level-card-top">
+                <span class="level-number">LEVEL 03</span>
+                <span class="status-tag open">AVAILABLE</span>
+            </div>
+
+            <div class="level-icon" aria-hidden="true">03</div>
+            <h2>Hard</h2>
+            <h3>Threat Hunter</h3>
+            <p>
+                Investigate complex incidents containing noisy telemetry,
+                false positives and incomplete evidence.
+            </p>
+
+            <div class="level-details">
+                <span>5 Investigations</span>
+                <span>Threat Hunting</span>
+                <span>Minimal Guidance</span>
+            </div>
+
+            <div class="level-tools">
+                <span>PCAP</span>
+                <span>Wireshark</span>
+                <span>Zeek</span>
+                <span>MITRE ATT&amp;CK</span>
+            </div>
+
+            <div class="level-progress-summary">
+                <div class="level-progress-numbers">
+                    <span>Progress</span>
+                    <strong>
+                        {{ hard_progress.completed }}
+                        /
+                        {{ hard_progress.total }}
+                    </strong>
+                </div>
+
+                <div class="level-mini-progress">
+                    <div
+                        class="level-mini-progress-fill"
+                        style="width: {{ hard_progress.percentage }}%;"
+                    ></div>
+                </div>
+            </div>
+
+            <a
+                href="{{ url_for('dashboard.select_level', level_name='hard') }}"
+                class="level-button hard"
+            >
+                ENTER HARD LEVEL
+                <span aria-hidden="true">&rarr;</span>
+            </a>
+        </article>
+    </section>
+
+    <section class="soc-panel level-progression">
+        <div class="panel-title">
+            <div>
+                <p class="soc-eyebrow">TRAINING PATH</p>
+                <h2>Analyst Progression</h2>
+            </div>
+        </div>
+
+        <div class="progression-flow">
+            <div>
+                <strong>Beginner</strong>
+                <span>Understand the evidence</span>
+            </div>
+            <span class="progression-arrow" aria-hidden="true">&rarr;</span>
+            <div>
+                <strong>Medium</strong>
+                <span>Investigate the evidence</span>
+            </div>
+            <span class="progression-arrow" aria-hidden="true">&rarr;</span>
+            <div>
+                <strong>Hard</strong>
+                <span>Discover the incident</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="soc-panel overall-training-progress">
+        <div class="panel-title">
+            <div>
+                <p class="soc-eyebrow">OPERATION STATUS</p>
+                <h2>Overall Investigation Progress</h2>
+            </div>
+
+            <div class="overall-progress-number">
+                {{ overall_progress.completed }}
+                /
+                {{ overall_progress.total }}
+            </div>
+        </div>
+
+        <div class="overall-progress-track">
+            <div
+                class="overall-progress-fill"
+                style="width: {{ overall_progress.percentage }}%;"
+            ></div>
+        </div>
+
+        <div class="overall-progress-footer">
+            <span>
+                {{ overall_progress.percentage }}% complete
+            </span>
+
+            {% if overall_progress.is_complete %}
+                <a
+                    href="{{ url_for('dashboard.operation_complete') }}"
+                    class="level-button"
+                >
+                    VIEW FINAL RESULTS
+                    <span aria-hidden="true">&rarr;</span>
+                </a>
+            {% else %}
+                <span>
+                    {{ overall_progress.remaining }}
+                    investigations remaining
+                </span>
+            {% endif %}
+        </div>
+    </section>
+</div>
+{% endblock %}

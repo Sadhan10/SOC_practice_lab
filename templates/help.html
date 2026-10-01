@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rules & Help | Operation Black Falcon</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="soc-shell">
+    {% include "_sidebar.html" %}
+
+    <main class="soc-main">
+        <header class="soc-topbar">
+            <div>
+                <h1>Rules & Help</h1>
+                <p>How to complete Operation Black Falcon</p>
+            </div>
+        </header>
+
+        <section class="help-grid">
+            <div class="panel">
+                <h2>Challenge Flow</h2>
+                <p>Open an investigation, answer the analyst prompts correctly, unlock the investigation flag, then submit it from the flag console.</p>
+            </div>
+
+            <div class="panel">
+                <h2>Rules</h2>
+                <p>All investigations are available immediately. Flags must be submitted only after the findings are validated. Progress is tracked per username.</p>
+            </div>
+
+            <div class="panel">
+                <h2>Scope</h2>
+                <p>This is a local OVA-based training environment. Stay inside the simulated Black Falcon application and evidence data.</p>
+            </div>
+
+            <div class="panel">
+                <h2>Flag Format</h2>
+                <p><code>32-character case token</code></p>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Submit Flag | Operation Black Falcon</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+</head>
+
+<body>
+
+<div class="soc-shell">
+    {% include "_sidebar.html" %}
+
+    <main class="soc-main">
+
+        <header class="soc-topbar">
+
+            <div>
+                <h1>Flag Submission Console</h1>
+
+                <p>
+                    Recover flags from validated investigation
+                    findings and submit them here.
+                </p>
+            </div>
+
+            <div class="analyst-box">
+                <span>Flag Format</span>
+                <strong>32-character token</strong>
+                <small>Evidence-derived values only</small>
+            </div>
+
+        </header>
+
+        <section class="flag-console">
+
+            <div class="terminal-panel">
+
+                <h2>Submit Investigation Flag</h2>
+
+                <p>
+                    Select an investigation and enter the flag you
+                    recovered after validating its findings.
+                </p>
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+
+                        {% for category, message in messages %}
+
+                            <div
+                                class="alert
+                                {% if category == 'success' %}
+                                    alert-success
+                                {% endif %}"
+                            >
+                                {{ message }}
+                            </div>
+
+                        {% endfor %}
+
+                    {% endif %}
+                {% endwith %}
+
+                <form
+                    method="POST"
+                    class="flag-form dark-form"
+                >
+
+                    <label>Select Investigation</label>
+
+                    <select
+                        name="investigation_id"
+                        required
+                    >
+
+                        {% for investigation in investigations %}
+
+                            {% set item_progress =
+                                progress_map.get(
+                                    investigation.id,
+                                    {}
+                                )
+                            %}
+
+                            <option value="{{ investigation.id }}">
+
+                                {{ investigation.id }}
+                                -
+                                {{ investigation.title }}
+
+                                {% if item_progress.get('completed') %}
+                                    (Completed)
+
+                                {% elif item_progress.get('findings_validated') %}
+                                    (Ready for submission)
+
+                                {% else %}
+                                    (Validate findings first)
+                                {% endif %}
+
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                    <label>Case Token</label>
+
+                    <input
+                        type="text"
+                        name="flag"
+                        placeholder="Enter the 32-character case token"
+                        autocomplete="off"
+                        required
+                    >
+
+                    <button type="submit">
+                        Validate Flag
+                    </button>
+
+                </form>
+
+            </div>
+
+            <div class="mini-panel">
+
+                <h3>Submission Rules</h3>
+
+                <ul>
+                    <li>
+                        Validate the investigation findings first.
+                    </li>
+
+                    <li>
+                        Recover the case token from the validated
+                        investigation.
+                    </li>
+
+                    <li>
+                        The application does not display correct
+                        flags.
+                    </li>
+
+                    <li>
+                        Flag comparison is case-insensitive.
+                    </li>
+
+                    <li>
+                        Incorrect submissions do not reset progress.
+                    </li>
+
+                    <li>
+                        All investigations are available from the
+                        beginning.
+                    </li>
+                </ul>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script
+    src="{{ url_for('static', filename='js/app.js') }}"
+></script>
+
+</body>
+</html>

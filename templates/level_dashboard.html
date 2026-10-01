@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% block title %}Operation Black Falcon | {{ level.name }}{% endblock %}
+
+{% block content %}
+<div class="soc-page level-dashboard {{ level_name }}-track">
+    <section class="soc-hero">
+        <div>
+            <p class="soc-eyebrow">
+                {% if level_name == "medium" %}
+                    LEVEL 02
+                {% elif level_name == "hard" %}
+                    LEVEL 03
+                {% endif %}
+            </p>
+            <h1>{{ level.subtitle }}</h1>
+            <p>
+                {{ level.description }}
+            </p>
+        </div>
+
+        <div class="threat-card">
+            <span>Difficulty</span>
+            <strong>{{ level.difficulty | upper }}</strong>
+            <small>{{ level.subtitle }}</small>
+        </div>
+    </section>
+
+    <section class="soc-panel">
+        <div class="panel-title">
+            <div>
+                <p class="soc-eyebrow">ANALYST PROGRESS</p>
+                <h2>Investigation Status</h2>
+            </div>
+
+            <div class="medium-score">
+                {{ completed_count }} / {{ total_cases }}
+            </div>
+        </div>
+
+        <div
+            class="medium-progress-track"
+            role="progressbar"
+            aria-label="{{ level.name }} investigation progress"
+            aria-valuemin="0"
+            aria-valuemax="{{ total_cases }}"
+            aria-valuenow="{{ completed_count }}"
+        >
+            <div
+                class="medium-progress-fill"
+                style="width: {{ completion_percentage }}%;"
+            ></div>
+        </div>
+
+        <div class="medium-progress-text">
+            {{ completion_percentage }}% complete
+        </div>
+    </section>
+
+    <section class="soc-panel">
+        <div class="panel-title">
+            <div>
+                <p class="soc-eyebrow">
+                    {% if level_name == "medium" %}
+                        ACTIVE CASE QUEUE
+                    {% else %}
+                        THREAT HUNT QUEUE
+                    {% endif %}
+                </p>
+                <h2>{{ level.name }} Investigations</h2>
+            </div>
+        </div>
+
+        <div class="medium-case-grid">
+            {% for case in investigations %}
+                <article
+                    class="medium-case-card
+                        {% if not case.available %}unavailable{% endif %}
+                        {% if case.completed %}completed{% endif %}"
+                >
+                    <div class="medium-case-header">
+                        <span class="medium-case-id">{{ case.id }}</span>
+
+                        {% if not case.available %}
+                            <span class="medium-case-status pending">
+                                IN DEVELOPMENT
+                            </span>
+                        {% elif case.completed %}
+                            <span class="medium-case-status solved">
+                                COMPLETED
+                            </span>
+                        {% elif case.findings_validated %}
+                            <span class="medium-case-status validated">
+                                FINDINGS VALIDATED
+                            </span>
+                        {% else %}
+                            <span class="medium-case-status active">
+                                ACTIVE
+                            </span>
+                        {% endif %}
+                    </div>
+
+                    {% if case.available %}
+                        <h3>{{ case.title }}</h3>
+
+                        <p class="medium-objective">
+                            {{ case.objective }}
+                        </p>
+
+                        <div class="medium-case-meta">
+                            <span>
+                                Difficulty:
+                                <strong>{{ case.difficulty }}</strong>
+                            </span>
+                            <span>
+                                Priority:
+                                <strong>{{ case.priority }}</strong>
+                            </span>
+                        </div>
+
+                        <div class="medium-tool-list">
+                            {% for tool in case.tools %}
+                                <span>{{ tool }}</span>
+                            {% endfor %}
+                        </div>
+
+                        <a
+                            href="{{ url_for(
+                                'investigations.investigation_detail',
+                                investigation_id=case.id
+                            ) }}"
+                            class="level-button"
+                        >
+                            {% if case.completed %}
+                                REVIEW INVESTIGATION
+                            {% elif level_name == "hard" %}
+                                START THREAT HUNT
+                            {% else %}
+                                OPEN INVESTIGATION
+                            {% endif %}
+                            <span aria-hidden="true">&rarr;</span>
+                        </a>
+                    {% else %}
+                        <h3>Classified Investigation</h3>
+
+                        <p class="medium-objective">
+                            This investigation package has not yet been
+                            deployed.
+                        </p>
+
+                        <div class="medium-placeholder">
+                            CASE PACKAGE PENDING
+                        </div>
+                    {% endif %}
+                </article>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="soc-panel">
+        <div class="panel-title">
+            <div>
+                <p class="soc-eyebrow">ANALYST TOOLKIT</p>
+                <h2>Available Capabilities</h2>
+            </div>
+        </div>
+
+        <div class="medium-toolkit">
+            {% for tool in level.tools %}
+                <div>
+                    <strong>{{ tool }}</strong>
+                    <span>
+                        {% if level_name == "hard" %}
+                            Threat Hunting
+                        {% else %}
+                            Practical Analysis
+                        {% endif %}
+                    </span>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <div class="medium-dashboard-actions">
+        <a
+            href="{{ url_for('dashboard.levels') }}"
+            class="level-button secondary"
+        >
+            &larr; CHANGE LEVEL
+        </a>
+    </div>
+</div>
+{% endblock %}

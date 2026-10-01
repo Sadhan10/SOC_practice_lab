@@ -1,0 +1,121 @@
+{
+  "id": "BF-2026-005",
+  "level": "beginner",
+  "title": "Executive Incident Reconstruction",
+  "difficulty": "Beginner Capstone",
+  "priority": "Critical",
+  "story": "Black Falcon Bank has contained the immediate threat. Senior management now requires the SOC team to reconstruct the complete incident before affected systems can return to production. As the lead SOC analyst, correlate the findings from the previous investigations and identify the major stages of the intrusion.",
+  "objective": "Reconstruct the complete Black Falcon attack chain. Use the four case summaries below together with the evidence from BF-2026-001 through BF-2026-004. You are expected to revisit earlier investigation evidence where required.",
+  "tools": [
+    "Wazuh",
+    "Suricata",
+    "Zeek",
+    "Cowrie",
+    "OpenVAS",
+    "OpenCTI",
+    "MITRE ATT&CK"
+  ],
+  "resources": [
+    {
+      "label": "Case 1 Investigation Summary",
+      "path": "reports/BF-2026-001_case_summary.txt"
+    },
+    {
+      "label": "Case 2 Investigation Summary",
+      "path": "reports/BF-2026-002_case_summary.txt"
+    },
+    {
+      "label": "Case 3 Investigation Summary",
+      "path": "reports/BF-2026-003_case_summary.txt"
+    },
+    {
+      "label": "Case 4 Investigation Summary",
+      "path": "reports/BF-2026-004_case_summary.txt"
+    }
+  ],
+  "timeline": [
+    {
+      "time": "08:45",
+      "title": "External Reconnaissance"
+    },
+    {
+      "time": "09:35",
+      "title": "Credential Compromise"
+    },
+    {
+      "time": "10:02",
+      "title": "Banking Application Compromise"
+    },
+    {
+      "time": "10:09",
+      "title": "Persistence and Command & Control"
+    },
+    {
+      "time": "10:15",
+      "title": "Data Exfiltration"
+    }
+  ],
+  "mitre_mapping": [
+    {
+      "activity": "Reconnaissance",
+      "technique": "TA0043"
+    },
+    {
+      "activity": "Brute Force",
+      "technique": "T1110"
+    },
+    {
+      "activity": "Exploit Public-Facing Application",
+      "technique": "T1190"
+    },
+    {
+      "activity": "Web Shell",
+      "technique": "T1505.003"
+    },
+    {
+      "activity": "Scheduled Task / Cron",
+      "technique": "T1053.003"
+    },
+    {
+      "activity": "Application Layer Protocol",
+      "technique": "T1071.001"
+    },
+    {
+      "activity": "Exfiltration Over C2 Channel",
+      "technique": "T1041"
+    }
+  ],
+  "questions": [
+    {
+      "field": "attacker_ip",
+      "label": "Initial Attacker IP",
+      "placeholder": "Source IPv4 address"
+    },
+    {
+      "field": "initial_access",
+      "label": "Initial Access Method",
+      "placeholder": "How did the attacker gain access?"
+    },
+    {
+      "field": "web_compromise",
+      "label": "Banking Application Compromise Technique",
+      "placeholder": "Web attack technique"
+    },
+    {
+      "field": "persistence",
+      "label": "Persistence Mechanism",
+      "placeholder": "How was persistence established?"
+    },
+    {
+      "field": "c2_infrastructure",
+      "label": "Command-and-Control Infrastructure",
+      "placeholder": "C2 domain"
+    },
+    {
+      "field": "exfiltration",
+      "label": "Final Exfiltration Activity",
+      "placeholder": "How was data exfiltrated?"
+    }
+  ],
+  "level": "beginner"
+}

@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}
+Investigation Notes | {{ case_id }}
+{% endblock %}
+
+{% block content %}
+
+<div class="soc-page narrow-page">
+
+    <section class="soc-hero compact-hero">
+
+        <div>
+            <p class="soc-eyebrow">
+                ANALYST NOTEBOOK
+            </p>
+
+            <h1>
+                {{ case_id }}
+            </h1>
+
+            <p>
+                {{ case_title }}
+            </p>
+        </div>
+
+        <a
+            class="secondary-button"
+            href="{{ url_for(
+                'soc_features.dashboard'
+            ) }}"
+        >
+            Return to Dashboard
+        </a>
+
+    </section>
+
+    <section class="soc-panel">
+
+        <div class="panel-title">
+
+            <div>
+                <p class="soc-eyebrow">
+                    PRIVATE WORKSPACE
+                </p>
+
+                <h2>Investigation Notes</h2>
+            </div>
+
+            <span id="note-save-status">
+                {% if updated_at %}
+                    Last saved: {{ updated_at }}
+                {% else %}
+                    Not saved
+                {% endif %}
+            </span>
+
+        </div>
+
+        <form
+            id="notes-form"
+            method="post"
+            action="{{ url_for(
+                'soc_features.investigation_notes',
+                case_id=case_id
+            ) }}"
+        >
+
+            <textarea
+                id="note-text"
+                name="note_text"
+                class="notes-editor"
+                placeholder="Record observations, timestamps, IOCs, hypotheses and pending actions..."
+            >{{ note_text }}</textarea>
+
+            <div class="form-actions">
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    Save Notes
+                </button>
+
+                <a
+                    class="secondary-button"
+                    href="{{ url_for(
+                        'soc_features.ioc_notebook'
+                    ) }}"
+                >
+                    Open IOC Notebook
+                </a>
+
+            </div>
+
+        </form>
+
+    </section>
+
+</div>
+
+{% endblock %}
+
+

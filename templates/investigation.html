@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ investigation.title }} | Operation Black Falcon</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/soc_features.css') }}">
+</head>
+<body>
+
+<div class="soc-shell">
+    {% include "_sidebar.html" %}
+
+    <main class="soc-main">
+        <header class="soc-topbar">
+            <div>
+                <h1>{{ investigation.id }}: {{ investigation.title }}</h1>
+                <p>{{ investigation.objective }}</p>
+            </div>
+
+            <div class="analyst-box">
+                <span>Difficulty</span>
+                <strong>{{ investigation.difficulty }}</strong>
+                <small>Priority: {{ investigation.priority }}</small>
+            </div>
+        </header>
+
+        <div class="workspace-toolbar">
+            <a
+                class="workspace-link"
+                href="{{ url_for(
+                    'soc_features.investigation_notes',
+                    case_id=investigation.id
+                ) }}"
+            >
+                Investigation Notes
+            </a>
+
+            <a
+                class="workspace-link"
+                href="{{ url_for('soc_features.ioc_notebook') }}"
+            >
+                IOC Notebook
+            </a>
+
+            <a
+                class="workspace-link"
+                href="{{ url_for('soc_features.mitre_mapping') }}"
+            >
+                MITRE ATT&amp;CK
+            </a>
+        </div>
+
+        <section class="case-detail-grid">
+            <div class="case-main-panel">
+                <div class="panel">
+                    <h2>Incident Story</h2>
+                    <p>{{ investigation.story }}</p>
+                </div>
+
+                <div class="panel">
+                    <h2>Investigation Resources</h2>
+
+                    <div class="evidence-resource-grid">
+                        {% for resource in investigation.resources %}
+                            <a
+                                class="evidence-resource"
+                                href="{{ url_for(
+                                    'soc_features.evidence_viewer',
+                                    path=resource.path,
+                                    case_id=investigation.id
+                                ) }}"
+                            >
+                                <span class="evidence-resource-icon">
+                                    &#9635;
+                                </span>
+
+                                <span>
+                                    <strong>{{ resource.label }}</strong>
+                                    <small>Open in evidence viewer</small>
+                                </span>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                {% if investigation.id == "BF-2026-005" %}
+                    <div class="panel capstone-panel">
+                        <div class="capstone-kicker">
+                            Incident Closure Briefing
+                        </div>
+
+                        <h2>Reconstructed Attack Chain</h2>
+
+                        <p>
+                            Use the evidence from all prior investigations to
+                            verify each stage before submitting the executive
+                            incident report.
+                        </p>
+
+                        <div class="capstone-timeline">
+                            {% for event in investigation.timeline %}
+                                <div class="timeline-stage">
+                                    <span>{{ event.time }}</span>
+                                    <strong>{{ event.title }}</strong>
+                                </div>
+
+                                {% if not loop.last %}
+                                    <div class="timeline-arrow" aria-hidden="true">
+                                        &rarr;
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <h2>MITRE ATT&amp;CK Validation</h2>
+
+                        <p>
+                            Confirm that the reconstructed activity aligns with
+                            the following tactics and techniques.
+                        </p>
+
+                        <div class="table-scroll">
+                            <table class="mitre-table">
+                                <thead>
+                                    <tr>
+                                        <th>Observed Activity</th>
+                                        <th>ATT&amp;CK ID</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for mapping in investigation.mitre_mapping %}
+                                        <tr>
+                                            <td>{{ mapping.activity }}</td>
+                                            <td><code>{{ mapping.technique }}</code></td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if investigation.id == "BF-2026-004" %}
+                    <div class="panel">
+                        <h2>Correlation Guidance</h2>
+
+                        <p>
+                            No individual tool provides the complete answer.
+                            Correlate the evidence using matching hosts,
+                            timestamps, process hashes, domains and destination
+                            addresses.
+                        </p>
+
+                        <div class="investigation-grid">
+                            <div class="mini-panel">
+                                <h3>Wazuh</h3>
+                                <p>
+                                    Identify persistence changes, suspicious
+                                    processes and their cryptographic hashes.
+                                </p>
+                            </div>
+
+                            <div class="mini-panel">
+                                <h3>Zeek</h3>
+                                <p>
+                                    Review DNS resolutions and outbound connection
+                                    volumes from the compromised host.
+                                </p>
+                            </div>
+
+                            <div class="mini-panel">
+                                <h3>OpenVAS</h3>
+                                <p>
+                                    Determine which critical vulnerability affected
+                                    the exposed web service.
+                                </p>
+                            </div>
+
+                            <div class="mini-panel">
+                                <h3>OpenCTI</h3>
+                                <p>
+                                    Match locally observed indicators against known
+                                    malware and intrusion-set intelligence.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="panel">
+                    {% if investigation.id == "BF-2026-005" %}
+                        <h2>Executive Report Validation</h2>
+                        <p>
+                            Enter the confirmed conclusions from the complete
+                            intrusion chain. These fields form the technical
+                            basis of the final incident report.
+                        </p>
+                    {% else %}
+                        <h2>Validate Findings</h2>
+                        <p>
+                            Answer every prompt correctly to unlock the
+                            case token required by the Flag Submission Console.
+                        </p>
+                    {% endif %}
+
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert {% if category == 'success' %}alert-success{% endif %}">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <form method="POST" class="flag-form investigation-form">
+                        {% for question in investigation.questions %}
+                            <label>
+                                <span class="question-number">
+                                    {{ loop.index }}.
+                                </span>
+
+                                {{ question.label }}
+                            </label>
+                            <input
+                                type="text"
+                                name="{{ question.field }}"
+                                value="{{ submitted_answers.get(question.field, '') }}"
+                                placeholder="{{ question.placeholder }}"
+                                required
+                            >
+                            {% if validation_results %}
+                                <p class="answer-status {% if validation_results.get(question.field) %}answer-correct{% else %}answer-incorrect{% endif %}">
+                                    {% if validation_results.get(question.field) %}
+                                        Correct
+                                    {% else %}
+                                        Incorrect
+                                    {% endif %}
+                                </p>
+                            {% endif %}
+                        {% endfor %}
+
+                        <button type="submit">
+                            {% if investigation.id == "BF-2026-005" %}
+                                Submit Executive Findings
+                            {% else %}
+                                Validate Findings
+                            {% endif %}
+                        </button>
+                    </form>
+                </div>
+
+                {% if progress['findings_validated'] %}
+                    <div class="panel success-panel">
+                        <h2>Findings Validated</h2>
+
+                        <p>
+                            Your investigation findings are correct.
+                            Construct the final CTF flag using the
+                            rule below.
+                        </p>
+
+                        {% if flag_rule %}
+                            <div class="flag-instruction-box">
+                                <strong>
+                                    Flag Construction Rule
+                                </strong>
+
+                                <p>
+                                    Replace each field name with the
+                                    corresponding value you identified.
+                                </p>
+
+                                <code>
+                                    {{ flag_rule }}
+                                </code>
+
+                                <p class="small-note">
+                                    Use underscores between components.
+                                    Replace spaces inside individual
+                                    values with hyphens.
+                                </p>
+                            </div>
+                        {% endif %}
+
+                        <a
+                            class="investigate-btn"
+                            href="{{ url_for('flags.submit_flag') }}"
+                        >
+                            Open Flag Console
+                        </a>
+                    </div>
+                {% endif %}
+
+                <div class="action-row">
+                    <a class="investigate-btn" href="{{ url_for('bank.bank') }}">Open Bank Portal</a>
+                    <a class="investigate-btn" href="{{ url_for('evidence.evidence') }}">Review Evidence</a>
+                    <a class="investigate-btn" href="{{ url_for('flags.submit_flag') }}">Submit Flag</a>
+                </div>
+            </div>
+
+            <aside class="right-panel">
+                <div class="mini-panel">
+                    <h3>Investigation Metadata</h3>
+                    <p><strong>ID:</strong> {{ investigation.id }}</p>
+                    <p><strong>Difficulty:</strong> {{ investigation.difficulty }}</p>
+                    <p><strong>Priority:</strong> {{ investigation.priority }}</p>
+                </div>
+
+                <div class="mini-panel">
+                    <h3>Required Tools</h3>
+                    <ul>
+                        {% for tool in investigation.tools %}
+                            <li>{{ tool }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="mini-panel">
+                    <h3>Status</h3>
+
+                    {% if progress['completed'] %}
+                        <p>Investigation completed.</p>
+
+                    {% elif progress['findings_validated'] %}
+                        <p>
+                            Findings validated. Construct and submit the flag.
+                        </p>
+
+                    {% else %}
+                        <p>Findings still need validation.</p>
+                    {% endif %}
+                </div>
+            </aside>
+        </section>
+    </main>
+</div>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+<script src="{{ url_for('static', filename='js/soc_features.js') }}"></script>
+</body>
+</html>

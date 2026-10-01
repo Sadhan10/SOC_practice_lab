@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block title %}
+Operation Black Falcon | Complete
+{% endblock %}
+
+{% block content %}
+
+<div class="soc-page">
+
+    <section class="soc-hero">
+
+        <div>
+
+            <p class="soc-eyebrow">
+                OPERATION BLACK FALCON
+            </p>
+
+            <h1>
+                Investigation Complete
+            </h1>
+
+            <p>
+                All three SOC investigation tracks
+                have been successfully completed.
+            </p>
+
+        </div>
+
+        <div class="threat-card">
+
+            <span>
+                Final Status
+            </span>
+
+            <strong>
+                {{ progress.completed }} / {{ progress.total }}
+            </strong>
+
+            <small>
+                OPERATION COMPLETE
+            </small>
+
+        </div>
+
+    </section>
+
+    <section class="soc-panel">
+
+        <div class="panel-title">
+
+            <div>
+
+                <p class="soc-eyebrow">
+                    ANALYST PERFORMANCE
+                </p>
+
+                <h2>
+                    Training Tracks Completed
+                </h2>
+
+            </div>
+
+        </div>
+
+        <div class="final-level-results">
+
+            <div>
+
+                <strong>
+                    SOC Foundation
+                </strong>
+
+                <span>
+                    Beginner &mdash;
+                    {{ progress.levels.beginner.completed }}/
+                    {{ progress.levels.beginner.total }}
+                </span>
+
+            </div>
+
+            <div>
+
+                <strong>
+                    SOC Analyst
+                </strong>
+
+                <span>
+                    Medium &mdash;
+                    {{ progress.levels.medium.completed }}/
+                    {{ progress.levels.medium.total }}
+                </span>
+
+            </div>
+
+            <div>
+
+                <strong>
+                    Threat Hunter
+                </strong>
+
+                <span>
+                    Hard &mdash;
+                    {{ progress.levels.hard.completed }}/
+                    {{ progress.levels.hard.total }}
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="final-operation-message">
+
+            <p>
+                You successfully investigated the
+                Black Falcon Bank intrusion from
+                initial reconnaissance through
+                credential compromise, application
+                exploitation, lateral movement,
+                command-and-control and data
+                exfiltration.
+            </p>
+
+        </div>
+
+        <div class="completion-actions">
+
+            <a
+                href="{{ url_for('soc_features.executive_report') }}"
+                class="level-button secondary"
+            >
+                VIEW FINAL REPORT
+                <span aria-hidden="true">&rarr;</span>
+            </a>
+
+            <a
+                href="{{ url_for('soc_features.certificate') }}"
+                class="level-button secondary"
+            >
+                VIEW FINAL CERTIFICATE
+                <span aria-hidden="true">&rarr;</span>
+            </a>
+
+            <a
+                href="{{ url_for('dashboard.levels') }}"
+                class="level-button"
+            >
+
+                RETURN TO OPERATIONS
+
+                <span aria-hidden="true">
+                    &rarr;
+                </span>
+
+            </a>
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}

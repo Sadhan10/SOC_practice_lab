@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Attack Timeline | Operation Black Falcon
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for(
+            'static',
+            filename='css/style.css'
+        ) }}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for(
+            'static',
+            filename='css/soc_features.css'
+        ) }}"
+    >
+</head>
+
+<body class="timeline-page">
+
+<div class="soc-shell">
+    {% include "_sidebar.html" %}
+
+    <main class="soc-main">
+
+        <header class="soc-topbar">
+
+            <div>
+                <h1>Attack Timeline</h1>
+
+                <p>
+                    Five-stage chronological reconstruction of
+                    the Black Falcon incident
+                </p>
+            </div>
+
+            <div class="analyst-box">
+                <span>Attack Chain</span>
+
+                <strong>
+                    {{ timeline_events|length }}
+                    Investigations
+                </strong>
+
+                <small>
+                    One timeline stage per case
+                </small>
+            </div>
+
+        </header>
+
+        <section class="timeline-introduction">
+
+            <div>
+                <span class="timeline-introduction-label">
+                    INCIDENT OVERVIEW
+                </span>
+
+                <h2>
+                    Operation Black Falcon Attack Chain
+                </h2>
+
+                <p>
+                    Each timeline stage corresponds directly to
+                    one investigation. Open the related case to
+                    examine its evidence and confirm the findings.
+                </p>
+            </div>
+
+        </section>
+
+        <section class="attack-timeline">
+
+            {% for event in timeline_events %}
+
+                <article class="timeline-block">
+
+                    <div class="timeline-marker">
+                        {{ event.sequence }}
+                    </div>
+
+                    <div class="timeline-event-content">
+
+                        <div class="timeline-event-header">
+
+                            <div>
+                                <span class="timeline-case-id">
+                                    {{ event.case }}
+                                </span>
+
+                                <span class="timeline-time">
+                                    {{ event.time }}
+                                </span>
+                            </div>
+
+                            <span class="timeline-investigation-label">
+                                {{ event.status }}
+                            </span>
+
+                        </div>
+
+                        <h3>
+                            {{ event.title }}
+                        </h3>
+
+                        <p>
+                            {{ event.description }}
+                        </p>
+
+                        <div class="timeline-event-footer">
+
+                            <span>
+                                MITRE ATT&amp;CK
+                            </span>
+
+                            <strong>
+                                {{ event.technique }}
+                            </strong>
+
+                            <a
+                                href="{{ url_for(
+                                    'investigations.investigation_detail',
+                                    investigation_id=event.case
+                                ) }}"
+                            >
+                                Open Investigation
+                                <span aria-hidden="true">
+                                    &rarr;
+                                </span>
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+            {% endfor %}
+
+        </section>
+
+    </main>
+
+</div>
+
+<script
+    src="{{ url_for(
+        'static',
+        filename='js/app.js'
+    ) }}"
+></script>
+
+</body>
+</html>

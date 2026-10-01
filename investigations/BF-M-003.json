@@ -1,0 +1,66 @@
+{
+  "id": "BF-M-003",
+  "level": "medium",
+  "title": "Web Application Intrusion",
+  "difficulty": "Medium",
+  "priority": "Critical",
+  "story": "Following the credential compromise, the SOC observed suspicious requests against the Black Falcon Bank web application. Multiple users accessed the portal during the same period, including legitimate administrators. Determine whether the web application was exploited and reconstruct the attacker activity.",
+  "objective": "Correlate Suricata alerts, Zeek HTTP metadata, web access logs and application events to identify the attacker, exploitation technique, compromised endpoint and suspicious file activity.",
+  "tools": [
+    "Suricata",
+    "Zeek",
+    "Web Access Logs",
+    "Application Logs",
+    "Bash"
+  ],
+  "resources": [
+    {
+      "label": "Suricata Web Alerts",
+      "path": "suricata/BF-M-003_eve.json"
+    },
+    {
+      "label": "Zeek HTTP Log",
+      "path": "zeek/BF-M-003_http.log"
+    },
+    {
+      "label": "Web Server Access Log",
+      "path": "web/BF-M-003_access.log"
+    },
+    {
+      "label": "Bank Application Log",
+      "path": "web/BF-M-003_bank_app.log"
+    }
+  ],
+  "questions": [
+    {
+      "field": "attacker_ip",
+      "label": "Identify the malicious source IP",
+      "placeholder": "Example: 192.168.56.100"
+    },
+    {
+      "field": "attack_type",
+      "label": "What web exploitation technique was used?",
+      "placeholder": "Example: SQL Injection"
+    },
+    {
+      "field": "target_endpoint",
+      "label": "Which application endpoint was exploited?",
+      "placeholder": "Example: /search"
+    },
+    {
+      "field": "admin_endpoint",
+      "label": "Which restricted administrative endpoint was discovered?",
+      "placeholder": "Example: /admin"
+    },
+    {
+      "field": "uploaded_file",
+      "label": "Identify the suspicious uploaded filename",
+      "placeholder": "Example: payload.php"
+    },
+    {
+      "field": "execution_command",
+      "label": "What command was executed through the suspicious file?",
+      "placeholder": "Example: whoami"
+    }
+  ]
+}

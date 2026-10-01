@@ -1,0 +1,66 @@
+{
+  "id": "BF-M-004",
+  "level": "medium",
+  "title": "Post-Exploitation and Command & Control",
+  "difficulty": "Medium-Hard",
+  "priority": "Critical",
+  "story": "After the web application compromise, the SOC observed unusual process execution and recurring outbound connections from the banking server. Some traffic belongs to legitimate update services. Determine whether the attacker established persistence and identify the command-and-control infrastructure.",
+  "objective": "Correlate Wazuh endpoint telemetry, Zeek DNS records, Zeek connection logs and process activity to identify persistence, malware activity and command-and-control communication.",
+  "tools": [
+    "Wazuh",
+    "Zeek",
+    "Process Logs",
+    "DNS Logs",
+    "Bash"
+  ],
+  "resources": [
+    {
+      "label": "Wazuh Endpoint Alerts",
+      "path": "wazuh/BF-M-004_wazuh_alerts.log"
+    },
+    {
+      "label": "Process Activity Log",
+      "path": "system/BF-M-004_process.log"
+    },
+    {
+      "label": "Zeek DNS Log",
+      "path": "zeek/BF-M-004_dns.log"
+    },
+    {
+      "label": "Zeek Connection Log",
+      "path": "zeek/BF-M-004_conn.log"
+    }
+  ],
+  "questions": [
+    {
+      "field": "compromised_host",
+      "label": "Identify the compromised host",
+      "placeholder": "Example: 192.168.56.10"
+    },
+    {
+      "field": "persistence",
+      "label": "What persistence mechanism was established?",
+      "placeholder": "Example: Cron Job"
+    },
+    {
+      "field": "malware",
+      "label": "Identify the suspicious payload or malware name",
+      "placeholder": "Example: payload.sh"
+    },
+    {
+      "field": "c2_domain",
+      "label": "Identify the command-and-control domain",
+      "placeholder": "Example: c2.example.local"
+    },
+    {
+      "field": "c2_ip",
+      "label": "Identify the C2 server IP",
+      "placeholder": "Example: 192.168.56.200"
+    },
+    {
+      "field": "beacon_interval",
+      "label": "Approximately how often does the compromised host beacon to the C2 server?",
+      "placeholder": "Example: 60 seconds"
+    }
+  ]
+}

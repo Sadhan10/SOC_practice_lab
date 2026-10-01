@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Backup Directory | Black Falcon Bank</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="bank-page">
+
+<div class="soc-shell">
+{% include "_sidebar.html" %}
+<div class="soc-main bank-workspace">
+
+<header class="bank-topbar danger-bank-bar">
+    <div>
+        <h1>Backup Directory</h1>
+        <p>Exposed internal backup reference</p>
+    </div>
+
+    <nav class="bank-nav">
+        <a href="{{ url_for('bank.bank') }}">Bank Home</a>
+        <a href="{{ url_for('dashboard.dashboard') }}">SOC Console</a>
+    </nav>
+</header>
+
+<main class="bank-dashboard single-bank-page">
+    <section class="bank-login-panel">
+        <h2>Directory Listing Disabled</h2>
+        <p class="bank-muted">
+            Logs show attackers attempted to access exposed backup paths.
+        </p>
+    </section>
+
+    <section class="bank-info-grid">
+        <div class="bank-card">
+            <h3>Observed Path</h3>
+            <p><code>/bank/backup</code></p>
+        </div>
+
+        <div class="bank-card">
+            <h3>Investigation Note</h3>
+            <p>This path is referenced in Zeek HTTP logs for Challenge 3.</p>
+        </div>
+    </section>
+</main>
+
+</div>
+</div>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

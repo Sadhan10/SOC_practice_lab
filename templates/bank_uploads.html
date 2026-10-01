@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Upload Storage | Black Falcon Bank
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+</head>
+
+<body class="bank-page">
+
+<div class="soc-shell">
+{% include "_sidebar.html" %}
+<div class="soc-main bank-workspace">
+
+<header class="bank-topbar danger-bank-bar">
+
+    <div>
+        <h1>Customer Upload Storage</h1>
+        <p>Internal file-processing directory</p>
+    </div>
+
+    <nav class="bank-nav">
+
+        <a href="{{ url_for('bank.bank_admin') }}">
+            Administration
+        </a>
+
+        <a href="{{ url_for('bank.bank') }}">
+            Bank Home
+        </a>
+
+        <a href="{{ url_for('dashboard.dashboard') }}">
+            SOC Console
+        </a>
+
+    </nav>
+
+</header>
+
+<main class="bank-dashboard single-bank-page">
+
+    <section class="bank-login-panel">
+
+        <h2>Stored Files</h2>
+
+        <p class="bank-muted">
+            Files are ordered by their last-modified timestamp.
+        </p>
+
+    </section>
+
+    <section class="bank-info-grid">
+
+        <div class="bank-card">
+
+            <h3>kyc_document.pdf</h3>
+
+            <p>
+                Modified: 2026-01-14 13:42:18
+            </p>
+
+            <p>
+                Size: 184 KB
+            </p>
+
+            <p>
+                Type: PDF document
+            </p>
+
+        </div>
+
+        <div class="bank-card">
+
+            <h3>loan_statement.pdf</h3>
+
+            <p>
+                Modified: 2026-01-14 16:11:04
+            </p>
+
+            <p>
+                Size: 96 KB
+            </p>
+
+            <p>
+                Type: PDF document
+            </p>
+
+        </div>
+
+        <div class="bank-card clue-card">
+
+            <h3>shell.php</h3>
+
+            <p>
+                Modified: 2026-01-15 10:05:02
+            </p>
+
+            <p>
+                Size: 105 bytes
+            </p>
+
+            <p>
+                Type: PHP source
+            </p>
+
+            <a
+                class="investigate-btn"
+                href="{{ url_for('bank.bank_shell') }}"
+            >
+                Inspect Artifact
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+</div>
+</div>
+
+<script
+    src="{{ url_for('static', filename='js/app.js') }}"
+></script>
+
+</body>
+
+</html>

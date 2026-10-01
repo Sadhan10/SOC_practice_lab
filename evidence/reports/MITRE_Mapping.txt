@@ -1,0 +1,15 @@
+BLACK FALCON BANK
+MITRE ATT&CK MAPPING
+
+Activity                         ATT&CK ID
+------------------------------------------------
+Reconnaissance                   TA0043
+SSH Brute Force                  T1110
+Exploit Public-Facing App        T1190
+Web Shell                        T1505.003
+Cron Persistence                 T1053.003
+Web Protocols / C2               T1071.001
+Exfiltration Over C2 Channel     T1041
+
+This mapping provides technique context only. Validate every conclusion
+against the incident evidence before including it in the final report.

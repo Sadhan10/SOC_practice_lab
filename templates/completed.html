@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Investigation Completed | Operation Black Falcon</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+</head>
+
+<body>
+
+    <div class="completion-screen">
+
+        <main class="completion-card">
+
+            <div class="success-icon">&#10003;</div>
+
+            <h1>Flag Accepted</h1>
+
+            <p>
+                You successfully completed
+                <strong>
+                    {{ investigation.id }}:
+                    {{ investigation.title }}
+                </strong>.
+            </p>
+
+            <p class="completion-note">
+                Your progress has been saved locally inside this OVA.
+            </p>
+
+            <div class="action-row center-actions">
+                <a
+                    class="investigate-btn"
+                    href="{{ url_for('dashboard.dashboard') }}"
+                >
+                    Return to {{ level_name | title }} Dashboard
+                </a>
+
+                <a
+                    class="investigate-btn"
+                    href="{{ url_for('flags.submit_flag') }}"
+                >
+                    Submit Another Flag
+                </a>
+            </div>
+
+        </main>
+
+</div>
+
+<script
+    src="{{ url_for('static', filename='js/app.js') }}"
+></script>
+
+</body>
+</html>

@@ -1,0 +1,18 @@
+BLACK FALCON BANK
+CASE TRANSFER SUMMARY
+
+Case:
+BF-2026-003
+
+Investigation Category:
+Bank Application Compromise
+
+Summary:
+Web application and host telemetry confirmed malicious request
+activity followed by the creation of an unauthorised PHP file
+inside the web application upload directory.
+
+Review the original Suricata, Wazuh and application evidence to
+confirm the attack method and uploaded artifact.
+
+This summary does not replace the original evidence.

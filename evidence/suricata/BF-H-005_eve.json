@@ -1,0 +1,7 @@
+{"timestamp":"2026-08-21T10:04:13.412+0530","event_type":"alert","src_ip":"192.168.56.104","dest_ip":"192.168.56.10","dest_port":445,"proto":"TCP","alert":{"signature":"ET SCAN Suspicious TCP Port Sweep","severity":2}}
+
+{"timestamp":"2026-08-21T10:32:09.301+0530","event_type":"alert","src_ip":"192.168.56.104","dest_ip":"192.168.56.10","dest_port":80,"proto":"TCP","alert":{"signature":"ET WEB_SERVER Possible Command Injection","severity":1}}
+
+{"timestamp":"2026-08-21T10:43:25.621+0530","event_type":"alert","src_ip":"192.168.56.21","dest_ip":"192.168.56.200","dest_port":443,"proto":"TCP","alert":{"signature":"ET MALWARE Suspicious Periodic HTTPS Beacon","severity":1}}
+
+{"timestamp":"2026-08-21T10:45:52.910+0530","event_type":"alert","src_ip":"192.168.56.21","dest_ip":"192.168.56.201","dest_port":443,"proto":"TCP","alert":{"signature":"ET POLICY Unusually Large Outbound HTTPS POST","severity":1}}

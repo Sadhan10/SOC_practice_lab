@@ -1,0 +1,94 @@
+{
+  "id": "BF-H-005",
+  "level": "hard",
+  "title": "Full Incident Reconstruction",
+  "difficulty": "Hard",
+  "priority": "Critical",
+  "story": "Black Falcon Bank has declared a major security incident. Multiple systems show suspicious activity, but individual alerts provide only fragments of what occurred. The SOC has preserved network, authentication, endpoint, DNS and application telemetry from the incident window. Reconstruct the intrusion, identify the attacker's path through the environment and determine whether sensitive banking data left the network.",
+  "objective": "Perform an end-to-end incident reconstruction using multiple telemetry sources. Establish the attacker's origin, compromised identity, lateral movement path, persistence or command-and-control activity, staged data and final exfiltration destination.",
+  "tools": [
+    "Zeek",
+    "Suricata",
+    "Wazuh",
+    "Authentication Analysis",
+    "Endpoint Telemetry",
+    "Timeline Analysis"
+  ],
+  "resources": [
+    {
+      "label": "Network Connections",
+      "path": "zeek/BF-H-005_conn.log"
+    },
+    {
+      "label": "DNS Activity",
+      "path": "zeek/BF-H-005_dns.log"
+    },
+    {
+      "label": "HTTP Activity",
+      "path": "zeek/BF-H-005_http.log"
+    },
+    {
+      "label": "Endpoint Telemetry",
+      "path": "wazuh/BF-H-005_wazuh_alerts.log"
+    },
+    {
+      "label": "Authentication Records",
+      "path": "system/BF-H-005_auth.log"
+    },
+    {
+      "label": "Process Activity",
+      "path": "system/BF-H-005_process.log"
+    },
+    {
+      "label": "IDS Telemetry",
+      "path": "suricata/BF-H-005_eve.json"
+    }
+  ],
+  "questions": [
+    {
+      "field": "attacker_ip",
+      "label": "Identify the original attacker IP",
+      "placeholder": "IPv4 address"
+    },
+    {
+      "field": "compromised_account",
+      "label": "Identify the compromised privileged account",
+      "placeholder": "Username"
+    },
+    {
+      "field": "pivot_path",
+      "label": "Reconstruct the internal lateral movement path",
+      "placeholder": "Example: 10.0.0.1 > 10.0.0.2 > 10.0.0.3"
+    },
+    {
+      "field": "host_execution",
+      "label": "What technique provided operating-system command execution?",
+      "placeholder": "Technique"
+    },
+    {
+      "field": "c2_domain",
+      "label": "Identify the command-and-control domain",
+      "placeholder": "Domain"
+    },
+    {
+      "field": "staged_archive",
+      "label": "Identify the archive prepared for exfiltration",
+      "placeholder": "Filename"
+    },
+    {
+      "field": "exfil_destination",
+      "label": "Identify the final exfiltration destination IP",
+      "placeholder": "IPv4 address"
+    },
+    {
+      "field": "exfil_method",
+      "label": "Identify the exfiltration method",
+      "placeholder": "Protocol / method"
+    },
+    {
+      "field": "incident_start",
+      "label": "At what time did the first confirmed hostile activity begin?",
+      "placeholder": "HH:MM:SS"
+    }
+  ]
+}

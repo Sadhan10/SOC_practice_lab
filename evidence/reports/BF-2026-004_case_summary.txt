@@ -1,0 +1,22 @@
+BLACK FALCON BANK
+CASE TRANSFER SUMMARY
+
+Case:
+BF-2026-004
+
+Investigation Category:
+Persistence, Command and Control, and Exfiltration
+
+Summary:
+The compromised web server executed a suspicious binary,
+established persistence and communicated with attacker-controlled
+infrastructure.
+
+Network telemetry shows increasing outbound data volume to a
+known exfiltration receiver.
+
+Review the original Wazuh, Zeek, OpenVAS and OpenCTI evidence to
+confirm the malware, persistence method, infrastructure and
+associated threat actor.
+
+This summary does not replace the original evidence.

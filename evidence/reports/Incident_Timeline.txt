@@ -1,0 +1,34 @@
+BLACK FALCON BANK
+INCIDENT TIMELINE
+
+All timestamps: 2026-01-15
+
+08:45
+External reconnaissance begins against the public banking server.
+
+09:35
+Repeated SSH password attempts are observed.
+
+09:40
+The administrator account is treated as compromised following
+the successful authentication sequence.
+
+10:02
+An abnormal transaction-search request bypasses expected filtering.
+
+10:05
+A PHP artifact is uploaded and subsequently accessed with command
+parameters.
+
+10:09
+A recurring cron entry is created under the web-service account.
+
+10:12
+The compromised host communicates with command-and-control
+infrastructure over encrypted web traffic.
+
+10:15
+Increasing outbound transfers indicate data exfiltration.
+
+Use the original Suricata, Zeek, Cowrie, Wazuh, OpenVAS and OpenCTI
+evidence to validate each stage before completing the executive report.

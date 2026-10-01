@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}
+Evidence Locker | Operation Black Falcon
+{% endblock %}
+
+{% block content %}
+
+<div class="soc-page">
+
+    <section class="soc-hero compact-hero">
+        <div>
+            <p class="soc-eyebrow">
+                DIGITAL FORENSICS
+            </p>
+
+            <h1>Evidence Locker</h1>
+
+            <p>
+                Collected artifacts, logs, and investigation files
+            </p>
+        </div>
+
+        <div class="threat-card evidence-source-card">
+            <span>Evidence source</span>
+            <strong>Local OVA</strong>
+            <small>Read-only &middot; No internet required</small>
+        </div>
+    </section>
+
+    <section class="evidence-locker-grid">
+
+        {% for category, files in evidence_categories.items() %}
+
+            <article class="soc-panel evidence-locker-category">
+
+                <div class="panel-title">
+                    <div>
+                        <p class="soc-eyebrow">
+                            {{ category|upper }}
+                        </p>
+
+                        <h2>{{ category|capitalize }} Evidence</h2>
+                    </div>
+
+                    <span class="panel-badge">
+                        {{ files|length }}
+                        {% if files|length == 1 %}file{% else %}files{% endif %}
+                    </span>
+                </div>
+
+                {% if files %}
+
+                    <div class="evidence-locker-files">
+
+                        {% for file in files %}
+
+                            <a
+                                class="evidence-resource"
+                                href="{{ url_for(
+                                    'soc_features.evidence_viewer',
+                                    path=file.path
+                                ) }}"
+                            >
+                                <span
+                                    class="evidence-resource-icon"
+                                    aria-hidden="true"
+                                >
+                                    &#128196;
+                                </span>
+
+                                <span class="evidence-resource-details">
+                                    <strong>{{ file.name }}</strong>
+                                    <small>
+                                        {{ file.size }} bytes
+                                        &middot; Open evidence
+                                    </small>
+                                </span>
+                            </a>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    <p class="empty-state">
+                        No evidence files currently available in this category.
+                    </p>
+
+                {% endif %}
+
+            </article>
+
+        {% endfor %}
+
+    </section>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,26 @@
+BLACK FALCON BANK
+ADMINISTRATIVE ACCESS REFERENCE
+
+AUTHORIZED ADMINISTRATOR WORKSTATION
+
+192.168.56.101
+Assigned user: admin
+Approved management targets:
+192.168.56.10
+192.168.56.20
+192.168.56.21
+
+NORMAL ADMINISTRATIVE PROTOCOLS
+
+SSH
+SMB
+HTTPS
+
+EXPECTED WORK HOURS
+
+09:00 - 18:00
+
+IMPORTANT
+
+The admin account may legitimately authenticate to multiple hosts.
+Authentication success alone must not be treated as proof of compromise.

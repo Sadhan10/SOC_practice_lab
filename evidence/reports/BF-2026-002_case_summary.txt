@@ -1,0 +1,17 @@
+BLACK FALCON BANK
+CASE TRANSFER SUMMARY
+
+Case:
+BF-2026-002
+
+Investigation Category:
+Credential Compromise
+
+Summary:
+Authentication telemetry identified repeated failed logins
+followed by successful use of a privileged account.
+
+The attacker address, affected account and authentication
+sequence must be confirmed through Cowrie and Wazuh logs.
+
+This summary does not replace the original evidence.

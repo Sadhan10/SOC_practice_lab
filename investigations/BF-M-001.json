@@ -1,0 +1,62 @@
+{
+  "id": "BF-M-001",
+  "level": "medium",
+  "title": "Network Reconnaissance Investigation",
+  "difficulty": "Medium",
+  "priority": "High",
+  "story": "The Black Falcon Bank SOC observed a short burst of unusual network activity against the public application server. The network also contains legitimate vulnerability scanning and routine administrative traffic. Determine whether a real reconnaissance attempt occurred and identify the responsible host.",
+  "objective": "Analyze Suricata and Zeek telemetry, distinguish legitimate scanning from hostile reconnaissance, and reconstruct the suspicious activity.",
+  "tools": [
+    "Suricata",
+    "Zeek",
+    "jq",
+    "grep",
+    "Bash"
+  ],
+  "resources": [
+    {
+      "label": "Suricata EVE JSON",
+      "path": "suricata/BF-M-001_eve.json"
+    },
+    {
+      "label": "Zeek Connection Log",
+      "path": "zeek/BF-M-001_conn.log"
+    },
+    {
+      "label": "Zeek Notice Log",
+      "path": "zeek/BF-M-001_notice.log"
+    }
+  ],
+  "questions": [
+    {
+      "field": "attacker_ip",
+      "label": "Identify the hostile reconnaissance source IP",
+      "placeholder": "Example: 192.168.56.100"
+    },
+    {
+      "field": "legitimate_scanner",
+      "label": "Identify the authorized vulnerability scanner IP",
+      "placeholder": "Example: 192.168.56.100"
+    },
+    {
+      "field": "target_host",
+      "label": "Identify the primary reconnaissance target",
+      "placeholder": "Example: 192.168.56.10"
+    },
+    {
+      "field": "targeted_ports",
+      "label": "Identify the ports probed by the hostile host",
+      "placeholder": "Example: 22 80 443"
+    },
+    {
+      "field": "scan_type",
+      "label": "What reconnaissance technique was observed?",
+      "placeholder": "Example: TCP SYN Scan"
+    },
+    {
+      "field": "first_seen",
+      "label": "At what time did the hostile reconnaissance begin?",
+      "placeholder": "Example: 14:32:10"
+    }
+  ]
+}

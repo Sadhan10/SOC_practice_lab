@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Transaction Search | Black Falcon Bank
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+</head>
+
+<body class="bank-page">
+
+<div class="soc-shell">
+{% include "_sidebar.html" %}
+<div class="soc-main bank-workspace">
+
+<header class="bank-topbar">
+
+    <div>
+        <h1>Transaction Search</h1>
+        <p>Black Falcon Bank public transaction lookup</p>
+    </div>
+
+    <nav class="bank-nav">
+
+        <a href="{{ url_for('bank.bank') }}">
+            Bank Home
+        </a>
+
+        <a href="{{ url_for('bank.bank_login') }}">
+            Internet Banking
+        </a>
+
+        <a href="{{ url_for('bank.bank_upload') }}">
+            Document Upload
+        </a>
+
+        <a href="{{ url_for('dashboard.dashboard') }}">
+            SOC Console
+        </a>
+
+    </nav>
+
+</header>
+
+<main class="bank-dashboard single-bank-page">
+
+    <section class="bank-login-panel">
+
+        <h2>Search Transactions</h2>
+
+        <p class="bank-muted">
+            Search using a transaction ID, account reference
+            or status.
+        </p>
+
+        {% with messages =
+            get_flashed_messages(
+                with_categories=true
+            )
+        %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div
+                        class="alert
+                        {% if category == 'success' %}
+                            alert-success
+                        {% endif %}"
+                    >
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+        <form method="POST">
+
+            <label for="query">
+                Search Query
+            </label>
+
+            <input
+                id="query"
+                type="text"
+                name="query"
+                value="{{ query }}"
+                placeholder="TXN-1001"
+                autocomplete="off"
+                required
+            >
+
+            <button type="submit">
+                Search
+            </button>
+
+        </form>
+
+        <p class="bank-muted">
+            The SOC web logs contain a request that returned
+            more records than expected.
+        </p>
+
+    </section>
+
+    {% if injection_detected %}
+
+        <section class="bank-login-panel">
+
+            <h2>Application Behaviour</h2>
+
+            <p>
+                The submitted input bypassed the expected search
+                filter and exposed internal records.
+            </p>
+
+            <p>
+                Record this weakness and review any internal paths
+                contained in the returned data.
+            </p>
+
+        </section>
+
+    {% endif %}
+
+    <section class="bank-info-grid">
+
+        {% if results %}
+
+            {% for transaction in results %}
+
+                <div class="bank-card">
+
+                    <h3>{{ transaction.id }}</h3>
+
+                    <p>
+                        <strong>Account:</strong>
+                        {{ transaction.account }}
+                    </p>
+
+                    <p>
+                        <strong>Amount:</strong>
+                        {{ transaction.amount }}
+                    </p>
+
+                    <p>
+                        <strong>Status:</strong>
+                        {{ transaction.status }}
+                    </p>
+
+                    <p>
+                        <strong>Note:</strong>
+                        {{ transaction.note }}
+                    </p>
+
+                </div>
+
+            {% endfor %}
+
+        {% elif query %}
+
+            <div class="bank-card">
+
+                <h3>No Matching Record</h3>
+
+                <p>
+                    No transaction matched the supplied search
+                    value.
+                </p>
+
+            </div>
+
+        {% else %}
+
+            <div class="bank-card">
+
+                <h3>Search Ready</h3>
+
+                <p>
+                    Enter a transaction reference to query the
+                    banking dataset.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+</main>
+
+</div>
+</div>
+
+<script
+    src="{{ url_for('static', filename='js/app.js') }}"
+></script>
+
+</body>
+
+</html>

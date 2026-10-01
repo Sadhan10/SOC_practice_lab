@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Internet Banking Login | Black Falcon Bank
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+</head>
+
+<body class="bank-page">
+
+<div class="soc-shell">
+{% include "_sidebar.html" %}
+<div class="soc-main bank-workspace">
+
+<header class="bank-topbar">
+
+    <div>
+        <h1>Internet Banking</h1>
+        <p>Black Falcon Bank Secure Access Portal</p>
+    </div>
+
+    <nav class="bank-nav">
+
+        <a href="{{ url_for('bank.bank') }}">
+            Bank Home
+        </a>
+
+        <a href="{{ url_for('bank.bank_search') }}">
+            Transaction Search
+        </a>
+
+        <a href="{{ url_for('dashboard.dashboard') }}">
+            SOC Console
+        </a>
+
+    </nav>
+
+</header>
+
+<main class="bank-dashboard single-bank-page">
+
+    <section class="bank-login-panel">
+
+        <h2>Internet Banking Authentication</h2>
+
+        <p class="bank-muted">
+            This portal requires valid banking credentials.
+            Authentication details are not provided by the
+            application.
+        </p>
+
+        {% with messages =
+            get_flashed_messages(
+                with_categories=true
+            )
+        %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div
+                        class="alert
+                        {% if category == 'success' %}
+                            alert-success
+                        {% endif %}"
+                    >
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+        <form method="POST">
+
+            <label for="bank_username">
+                Customer ID
+            </label>
+
+            <input
+                id="bank_username"
+                type="text"
+                name="bank_username"
+                placeholder="Enter customer ID"
+                autocomplete="off"
+                required
+            >
+
+            <label for="bank_password">
+                Password
+            </label>
+
+            <input
+                id="bank_password"
+                type="password"
+                name="bank_password"
+                placeholder="Enter password"
+                autocomplete="off"
+                required
+            >
+
+            <button type="submit">
+                Authenticate
+            </button>
+
+        </form>
+
+    </section>
+
+    <section class="bank-info-grid">
+
+        <div class="bank-card">
+
+            <h3>Security Notice</h3>
+
+            <p>
+                Multiple failed authentication attempts may
+                trigger security monitoring.
+            </p>
+
+            <p>
+                Authorized access only. All activity is logged.
+            </p>
+
+        </div>
+
+        <div class="bank-card">
+
+            <h3>Analyst Objective</h3>
+
+            <p>
+                Review the authentication and honeypot evidence
+                associated with the credential-compromise
+                investigation.
+            </p>
+
+            <p>
+                Correlate the successful session before testing
+                recovered credentials.
+            </p>
+
+        </div>
+
+    </section>
+
+</main>
+
+</div>
+</div>
+
+<script
+    src="{{ url_for('static', filename='js/app.js') }}"
+></script>
+
+</body>
+
+</html>

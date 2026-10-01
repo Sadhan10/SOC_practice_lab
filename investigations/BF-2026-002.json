@@ -1,0 +1,56 @@
+{
+  "id": "BF-2026-002",
+  "level": "beginner",
+  "title": "Credential Compromise",
+  "difficulty": "Medium",
+  "priority": "High",
+  "story": "Following the reconnaissance activity, the SOC detects repeated SSH authentication failures against the banking web server. A successful login from the same source occurs shortly afterward.",
+  "objective": "Correlate Wazuh authentication alerts with Cowrie session telemetry to identify the compromised account, recovered credential, source address, access service and attack technique.",
+  "tools": [
+    "Wazuh",
+    "Cowrie"
+  ],
+  "resources": [
+    {
+      "label": "Wazuh Authentication Events",
+      "path": "wazuh/BF-2026-002_authentication.log"
+    },
+    {
+      "label": "Cowrie Honeypot Session Export",
+      "path": "cowrie/BF-2026-002_cowrie_sessions.log"
+    }
+  ],
+  "questions": [
+    {
+      "field": "compromised_account",
+      "label": "Compromised Account",
+      "placeholder": "Username used in the successful login"
+    },
+    {
+      "field": "recovered_password",
+      "label": "Recovered Password",
+      "placeholder": "Password captured by the honeypot"
+    },
+    {
+      "field": "attacker_ip",
+      "label": "Source IP Address",
+      "placeholder": "Example: 192.168.1.50"
+    },
+    {
+      "field": "target_service",
+      "label": "Targeted Remote Service",
+      "placeholder": "Name of the remote-access service"
+    },
+    {
+      "field": "login_method",
+      "label": "Initial Access Technique",
+      "placeholder": "Technique that caused the compromise"
+    },
+    {
+      "field": "successful_login_time",
+      "label": "Successful Login Time",
+      "placeholder": "HH:MM:SS"
+    }
+  ],
+  "level": "beginner"
+}

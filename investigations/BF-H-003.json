@@ -1,0 +1,75 @@
+{
+  "id": "BF-H-003",
+  "level": "hard",
+  "title": "Web-to-Host Compromise",
+  "difficulty": "Hard",
+  "priority": "Critical",
+  "story": "The Black Falcon Bank web application generated several suspicious requests, but no single alert confirms host compromise. At approximately the same time, the application server created new processes and outbound connections. Determine whether the web attack resulted in operating-system level execution.",
+  "objective": "Correlate web requests, application activity, endpoint process telemetry and network connections to identify the exploitation path from web application abuse to host execution.",
+  "tools": [
+    "Suricata",
+    "Zeek",
+    "Web Logs",
+    "Wazuh",
+    "Process Telemetry",
+    "Bash"
+  ],
+  "resources": [
+    {
+      "label": "Suricata Web Telemetry",
+      "path": "suricata/BF-H-003_eve.json"
+    },
+    {
+      "label": "Zeek HTTP Log",
+      "path": "zeek/BF-H-003_http.log"
+    },
+    {
+      "label": "Web Access Log",
+      "path": "web/BF-H-003_access.log"
+    },
+    {
+      "label": "Application Log",
+      "path": "web/BF-H-003_app.log"
+    },
+    {
+      "label": "Endpoint Process Log",
+      "path": "system/BF-H-003_process.log"
+    },
+    {
+      "label": "Wazuh Alerts",
+      "path": "wazuh/BF-H-003_wazuh_alerts.log"
+    }
+  ],
+  "questions": [
+    {
+      "field": "attacker_ip",
+      "label": "Identify the malicious source IP",
+      "placeholder": "IPv4 address"
+    },
+    {
+      "field": "exploit_endpoint",
+      "label": "Which web endpoint triggered the compromise?",
+      "placeholder": "Example: /api/export"
+    },
+    {
+      "field": "exploit_type",
+      "label": "What vulnerability or technique resulted in host command execution?",
+      "placeholder": "Example: Command Injection"
+    },
+    {
+      "field": "executed_command",
+      "label": "Identify the first malicious operating-system command executed",
+      "placeholder": "Command"
+    },
+    {
+      "field": "payload",
+      "label": "Identify the payload written to disk",
+      "placeholder": "Filename"
+    },
+    {
+      "field": "execution_user",
+      "label": "Under which account did the malicious process initially execute?",
+      "placeholder": "Username"
+    }
+  ]
+}

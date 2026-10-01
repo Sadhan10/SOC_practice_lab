@@ -1,0 +1,247 @@
+{% extends "base.html" %}
+
+{% block title %}
+IOC Notebook | Operation Black Falcon
+{% endblock %}
+
+{% block content %}
+
+<div class="soc-page">
+
+    <section class="soc-hero compact-hero">
+
+        <div>
+            <p class="soc-eyebrow">
+                THREAT INTELLIGENCE
+            </p>
+
+            <h1>IOC Notebook</h1>
+
+            <p>
+                Record and organise indicators discovered during
+                the investigation.
+            </p>
+        </div>
+
+        <form
+            method="post"
+            action="{{ url_for(
+                'soc_features.seed_iocs'
+            ) }}"
+        >
+            <button
+                type="submit"
+                class="secondary-button"
+            >
+                Import Confirmed Case IOCs
+            </button>
+        </form>
+
+    </section>
+
+    <section class="ioc-layout">
+
+        <article class="soc-panel">
+
+            <div class="panel-title">
+                <div>
+                    <p class="soc-eyebrow">
+                        NEW INDICATOR
+                    </p>
+
+                    <h2>Add IOC</h2>
+                </div>
+            </div>
+
+            {% if error %}
+
+                <div class="form-error">
+                    {{ error }}
+                </div>
+
+            {% endif %}
+
+            <form
+                method="post"
+                class="soc-form"
+            >
+
+                <label>
+                    IOC Type
+
+                    <select name="ioc_type" required>
+                        <option value="">Select type</option>
+                        <option value="IPv4">IPv4 Address</option>
+                        <option value="Domain">Domain</option>
+                        <option value="URL">URL</option>
+                        <option value="SHA-256">SHA-256</option>
+                        <option value="MD5">MD5</option>
+                        <option value="Email">Email</option>
+                        <option value="Filename">Filename</option>
+                    </select>
+                </label>
+
+                <label>
+                    IOC Value
+
+                    <input
+                        type="text"
+                        name="ioc_value"
+                        required
+                        placeholder="Enter the indicator"
+                    >
+                </label>
+
+                <label>
+                    Investigation
+
+                    <select name="case_id" required>
+
+                        <option value="">
+                            Select investigation
+                        </option>
+
+                        {% for case in case_options %}
+
+                            <option value="{{ case.id }}">
+                                {{ case.level_name }} &mdash;
+                                {{ case.id }} &mdash;
+                                {{ case.title }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+                </label>
+
+                <label>
+                    Description
+
+                    <textarea
+                        name="description"
+                        rows="4"
+                        placeholder="Why is this indicator important?"
+                    ></textarea>
+                </label>
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    Save IOC
+                </button>
+
+            </form>
+
+        </article>
+
+        <article class="soc-panel">
+
+            <div class="panel-title">
+
+                <div>
+                    <p class="soc-eyebrow">
+                        COLLECTED INTELLIGENCE
+                    </p>
+
+                    <h2>
+                        Stored IOCs
+                    </h2>
+                </div>
+
+                <span class="panel-badge">
+                    {{ iocs|length }} indicators
+                </span>
+
+            </div>
+
+            {% if iocs %}
+
+                <div class="ioc-table-wrapper">
+
+                    <table class="soc-table">
+
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Value</th>
+                                <th>Case</th>
+                                <th>Description</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            {% for ioc in iocs %}
+
+                                <tr>
+                                    <td>
+                                        <span class="ioc-type-tag">
+                                            {{ ioc.ioc_type }}
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <code>
+                                            {{ ioc.ioc_value }}
+                                        </code>
+                                    </td>
+
+                                    <td>
+                                        {{ ioc.case_id }}
+                                    </td>
+
+                                    <td>
+                                        {{ ioc.description or "—" }}
+                                    </td>
+
+                                    <td>
+                                        <form
+                                            method="post"
+                                            action="{{ url_for(
+                                                'soc_features.delete_ioc',
+                                                ioc_id=ioc.id
+                                            ) }}"
+                                        >
+                                            <button
+                                                type="submit"
+                                                class="danger-button"
+                                                data-confirm="Delete this IOC?"
+                                            >
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            {% else %}
+
+                <div class="empty-state">
+
+                    <h3>No IOCs recorded</h3>
+
+                    <p>
+                        Review the evidence and add relevant IP
+                        addresses, domains, hashes and filenames.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </article>
+
+    </section>
+
+</div>
+
+{% endblock %}

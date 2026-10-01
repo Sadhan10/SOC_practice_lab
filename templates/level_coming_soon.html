@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Operation Black Falcon | {{ level_name }}{% endblock %}
+
+{% block content %}
+<div class="soc-page">
+    <section class="soc-hero">
+        <div>
+            <p class="soc-eyebrow">OPERATION BLACK FALCON</p>
+            <h1>{{ level_name }} Level</h1>
+            <p>{{ level_description }}</p>
+        </div>
+
+        <div class="threat-card">
+            <span>Status</span>
+            <strong>IN DEVELOPMENT</strong>
+            <small>5 investigations planned</small>
+        </div>
+    </section>
+
+    <section class="soc-panel">
+        <div class="panel-title">
+            <div>
+                <p class="soc-eyebrow">TRAINING TRACK</p>
+                <h2>{{ level_name }} Investigations</h2>
+            </div>
+        </div>
+
+        <p>This investigation track will contain five SOC cases.</p>
+
+        <a href="{{ url_for('dashboard.levels') }}" class="level-button">
+            &larr; BACK TO LEVELS
+        </a>
+    </section>
+</div>
+{% endblock %}

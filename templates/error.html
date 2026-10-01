@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ code }} | Operation Black Falcon
+{% endblock %}
+
+{% block content %}
+
+    <div class="login-box">
+
+        <h1>{{ code }}</h1>
+
+        <p class="subtitle">
+            {{ message }}
+        </p>
+
+        <a
+            class="investigate-btn"
+            href="{{ url_for('auth.index') }}"
+        >
+            Return to Console
+        </a>
+
+    </div>
+
+{% endblock %}

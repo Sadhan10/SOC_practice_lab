@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Black Falcon Bank</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="bank-page">
+
+<div class="soc-shell">
+{% include "_sidebar.html" %}
+<div class="soc-main bank-workspace">
+
+<header class="bank-topbar">
+    <div>
+        <h1>Black Falcon Bank</h1>
+        <p>Secure Digital Banking for Individuals and Businesses</p>
+    </div>
+
+    <nav class="bank-nav">
+        <a href="{{ url_for('bank.bank') }}">Home</a>
+        <a href="{{ url_for('bank.bank_search') }}">Search</a>
+        {% if bank_authenticated %}
+            <a href="{{ url_for('bank.bank_admin') }}">Internal Banking</a>
+            <a href="{{ url_for('bank.bank_logout') }}">End Banking Session</a>
+        {% else %}
+            <a href="{{ url_for('bank.bank_login') }}">Internet Banking</a>
+        {% endif %}
+        <a href="{{ url_for('dashboard.dashboard') }}">SOC Console</a>
+    </nav>
+</header>
+
+<section class="bank-hero">
+    <div>
+        <h1>Banking Built for Trust</h1>
+        <p>
+            Black Falcon Bank provides digital banking, business accounts,
+            loans and secure customer services.
+        </p>
+        {% if bank_authenticated %}
+            <a
+                class="investigate-btn"
+                href="{{ url_for('bank.bank_admin') }}"
+            >
+                Open Internal Banking
+            </a>
+
+            <a
+                class="secondary-btn"
+                href="{{ url_for('bank.bank_logout') }}"
+            >
+                End Banking Session
+            </a>
+        {% else %}
+            <a
+                class="investigate-btn"
+                href="{{ url_for('bank.bank_login') }}"
+            >
+                Internet Banking Login
+            </a>
+        {% endif %}
+    </div>
+</section>
+
+<main class="bank-public-grid">
+    <div class="bank-card">
+        <h3>Personal Banking</h3>
+        <p>Savings accounts, digital payments and customer banking services.</p>
+    </div>
+
+    <div class="bank-card">
+        <h3>Business Banking</h3>
+        <p>Corporate banking services for enterprise customers.</p>
+    </div>
+
+    <div class="bank-card">
+        <h3>Loans</h3>
+        <p>Home loans, business loans and personal financial products.</p>
+    </div>
+
+    <div class="bank-card">
+        <h3>Security Notice</h3>
+        <p>
+            We recommend customers report suspicious emails or unusual login activity immediately.
+        </p>
+    </div>
+
+    <div class="bank-card clue-card">
+        <h3>Investigation Surface</h3>
+        <p>
+            SOC analysts may review public routes, banking login behavior,
+            search activity, uploads and exposed internal paths.
+        </p>
+    </div>
+
+    <div class="bank-card">
+        <h3>Customer Support</h3>
+        <p>Email: support@blackfalconbank.local</p>
+    </div>
+</main>
+
+</div>
+</div>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,537 @@
+{% extends "base.html" %}
+
+{% block title %}
+Operation Black Falcon | SOC Dashboard
+{% endblock %}
+
+{% block content %}
+
+<div class="soc-page">
+
+    <section class="soc-hero">
+
+        <div>
+            <p class="soc-eyebrow">
+                BLACK FALCON BANK
+            </p>
+
+            <h1>
+                Security Operations Center
+            </h1>
+
+            <p>
+                Active incident investigation and threat
+                containment workspace.
+            </p>
+        </div>
+
+        <div class="threat-card">
+            <span>Threat Level</span>
+            <strong>CRITICAL</strong>
+            <small>Coordinated intrusion detected</small>
+        </div>
+
+    </section>
+
+    <section class="metric-grid">
+
+        <article class="metric-card">
+            <span>Investigations</span>
+            <strong>{{ total_cases }}</strong>
+            <small>Total cases</small>
+        </article>
+
+        <article class="metric-card">
+            <span>Completed</span>
+            <strong>{{ completed_count }}</strong>
+            <small>{{ pending_count }} remaining</small>
+        </article>
+
+        <article class="metric-card">
+            <span>Flags</span>
+            <strong>
+                {{ completed_count }} of {{ total_cases }}
+            </strong>
+            <small>Validated locally</small>
+        </article>
+
+        <article class="metric-card">
+            <span>Evidence</span>
+            <strong>{{ evidence_view_count }}</strong>
+            <small>Files reviewed</small>
+        </article>
+
+        <article class="metric-card">
+            <span>IOCs</span>
+            <strong>{{ ioc_count }}</strong>
+            <small>Indicators stored</small>
+        </article>
+
+        <article class="metric-card">
+            <span>Score</span>
+            <strong>{{ score }}%</strong>
+            <small>
+                {{ incorrect_attempts }} incorrect attempts
+            </small>
+        </article>
+
+    </section>
+
+    <section class="dashboard-layout">
+
+        <div class="dashboard-primary">
+
+            <article class="soc-panel">
+
+                <div class="panel-title">
+
+                    <div>
+                        <p class="soc-eyebrow">
+                            ACTIVE WORK
+                        </p>
+
+                        <h2>Investigations</h2>
+                    </div>
+
+                    <span class="panel-badge">
+                        {{ completed_count }} of
+                        {{ total_cases }} completed
+                    </span>
+
+                </div>
+
+                <div class="investigation-card-grid">
+
+                    {% for case in cases %}
+
+                        <a
+                            class="investigation-card
+                            {% if case.completed %}
+                                completed
+                            {% endif %}"
+                            href="{{ url_for(
+                                'investigations.investigation_detail',
+                                investigation_id=case.id
+                            ) }}"
+                        >
+
+                            <div class="investigation-card-header">
+
+                                <span class="case-number">
+                                    {{ case.id }}
+                                </span>
+
+                                {% if case.completed %}
+                                    <span class="status-tag resolved">
+                                        Completed
+                                    </span>
+                                {% else %}
+                                    <span class="status-tag open">
+                                        Open
+                                    </span>
+                                {% endif %}
+
+                            </div>
+
+                            <h3>
+                                {{ case.title }}
+                            </h3>
+
+                            <div class="investigation-card-footer">
+                                <span>
+                                    {{ case.points }} points
+                                </span>
+
+                                <span>
+                                    Open case &rarr;
+                                </span>
+                            </div>
+
+                        </a>
+
+                    {% endfor %}
+
+                </div>
+
+            </article>
+
+            <article class="soc-panel">
+
+                <div class="panel-title">
+                    <div>
+                        <p class="soc-eyebrow">
+                            SECURITY TELEMETRY
+                        </p>
+
+                        <h2>Alert Queue</h2>
+                    </div>
+                </div>
+
+                <div class="alert-list">
+
+                    {% for alert in alerts %}
+
+                        <div class="alert-row
+                            {% if alert.resolved %}
+                                resolved-alert
+                            {% endif %}"
+                        >
+
+                            <div class="alert-time">
+                                {{ alert.time }}
+                            </div>
+
+                            <div class="alert-information">
+
+                                <div class="alert-heading">
+
+                                    <strong>
+                                        {{ alert.title }}
+                                    </strong>
+
+                                    <span class="severity-tag
+                                        {{ alert.severity }}"
+                                    >
+                                        {{ alert.severity }}
+                                    </span>
+
+                                </div>
+
+                                <p>
+                                    Detection source:
+                                    {{ alert.source }}
+                                </p>
+
+                                {% if alert.resolved %}
+                                    <small class="resolved-text">
+                                        &#10003; Resolved through investigation
+                                    </small>
+                                {% else %}
+                                    <small class="pending-text">
+                                        Investigation required
+                                    </small>
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </article>
+
+        </div>
+
+        <aside class="dashboard-secondary">
+
+            <article class="soc-panel progress-card">
+
+                <div class="panel-title">
+                    <div>
+                        <p class="soc-eyebrow">
+                            MISSION STATUS
+                        </p>
+
+                        <h2>Completion</h2>
+                    </div>
+                </div>
+
+                <div
+                    class="progress-circle"
+                    style="--progress: {{ completion_percentage }}"
+                >
+                    <div>
+                        <strong>
+                            {{ completion_percentage }}%
+                        </strong>
+
+                        <span>
+                            Mission progress
+                        </span>
+                    </div>
+                </div>
+
+                <div class="progress-track">
+                    <div
+                        class="progress-value"
+                        style="width:
+                            {{ completion_percentage }}%"
+                    ></div>
+                </div>
+
+                {% if mission_complete %}
+
+                    <div class="mission-complete">
+                        MISSION COMPLETE
+                    </div>
+
+                {% else %}
+
+                    <p class="progress-caption">
+                        Complete all investigations to close
+                        the incident.
+                    </p>
+
+                {% endif %}
+
+            </article>
+
+            <article class="soc-panel">
+
+                <div class="panel-title">
+                    <div>
+                        <p class="soc-eyebrow">
+                            ATTACK CHAIN
+                        </p>
+
+                        <h2>Incident Timeline</h2>
+                    </div>
+
+                    <span class="panel-badge">
+                        {{ timeline|length }} Investigations
+                    </span>
+                </div>
+
+                <div class="attack-timeline">
+
+                    {% for item in timeline %}
+
+                        <div class="timeline-item
+                            {% if item.completed %}
+                                completed
+                            {% endif %}"
+                        >
+
+                            <div class="timeline-node">
+
+                                {% if item.completed %}
+                                    &#10003;
+                                {% else %}
+                                    {{ loop.index }}
+                                {% endif %}
+
+                            </div>
+
+                            <div class="timeline-details">
+
+                                <div>
+                                    <strong>
+                                        {{ item.time }}
+                                    </strong>
+
+                                    <span>
+                                        {{ item.technique }}
+                                    </span>
+                                </div>
+
+                                <p>
+                                    {{ item.title }}
+                                </p>
+
+                                <small>
+
+                                    {% if item.completed %}
+                                        Confirmed
+                                    {% else %}
+                                        Pending analysis
+                                    {% endif %}
+
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </article>
+
+            <article class="soc-panel">
+
+                <div class="panel-title">
+                    <div>
+                        <p class="soc-eyebrow">
+                            ANALYST WORKSPACE
+                        </p>
+
+                        <h2>Quick Actions</h2>
+                    </div>
+                </div>
+
+                <div class="quick-actions">
+
+                    <a href="{{ url_for(
+                        'soc_features.ioc_notebook'
+                    ) }}">
+                        <strong>IOC Notebook</strong>
+                        <span>Record indicators</span>
+                    </a>
+
+                    <a href="{{ url_for(
+                        'soc_features.mitre_mapping'
+                    ) }}">
+                        <strong>MITRE ATT&CK</strong>
+                        <span>Review mapped techniques</span>
+                    </a>
+
+                    {% if overall_complete %}
+                        <a href="{{ url_for(
+                            'soc_features.executive_report'
+                        ) }}">
+                            <strong>Final Executive Report</strong>
+                            <span>Review and submit the incident report</span>
+                        </a>
+                    {% else %}
+                        <div class="locked-action">
+                            <strong>Final Executive Report</strong>
+                            <span>Complete all 15 investigations</span>
+                        </div>
+                    {% endif %}
+
+                    {% if mission_complete %}
+
+                        <a href="{{ url_for(
+                            'soc_features.certificate',
+                            level_name='beginner'
+                        ) }}">
+                            <strong>Beginner Certificate</strong>
+                            <span>Print track completion record</span>
+                        </a>
+
+                    {% endif %}
+
+                </div>
+
+                <div class="workspace-settings">
+                    <form
+                        method="post"
+                        action="{{ url_for('soc_features.update_profile') }}"
+                    >
+                        <label for="analyst-name">Certificate analyst name</label>
+
+                        <div>
+                            <input
+                                id="analyst-name"
+                                name="analyst_name"
+                                value="{{ analyst.analyst_name }}"
+                                maxlength="80"
+                                required
+                            >
+
+                            <button class="secondary-button" type="submit">
+                                Save Name
+                            </button>
+                        </div>
+                    </form>
+
+                    <form
+                        method="post"
+                        action="{{ url_for('soc_features.reset_features') }}"
+                    >
+                        <button
+                            class="danger-button"
+                            type="submit"
+                            data-confirm="Reset all local investigation progress, submissions, notes, IOCs and feature metrics for this analyst?"
+                        >
+                            Reset Local Progress
+                        </button>
+                    </form>
+                </div>
+
+            </article>
+
+        </aside>
+
+    </section>
+
+    {% if mission_complete %}
+
+        <section class="soc-panel executive-summary">
+
+            <div class="panel-title">
+
+                <div>
+                    <p class="soc-eyebrow">
+                        INCIDENT CLOSURE
+                    </p>
+
+                    <h2>Executive Summary</h2>
+                </div>
+
+                <span class="status-tag resolved">
+                    Contained
+                </span>
+
+            </div>
+
+            <div class="executive-summary-grid">
+
+                <div>
+                    <span>Threat Actor</span>
+                    <strong>
+                        {{ executive_summary.threat_actor }}
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Malware</span>
+                    <strong>
+                        {{ executive_summary.malware }}
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Affected Host</span>
+                    <strong>
+                        {{ executive_summary.affected_host }}
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Attacker IP</span>
+                    <strong>
+                        {{ executive_summary.attacker_ip }}
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Web Attack</span>
+                    <strong>
+                        {{ executive_summary.web_attack }}
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Persistence</span>
+                    <strong>
+                        {{ executive_summary.persistence }}
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Exfiltration</span>
+                    <strong>
+                        {{ executive_summary.exfiltration }}
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Risk</span>
+                    <strong class="critical-value">
+                        {{ executive_summary.risk }}
+                    </strong>
+                </div>
+
+            </div>
+
+        </section>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

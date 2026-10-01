@@ -1,0 +1,85 @@
+<aside class="sidebar no-print">
+    <div class="brand">
+        <h2>BLACK FALCON</h2>
+        <span>SOC CTF Console</span>
+    </div>
+
+    <a
+        {% if request.endpoint in ('dashboard.dashboard', 'dashboard.level_dashboard', 'soc_features.dashboard') %}
+            class="active"
+        {% endif %}
+        href="{{ url_for('dashboard.dashboard') }}"
+    >Mission Dashboard</a>
+
+    <a
+        {% if request.endpoint in ('dashboard.levels', 'dashboard.select_level') %}
+            class="active"
+        {% endif %}
+        href="{{ url_for('dashboard.levels') }}"
+    >Levels</a>
+
+    <a
+        {% if request.endpoint and request.endpoint.startswith('bank.') %}
+            class="active"
+        {% endif %}
+        href="{{ url_for('bank.bank') }}"
+    >Bank Environment</a>
+
+    <a
+        {% if request.endpoint == 'evidence.evidence' %}
+            class="active"
+        {% endif %}
+        href="{{ url_for('evidence.evidence') }}"
+    >Evidence Locker</a>
+
+    <a
+        {% if request.endpoint == 'evidence.threat_intel' %}
+            class="active"
+        {% endif %}
+        href="{{ url_for('evidence.threat_intel') }}"
+    >Threat Intelligence</a>
+
+    <a
+        {% if request.endpoint == 'evidence.timeline' %}
+            class="active"
+        {% endif %}
+        href="{{ url_for('evidence.timeline') }}"
+    >Attack Timeline</a>
+
+    <a
+        {% if request.endpoint == 'soc_features.ioc_notebook' %}
+            class="active"
+        {% endif %}
+        href="{{ url_for('soc_features.ioc_notebook') }}"
+    >IOC Notebook</a>
+
+    <a
+        {% if request.endpoint == 'soc_features.mitre_mapping' %}
+            class="active"
+        {% endif %}
+        href="{{ url_for('soc_features.mitre_mapping') }}"
+    >MITRE ATT&amp;CK Mapping</a>
+
+    <a
+        {% if request.endpoint == 'soc_features.executive_report' %}
+            class="active"
+        {% endif %}
+        href="{{ url_for('soc_features.executive_report') }}"
+    >Final Executive Report</a>
+
+    <a
+        {% if request.endpoint == 'soc_features.certificate' %}
+            class="active"
+        {% endif %}
+        href="{{ url_for('soc_features.certificate') }}"
+    >Final Certificate</a>
+
+    <a
+        {% if request.endpoint == 'flags.submit_flag' %}
+            class="active"
+        {% endif %}
+        href="{{ url_for('flags.submit_flag') }}"
+    >Submit Flag</a>
+
+    <a href="{{ url_for('auth.logout') }}">Logout</a>
+</aside>

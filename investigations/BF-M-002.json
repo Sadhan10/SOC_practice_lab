@@ -1,0 +1,61 @@
+{
+  "id": "BF-M-002",
+  "level": "medium",
+  "title": "Credential Compromise Investigation",
+  "difficulty": "Medium",
+  "priority": "High",
+  "story": "The SOC detected repeated authentication failures against the Black Falcon Bank administration server. Shortly afterward, a privileged session was established. However, legitimate administrator activity also occurred during the same period. Determine whether an account was compromised and identify the malicious source.",
+  "objective": "Correlate Wazuh authentication alerts, system authentication records and Zeek network connections to identify the compromised account, attack source, successful access time and authentication technique.",
+  "tools": [
+    "Wazuh",
+    "Zeek",
+    "Authentication Logs",
+    "Bash"
+  ],
+  "resources": [
+    {
+      "label": "Wazuh Authentication Alerts",
+      "path": "wazuh/BF-M-002_wazuh_alerts.log"
+    },
+    {
+      "label": "System Authentication Log",
+      "path": "system/BF-M-002_auth.log"
+    },
+    {
+      "label": "Zeek Connection Log",
+      "path": "zeek/BF-M-002_conn.log"
+    }
+  ],
+  "questions": [
+    {
+      "field": "attacker_ip",
+      "label": "Identify the malicious source IP",
+      "placeholder": "Example: 192.168.56.100"
+    },
+    {
+      "field": "compromised_user",
+      "label": "Which privileged account was compromised?",
+      "placeholder": "Example: administrator"
+    },
+    {
+      "field": "service",
+      "label": "Which service was attacked?",
+      "placeholder": "Example: SSH"
+    },
+    {
+      "field": "attack_type",
+      "label": "What authentication attack technique was used?",
+      "placeholder": "Example: Password Spraying"
+    },
+    {
+      "field": "successful_login",
+      "label": "At what time did the malicious login succeed?",
+      "placeholder": "Example: 15:05:31"
+    },
+    {
+      "field": "legitimate_admin_ip",
+      "label": "Identify the legitimate administrator IP",
+      "placeholder": "Example: 192.168.56.100"
+    }
+  ]
+}

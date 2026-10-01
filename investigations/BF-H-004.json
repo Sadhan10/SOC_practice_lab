@@ -1,0 +1,80 @@
+{
+  "id": "BF-H-004",
+  "level": "hard",
+  "title": "Covert C2 and Data Staging",
+  "difficulty": "Hard",
+  "priority": "Critical",
+  "story": "The SOC observed several recurring outbound connections from internal systems. Some belong to legitimate software update and monitoring services, while others may indicate command-and-control activity. At the same time, sensitive files appear to have been collected into a temporary staging location. Determine whether covert C2 is active and identify what data is being prepared for exfiltration.",
+  "objective": "Correlate DNS, network flow, HTTP metadata, endpoint process activity and filesystem events to identify covert C2 communication and data staging activity.",
+  "tools": [
+    "Zeek",
+    "Suricata",
+    "Wazuh",
+    "DNS Analysis",
+    "Process Telemetry",
+    "Bash"
+  ],
+  "resources": [
+    {
+      "label": "Zeek DNS Log",
+      "path": "zeek/BF-H-004_dns.log"
+    },
+    {
+      "label": "Zeek Connection Log",
+      "path": "zeek/BF-H-004_conn.log"
+    },
+    {
+      "label": "Zeek HTTP Log",
+      "path": "zeek/BF-H-004_http.log"
+    },
+    {
+      "label": "Suricata Telemetry",
+      "path": "suricata/BF-H-004_eve.json"
+    },
+    {
+      "label": "Wazuh Endpoint Alerts",
+      "path": "wazuh/BF-H-004_wazuh_alerts.log"
+    },
+    {
+      "label": "Process Activity",
+      "path": "system/BF-H-004_process.log"
+    }
+  ],
+  "questions": [
+    {
+      "field": "compromised_host",
+      "label": "Identify the host communicating with the malicious C2 infrastructure",
+      "placeholder": "IPv4 address"
+    },
+    {
+      "field": "c2_domain",
+      "label": "Identify the command-and-control domain",
+      "placeholder": "Domain"
+    },
+    {
+      "field": "c2_ip",
+      "label": "Identify the C2 server IP",
+      "placeholder": "IPv4 address"
+    },
+    {
+      "field": "beacon_interval",
+      "label": "Approximately how often does the malicious beacon occur?",
+      "placeholder": "Example: 90 seconds"
+    },
+    {
+      "field": "staging_directory",
+      "label": "Identify the directory used to stage collected data",
+      "placeholder": "Directory path"
+    },
+    {
+      "field": "staged_archive",
+      "label": "Identify the archive created for staging",
+      "placeholder": "Filename"
+    },
+    {
+      "field": "collected_data",
+      "label": "Which sensitive dataset was included in the staged archive?",
+      "placeholder": "Filename"
+    }
+  ]
+}

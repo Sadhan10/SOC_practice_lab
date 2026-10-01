@@ -1,0 +1,46 @@
+BLACK FALCON BANK
+AUTHORIZED NETWORK ASSET REFERENCE
+
+192.168.56.10
+Public Banking Application
+
+192.168.56.20
+Internal API Server
+
+192.168.56.21
+Administrative Server
+
+192.168.56.30
+Update Repository
+
+192.168.56.101
+SOC Administrator Workstation
+
+192.168.56.102
+Employee Workstation
+
+192.168.56.103
+Authorized Vulnerability Scanner
+
+192.168.56.105
+Monitoring Server
+
+192.168.56.106
+Developer Workstation
+
+
+AUTHORIZED SECURITY ACTIVITY
+
+192.168.56.103
+Approved vulnerability scanner.
+
+Expected scanning window:
+09:00-18:00
+
+192.168.56.105
+Monitoring server.
+
+Expected probes:
+TCP/443
+TCP/80
+ICMP

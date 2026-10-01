@@ -1,0 +1,66 @@
+{
+  "id": "BF-H-001",
+  "level": "hard",
+  "title": "Silent Reconnaissance",
+  "difficulty": "Hard",
+  "priority": "High",
+  "story": "Black Falcon Bank has received no confirmed intrusion alert, but the SOC suspects that an external actor may be mapping internal-facing services. Normal user traffic, monitoring probes and authorized vulnerability assessments are occurring at the same time. Determine whether hostile reconnaissance is present.",
+  "objective": "Perform a network threat hunt across mixed telemetry and identify suspicious reconnaissance activity without relying on a single alert source.",
+  "tools": [
+    "Suricata",
+    "Zeek",
+    "DNS",
+    "Network Flow Analysis",
+    "Bash"
+  ],
+  "resources": [
+    {
+      "label": "Suricata Network Telemetry",
+      "path": "suricata/BF-H-001_eve.json"
+    },
+    {
+      "label": "Zeek Connection Log",
+      "path": "zeek/BF-H-001_conn.log"
+    },
+    {
+      "label": "Zeek DNS Log",
+      "path": "zeek/BF-H-001_dns.log"
+    },
+    {
+      "label": "Authorized Assets Reference",
+      "path": "reports/BF-H-001_asset_reference.txt"
+    }
+  ],
+  "questions": [
+    {
+      "field": "attacker_ip",
+      "label": "Identify the hostile reconnaissance source",
+      "placeholder": "IPv4 address"
+    },
+    {
+      "field": "primary_target",
+      "label": "Identify the primary target host",
+      "placeholder": "IPv4 address"
+    },
+    {
+      "field": "authorized_scanner",
+      "label": "Identify the authorized security scanner",
+      "placeholder": "IPv4 address"
+    },
+    {
+      "field": "recon_method",
+      "label": "Identify the reconnaissance technique",
+      "placeholder": "Technique"
+    },
+    {
+      "field": "secondary_target",
+      "label": "Which additional system was probed?",
+      "placeholder": "IPv4 address"
+    },
+    {
+      "field": "first_seen",
+      "label": "When did the hostile reconnaissance begin?",
+      "placeholder": "HH:MM:SS"
+    }
+  ]
+}

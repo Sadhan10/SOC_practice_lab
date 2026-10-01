@@ -1,0 +1,127 @@
+OPENCTI THREAT INTELLIGENCE EXPORT
+Black Falcon Bank SOC
+
+Report ID:
+CTI-BF-2026-004
+
+Report Created:
+2026-01-15 10:22 UTC
+
+Confidence:
+High
+
+
+============================================================
+INTRUSION SET
+============================================================
+
+Name:
+Black Falcon Group
+
+Aliases:
+BFG
+Falcon Syndicate
+
+Description:
+A financially motivated intrusion group associated with attacks
+against banking, payment and financial-service infrastructure.
+
+Observed Techniques:
+- T1110: Brute Force
+- T1190: Exploit Public-Facing Application
+- T1505.003: Web Shell
+- T1053.003: Cron
+- T1071.001: Web Protocols
+- T1041: Exfiltration Over C2 Channel
+
+
+============================================================
+MALWARE
+============================================================
+
+Name:
+FalconLoader
+
+Type:
+Downloader / Backdoor
+
+SHA-256:
+572db6dc17de9dba31225688ee312443c866c919ef21d7e8f2e8ab8c615e7d81
+
+Common Behaviour:
+- Executes under compromised web-service accounts
+- Establishes persistence through scheduled tasks or cron
+- Communicates over HTTPS
+- Collects and stages files before outbound transfer
+
+
+============================================================
+NETWORK INDICATORS
+============================================================
+
+Indicator:
+api.blackfalcon-c2.local
+
+Type:
+Domain name
+
+Purpose:
+Command-and-control staging
+
+Resolves To:
+10.10.14.20
+
+
+Indicator:
+exfil.blackfalcon-c2.local
+
+Type:
+Domain name
+
+Purpose:
+Data exfiltration endpoint
+
+Resolves To:
+10.10.14.25
+
+
+Indicator:
+10.10.14.20
+
+Type:
+IPv4 address
+
+Purpose:
+Command-and-control server
+
+
+Indicator:
+10.10.14.25
+
+Type:
+IPv4 address
+
+Purpose:
+Exfiltration receiver
+
+
+============================================================
+RELATED VULNERABILITY
+============================================================
+
+CVE:
+CVE-2021-41773
+
+Relationship:
+The intrusion set has previously targeted vulnerable Apache
+HTTP Server 2.4.49 systems exposed to the Internet.
+
+
+============================================================
+ANALYST CORRELATION STATUS
+============================================================
+
+The indicators in this report have not automatically been
+confirmed in the Black Falcon Bank environment.
+
+Local telemetry must be reviewed before assigning attribution.

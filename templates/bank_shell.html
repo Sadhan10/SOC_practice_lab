@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Artifact Review | Black Falcon Bank
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+</head>
+
+<body class="bank-page">
+
+<div class="soc-shell">
+{% include "_sidebar.html" %}
+<div class="soc-main bank-workspace">
+
+<header class="bank-topbar danger-bank-bar">
+
+    <div>
+        <h1>Uploaded Artifact Review</h1>
+        <p>Forensic inspection mode</p>
+    </div>
+
+    <nav class="bank-nav">
+
+        <a href="{{ url_for('bank.bank_uploads') }}">
+            Back to Upload Storage
+        </a>
+
+        <a href="{{ url_for('bank.bank_admin') }}">
+            Administration
+        </a>
+
+        <a href="{{ url_for('dashboard.dashboard') }}">
+            SOC Console
+        </a>
+
+    </nav>
+
+</header>
+
+<main class="bank-dashboard single-bank-page">
+
+    <section class="bank-login-panel">
+
+        <h2>Artifact Metadata</h2>
+
+        <p>
+            <strong>Filename:</strong>
+            shell.php
+        </p>
+
+        <p>
+            <strong>Filesystem location:</strong>
+            /var/www/blackfalconbank/uploads/shell.php
+        </p>
+
+        <p>
+            <strong>Size:</strong>
+            105 bytes
+        </p>
+
+        <p>
+            <strong>MD5:</strong>
+        </p>
+
+        <code>
+            26b58495deecd83c0517cf53b7f07fbb
+        </code>
+
+    </section>
+
+    <section class="bank-login-panel">
+
+        <h2>Recovered Source Preview</h2>
+
+        <pre class="evidence-preview">&lt;?php
+/* Black Falcon training artifact */
+$parameter = "cmd";
+$action = "system-command-execution";
+?&gt;</pre>
+
+        <p class="bank-muted">
+            The recovered source has been rendered as text and is
+            not executed by the training application.
+        </p>
+
+    </section>
+
+    <section class="bank-info-grid">
+
+        <div class="bank-card">
+
+            <h3>Observed Requests</h3>
+
+            <p>
+                The access logs show requests containing:
+            </p>
+
+            <code>?cmd=id</code>
+
+            <br><br>
+
+            <code>?cmd=whoami</code>
+
+        </div>
+
+        <div class="bank-card">
+
+            <h3>Analyst Task</h3>
+
+            <p>
+                Correlate the filename, file hash, upload timestamp
+                and access-log activity with the Wazuh evidence.
+            </p>
+
+        </div>
+
+    </section>
+
+</main>
+
+</div>
+</div>
+
+<script
+    src="{{ url_for('static', filename='js/app.js') }}"
+></script>
+
+</body>
+
+</html>

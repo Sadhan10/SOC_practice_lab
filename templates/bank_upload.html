@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Document Upload | Black Falcon Bank
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+</head>
+
+<body class="bank-page">
+
+<div class="soc-shell">
+{% include "_sidebar.html" %}
+<div class="soc-main bank-workspace">
+
+<header class="bank-topbar">
+
+    <div>
+        <h1>Document Upload</h1>
+        <p>Customer verification document submission</p>
+    </div>
+
+    <nav class="bank-nav">
+
+        <a href="{{ url_for('bank.bank') }}">
+            Bank Home
+        </a>
+
+        <a href="{{ url_for('bank.bank_search') }}">
+            Transaction Search
+        </a>
+
+        <a href="{{ url_for('bank.bank_login') }}">
+            Internet Banking
+        </a>
+
+        <a href="{{ url_for('dashboard.dashboard') }}">
+            SOC Console
+        </a>
+
+    </nav>
+
+</header>
+
+<main class="bank-dashboard single-bank-page">
+
+    <section class="bank-login-panel">
+
+        <h2>Upload Verification Document</h2>
+
+        <p class="bank-muted">
+            Accepted business documents include PDF, PNG and JPG.
+        </p>
+
+        {% with messages =
+            get_flashed_messages(
+                with_categories=true
+            )
+        %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div
+                        class="alert
+                        {% if category == 'success' %}
+                            alert-success
+                        {% endif %}"
+                    >
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+        >
+
+            <label for="file">
+                Select Document
+            </label>
+
+            <input
+                id="file"
+                type="file"
+                name="file"
+                required
+            >
+
+            <button type="submit">
+                Submit Document
+            </button>
+
+        </form>
+
+        {% if uploaded_file %}
+
+            <p class="bank-muted">
+                Submitted filename:
+                <strong>{{ uploaded_file }}</strong>
+            </p>
+
+        {% endif %}
+
+    </section>
+
+    <section class="bank-info-grid">
+
+        <div class="bank-card">
+
+            <h3>Upload Policy</h3>
+
+            <p>
+                Documents are transferred to the customer upload
+                directory for processing.
+            </p>
+
+            <p>
+                Uploaded files are reviewed asynchronously by
+                banking operations.
+            </p>
+
+        </div>
+
+        <div class="bank-card">
+
+            <h3>Security Monitoring</h3>
+
+            <p>
+                File-integrity monitoring records newly created
+                files within the web application directory.
+            </p>
+
+        </div>
+
+    </section>
+
+</main>
+
+</div>
+</div>
+
+<script
+    src="{{ url_for('static', filename='js/app.js') }}"
+></script>
+
+</body>
+
+</html>

@@ -1,0 +1,51 @@
+{
+  "id": "BF-2026-001",
+  "level": "beginner",
+  "title": "External Reconnaissance",
+  "difficulty": "Easy",
+  "priority": "Medium",
+  "story": "Black Falcon Bank users report intermittent delays while accessing the public banking portal. Suricata generated multiple scan alerts, while Zeek recorded several incomplete connections against the public web server.",
+  "objective": "Correlate the Suricata and Zeek telemetry to identify the scanning host, technique, targeted services and activity window.",
+  "tools": [
+    "Suricata",
+    "Zeek"
+  ],
+  "resources": [
+    {
+      "label": "Suricata IDS Alerts",
+      "path": "suricata/BF-2026-001_suricata_alerts.log"
+    },
+    {
+      "label": "Zeek Connection Log",
+      "path": "zeek/BF-2026-001_conn.log"
+    }
+  ],
+  "questions": [
+    {
+      "field": "attacker_ip",
+      "label": "Suspected Scanner IP",
+      "placeholder": "Example: 192.168.1.50"
+    },
+    {
+      "field": "target_host",
+      "label": "Targeted Server IP",
+      "placeholder": "Example: 192.168.1.10"
+    },
+    {
+      "field": "scan_type",
+      "label": "Reconnaissance Technique",
+      "placeholder": "Example: TCP SYN scan"
+    },
+    {
+      "field": "targeted_ports",
+      "label": "Targeted Destination Ports",
+      "placeholder": "Enter all ports in ascending order"
+    },
+    {
+      "field": "scan_time",
+      "label": "Scan Time Window",
+      "placeholder": "Example: 08:45-08:46"
+    }
+  ],
+  "level": "beginner"
+}

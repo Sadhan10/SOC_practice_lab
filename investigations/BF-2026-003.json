@@ -1,0 +1,57 @@
+{
+  "id": "BF-2026-003",
+  "level": "beginner",
+  "title": "Banking Application Compromise",
+  "difficulty": "Medium-Hard",
+  "priority": "High",
+  "story": "Following the credential compromise, the attacker begins probing the Black Falcon Bank web application. Monitoring systems record an abnormal transaction search, access to a restricted administration path and the creation of a suspicious PHP file.",
+  "objective": "Reproduce the suspicious search behaviour, identify the exposed administration route, correlate the uploaded artifact with network and integrity logs, and verify its MD5 hash.",
+  "tools": [
+    "Black Falcon Bank Portal",
+    "Suricata",
+    "Wazuh"
+  ],
+  "resources": [
+    {
+      "label": "Suricata Web Attack Alerts",
+      "path": "suricata/BF-2026-003_web_attack.log"
+    },
+    {
+      "label": "Wazuh File Integrity Events",
+      "path": "wazuh/BF-2026-003_web_integrity.log"
+    }
+  ],
+  "questions": [
+    {
+      "field": "exploited_weakness",
+      "label": "Transaction Search Weakness",
+      "placeholder": "Name of the application weakness"
+    },
+    {
+      "field": "injection_payload",
+      "label": "SQL Injection Payload Used",
+      "placeholder": "Enter the SQL injection payload used"
+    },
+    {
+      "field": "hidden_admin_path",
+      "label": "Exposed Administration Path",
+      "placeholder": "/bank/..."
+    },
+    {
+      "field": "uploaded_payload",
+      "label": "Suspicious Uploaded Filename",
+      "placeholder": "filename.extension"
+    },
+    {
+      "field": "payload_hash",
+      "label": "Uploaded File MD5",
+      "placeholder": "32-character MD5 value"
+    },
+    {
+      "field": "web_shell_parameter",
+      "label": "Web Shell Command Parameter",
+      "placeholder": "Example: cmd"
+    }
+  ],
+  "level": "beginner"
+}

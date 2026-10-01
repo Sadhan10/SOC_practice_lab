@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block title %}
+Operation Black Falcon | Level Complete
+{% endblock %}
+
+{% block content %}
+
+<div class="soc-page">
+
+    <section class="soc-hero">
+
+        <div>
+
+            <p class="soc-eyebrow">
+                INVESTIGATION TRACK COMPLETE
+            </p>
+
+            <h1>
+                {{ level.name }} Completed
+            </h1>
+
+            <p>
+                You have successfully completed all investigations
+                in the {{ level.subtitle }} track.
+            </p>
+
+        </div>
+
+        <div class="threat-card">
+
+            <span>Investigations</span>
+
+            <strong>
+                {{ progress.completed }} / {{ progress.total }}
+            </strong>
+
+            <small>100% COMPLETE</small>
+
+        </div>
+
+    </section>
+
+    <section class="soc-panel">
+
+        <div class="panel-title">
+
+            <div>
+
+                <p class="soc-eyebrow">
+                    ANALYST ASSESSMENT
+                </p>
+
+                <h2>Track Successfully Completed</h2>
+
+            </div>
+
+        </div>
+
+        {% if level_name == "beginner" %}
+
+            <p>
+                You have demonstrated an understanding of fundamental
+                SOC investigation, security alerts, evidence analysis
+                and incident identification.
+            </p>
+
+        {% elif level_name == "medium" %}
+
+            <p>
+                You have demonstrated practical SOC investigation skills
+                including multi-source log correlation, attack
+                reconstruction, network analysis, endpoint investigation,
+                command-and-control detection and data exfiltration
+                analysis.
+            </p>
+
+        {% elif level_name == "hard" %}
+
+            <p>
+                You have demonstrated advanced threat hunting and incident
+                reconstruction capabilities.
+            </p>
+
+        {% endif %}
+
+        <div class="completion-actions">
+
+            <a
+                href="{{ url_for('dashboard.levels') }}"
+                class="level-button"
+            >
+                RETURN TO LEVELS
+                <span aria-hidden="true">&rarr;</span>
+            </a>
+
+            <a
+                href="{{ url_for(
+                    'soc_features.certificate',
+                    level_name=level_name
+                ) }}"
+                class="level-button secondary"
+            >
+                VIEW TRACK CERTIFICATE
+                <span aria-hidden="true">&rarr;</span>
+            </a>
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}

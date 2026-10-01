@@ -1,0 +1,461 @@
+{% extends "base.html" %}
+
+{% block title %}
+Executive Incident Report | Operation Black Falcon
+{% endblock %}
+
+{% block content %}
+
+<div class="soc-page report-page">
+
+    <section class="soc-hero compact-hero no-print">
+
+        <div>
+            <p class="soc-eyebrow">
+                OPERATION BLACK FALCON &middot; FINAL PROGRAM REPORT
+            </p>
+
+            <h1>Executive Incident Report</h1>
+
+            <p>
+                Consolidated findings from the Black Falcon Bank
+                security incident.
+            </p>
+        </div>
+
+        <div class="report-actions">
+
+            <button
+                type="button"
+                class="secondary-button"
+                onclick="window.print()"
+            >
+                Print Report
+            </button>
+
+            {% if can_submit and not report_submitted %}
+
+                <form method="post">
+
+                    <button
+                        type="submit"
+                        class="primary-button"
+                    >
+                        Submit Final Report
+                    </button>
+
+                </form>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+    <article class="incident-report">
+
+        <header class="report-header">
+
+            <div>
+                <p>
+                    BLACK FALCON BANK
+                </p>
+
+                <h1>
+                    Cybersecurity Incident Report
+                </h1>
+
+                <span>
+                    Reference: BF-IR-2026-001 &middot; FULL 15-CASE PROGRAM
+                </span>
+            </div>
+
+            <div class="report-classification">
+                CONFIDENTIAL
+            </div>
+
+        </header>
+
+        <section class="report-metadata">
+
+            <div>
+                <span>Incident Status</span>
+
+                <strong>
+                    {{ executive_summary.status }}
+                </strong>
+            </div>
+
+            <div>
+                <span>Severity</span>
+
+                <strong class="critical-value">
+                    Critical
+                </strong>
+            </div>
+
+            <div>
+                <span>Analyst</span>
+
+                <strong>
+                    {{ analyst.analyst_name }}
+                </strong>
+            </div>
+
+            <div>
+                <span>Score</span>
+
+                <strong>
+                    {{ score }}%
+                </strong>
+            </div>
+
+        </section>
+
+        <section class="report-section">
+
+            <h2>Program Completion</h2>
+
+            <div class="report-finding-grid">
+
+                <div>
+                    <span>Beginner</span>
+                    <strong>
+                        {{ beginner_progress.completed }} /
+                        {{ beginner_progress.total }}
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Medium</span>
+                    <strong>
+                        {{ medium_progress.completed }} /
+                        {{ medium_progress.total }}
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Hard</span>
+                    <strong>
+                        {{ hard_progress.completed }} /
+                        {{ hard_progress.total }}
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Overall</span>
+                    <strong>
+                        {{ overall_progress.completed }} /
+                        {{ overall_progress.total }}
+                    </strong>
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="report-section">
+
+            <h2>1. Executive Summary</h2>
+
+            <p>
+                Black Falcon Bank experienced a coordinated
+                cyberattack involving reconnaissance, credential
+                compromise, web application abuse, server-side
+                persistence, command-and-control communication and
+                confirmed outbound data transfer.
+            </p>
+
+            <p>
+                The investigation attributes the activity to the
+                <strong>Black Falcon Group</strong>. Host and
+                network evidence identified the
+                <strong>FalconLoader</strong> malware family and
+                associated command-and-control infrastructure.
+            </p>
+
+        </section>
+
+        <section class="report-section">
+
+            <h2>2. Incident Overview</h2>
+
+            <div class="report-finding-grid">
+
+                <div>
+                    <span>Threat Actor</span>
+                    <strong>Black Falcon Group</strong>
+                </div>
+
+                <div>
+                    <span>Malware</span>
+                    <strong>FalconLoader</strong>
+                </div>
+
+                <div>
+                    <span>Attacker IP</span>
+                    <strong>192.168.56.104</strong>
+                </div>
+
+                <div>
+                    <span>Affected Host</span>
+                    <strong>192.168.56.10</strong>
+                </div>
+
+                <div>
+                    <span>Web Attack</span>
+                    <strong>SQL Injection</strong>
+                </div>
+
+                <div>
+                    <span>Uploaded Artifact</span>
+                    <strong>shell.php</strong>
+                </div>
+
+                <div>
+                    <span>Persistence</span>
+                    <strong>Cron Job</strong>
+                </div>
+
+                <div>
+                    <span>Exfiltration</span>
+                    <strong>Confirmed</strong>
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="report-section">
+
+            <h2>3. Reconstructed Timeline</h2>
+
+            <table class="report-table">
+
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Activity</th>
+                        <th>MITRE</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for item in timeline %}
+
+                        <tr>
+                            <td>{{ item.time }}</td>
+                            <td>{{ item.title }}</td>
+                            <td>{{ item.technique }}</td>
+
+                            <td>
+                                {% if item.completed %}
+                                    Confirmed
+                                {% else %}
+                                    Pending
+                                {% endif %}
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+        <section class="report-section">
+
+            <h2>4. Indicators of Compromise</h2>
+
+            {% if iocs %}
+
+                <table class="report-table">
+
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Indicator</th>
+                            <th>Case</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for ioc in iocs %}
+
+                            <tr>
+                                <td>{{ ioc.ioc_type }}</td>
+
+                                <td>
+                                    <code>
+                                        {{ ioc.ioc_value }}
+                                    </code>
+                                </td>
+
+                                <td>{{ ioc.case_id }}</td>
+
+                                <td>
+                                    {{ ioc.description or "—" }}
+                                </td>
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            {% else %}
+
+                <p>
+                    No indicators have been added to the IOC
+                    notebook.
+                </p>
+
+            {% endif %}
+
+        </section>
+
+        <section class="report-section">
+
+            <h2>5. Analyst Notes</h2>
+
+            {% if notes %}
+
+                {% for note in notes %}
+
+                    <div class="report-note">
+
+                        <h3>
+                            {{ note.case_id }}
+                        </h3>
+
+                        <pre>{{ note.note_text or "No notes recorded." }}</pre>
+
+                    </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p>
+                    No investigation notes were recorded.
+                </p>
+
+            {% endif %}
+
+        </section>
+
+        <section class="report-section">
+
+            <h2>6. Business Impact</h2>
+
+            <ul>
+                <li>
+                    Unauthorised access to banking application
+                    infrastructure.
+                </li>
+
+                <li>
+                    Deployment of a server-side web shell.
+                </li>
+
+                <li>
+                    Persistent execution under the web-service
+                    account.
+                </li>
+
+                <li>
+                    Communication with attacker-controlled
+                    infrastructure.
+                </li>
+
+                <li>
+                    Confirmed outbound transfer of organisational
+                    data.
+                </li>
+            </ul>
+
+        </section>
+
+        <section class="report-section">
+
+            <h2>7. Recommended Actions</h2>
+
+            <ol>
+                <li>
+                    Isolate and rebuild the compromised web server
+                    from a trusted image.
+                </li>
+
+                <li>
+                    Remove the web shell, malicious cron entry and
+                    FalconLoader artifact.
+                </li>
+
+                <li>
+                    Reset affected credentials and enforce
+                    multi-factor authentication.
+                </li>
+
+                <li>
+                    Patch vulnerable web-server and application
+                    components.
+                </li>
+
+                <li>
+                    Block identified C2 and exfiltration indicators
+                    at DNS, proxy and firewall layers.
+                </li>
+
+                <li>
+                    Review customer and transaction data for
+                    unauthorised access.
+                </li>
+
+                <li>
+                    Perform enterprise-wide IOC hunting and
+                    retrospective log analysis.
+                </li>
+            </ol>
+
+        </section>
+
+        <footer class="report-footer">
+
+            {% if report_submitted %}
+
+                <strong>
+                    Final report submitted
+                </strong>
+
+                <span>
+                    {{ report_submitted_at }}
+                </span>
+
+            {% elif can_submit %}
+
+                <strong>
+                    Ready for final submission
+                </strong>
+
+            {% else %}
+
+                <strong>
+                    Complete all 15 investigations before submission
+                </strong>
+
+            {% endif %}
+
+        </footer>
+
+    </article>
+
+</div>
+
+{% endblock %}

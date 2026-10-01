@@ -1,0 +1,90 @@
+{
+  "id": "BF-2026-004",
+  "level": "beginner",
+  "title": "Internal Compromise and Exfiltration",
+  "difficulty": "Hard",
+  "priority": "Critical",
+  "story": "After the banking application compromise, the SOC observes suspicious process execution, persistence changes and repeated encrypted outbound connections from the web server. Threat-intelligence indicators suggest that the incident may be associated with a financially motivated intrusion group.",
+  "objective": "Correlate Wazuh host alerts, Zeek network telemetry, OpenVAS vulnerability findings and OpenCTI indicators to determine the persistence mechanism, malware family, threat actor, command-and-control infrastructure and exfiltration activity.",
+  "tools": [
+    "Wazuh",
+    "Zeek",
+    "OpenVAS",
+    "OpenCTI"
+  ],
+  "resources": [
+    {
+      "label": "Wazuh Persistence and Process Events",
+      "path": "wazuh/BF-2026-004_persistence.log"
+    },
+    {
+      "label": "Zeek DNS Log",
+      "path": "zeek/BF-2026-004_dns.log"
+    },
+    {
+      "label": "Zeek Connection Log",
+      "path": "zeek/BF-2026-004_conn.log"
+    },
+    {
+      "label": "OpenVAS Vulnerability Report",
+      "path": "openvas/BF-2026-004_vulnerability_report.txt"
+    },
+    {
+      "label": "OpenCTI Threat Intelligence Report",
+      "path": "opencti/BF-2026-004_threat_actor.txt"
+    }
+  ],
+  "questions": [
+    {
+      "field": "compromised_host",
+      "label": "Compromised Host IP",
+      "placeholder": "Internal IP address"
+    },
+    {
+      "field": "persistence",
+      "label": "System Persistence Mechanism",
+      "placeholder": "Persistence method created after compromise"
+    },
+    {
+      "field": "malware",
+      "label": "Associated Malware Family",
+      "placeholder": "Malware name"
+    },
+    {
+      "field": "malware_hash",
+      "label": "Malware SHA-256",
+      "placeholder": "64-character SHA-256 value"
+    },
+    {
+      "field": "threat_actor",
+      "label": "Associated Threat Actor",
+      "placeholder": "Intrusion-set name"
+    },
+    {
+      "field": "c2_domain",
+      "label": "Command-and-Control Domain",
+      "placeholder": "C2 domain"
+    },
+    {
+      "field": "exfiltration_domain",
+      "label": "Exfiltration Domain",
+      "placeholder": "Domain receiving outbound data"
+    },
+    {
+      "field": "exfiltration_ip",
+      "label": "Exfiltration Destination IP",
+      "placeholder": "Destination IPv4 address"
+    },
+    {
+      "field": "exploited_cve",
+      "label": "Relevant Critical Web Vulnerability",
+      "placeholder": "CVE-YYYY-NNNN"
+    },
+    {
+      "field": "exfiltration_technique",
+      "label": "Exfiltration Technique",
+      "placeholder": "How data left the environment"
+    }
+  ],
+  "level": "beginner"
+}

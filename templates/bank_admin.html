@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Internal Administration | Black Falcon Bank
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+</head>
+
+<body class="bank-page">
+
+<div class="soc-shell">
+{% include "_sidebar.html" %}
+<div class="soc-main bank-workspace">
+
+<header class="bank-topbar danger-bank-bar">
+
+    <div>
+        <h1>Internal Banking Administration</h1>
+        <p>Restricted operational interface</p>
+    </div>
+
+    <nav class="bank-nav">
+
+        <a href="{{ url_for('bank.bank') }}">
+            Bank Home
+        </a>
+
+        <a href="{{ url_for('bank.bank_uploads') }}">
+            Upload Storage
+        </a>
+
+        <a href="{{ url_for('bank.bank_logout') }}">
+            End Banking Session
+        </a>
+
+        <a href="{{ url_for('dashboard.dashboard') }}">
+            SOC Console
+        </a>
+
+    </nav>
+
+</header>
+
+<main class="bank-dashboard single-bank-page">
+
+    <section class="bank-login-panel">
+
+        <h2>Authenticated Administration Session</h2>
+
+        <p>
+            Signed in as:
+            <strong>{{ bank_username }}</strong>
+        </p>
+
+        <p class="bank-muted">
+            Review the recent application access events for
+            activity associated with the compromise.
+        </p>
+
+    </section>
+
+    <section class="bank-login-panel">
+
+        <h2>Recent Web Access Events</h2>
+
+        <pre class="evidence-preview">2026-01-15 10:02:14 192.168.56.104 POST /bank/search HTTP/1.1 200
+2026-01-15 10:02:14 query="' OR 1=1 --" result_count=5
+
+2026-01-15 10:04:31 192.168.56.104 GET /bank/admin HTTP/1.1 200
+2026-01-15 10:05:02 192.168.56.104 POST /bank/upload HTTP/1.1 302
+2026-01-15 10:05:02 multipart_filename="shell.php" content_type="application/x-php"
+
+2026-01-15 10:05:16 192.168.56.104 GET /bank/uploads/shell.php?cmd=id HTTP/1.1 200
+2026-01-15 10:05:22 192.168.56.104 GET /bank/uploads/shell.php?cmd=whoami HTTP/1.1 200</pre>
+
+    </section>
+
+    <section class="bank-info-grid">
+
+        <div class="bank-card">
+
+            <h3>Upload Storage</h3>
+
+            <p>
+                Review the stored customer-upload artifacts and
+                compare them with the integrity-monitoring events.
+            </p>
+
+            <a
+                class="investigate-btn"
+                href="{{ url_for('bank.bank_uploads') }}"
+            >
+                Open Upload Storage
+            </a>
+
+        </div>
+
+        <div class="bank-card">
+
+            <h3>Investigation Guidance</h3>
+
+            <p>
+                Identify the request that bypassed normal search
+                filtering.
+            </p>
+
+            <p>
+                Determine which uploaded file was later requested
+                with operating-system command parameters.
+            </p>
+
+        </div>
+
+    </section>
+
+</main>
+
+</div>
+</div>
+
+<script
+    src="{{ url_for('static', filename='js/app.js') }}"
+></script>
+
+</body>
+
+</html>

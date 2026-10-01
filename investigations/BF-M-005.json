@@ -1,0 +1,81 @@
+{
+  "id": "BF-M-005",
+  "level": "medium",
+  "title": "Data Exfiltration & Incident Reconstruction",
+  "difficulty": "Medium Capstone",
+  "priority": "Critical",
+  "story": "Black Falcon Bank has confirmed that the compromised application server communicated with unauthorized external infrastructure. Management requires the SOC to determine whether sensitive data left the environment and reconstruct the incident from initial reconnaissance through exfiltration.",
+  "objective": "Reconstruct the Medium-level incident from initial access through data exfiltration. Correlate the evidence in this case with findings from BF-M-001 through BF-M-004 to identify the original attacker, initial access, persistence and final exfiltration activity.",
+  "tools": [
+    "Zeek",
+    "Suricata",
+    "Wazuh",
+    "DNS Logs",
+    "HTTP Logs",
+    "Bash"
+  ],
+  "resources": [
+    {
+      "label": "Zeek Connection Log",
+      "path": "zeek/BF-M-005_conn.log"
+    },
+    {
+      "label": "Zeek HTTP Log",
+      "path": "zeek/BF-M-005_http.log"
+    },
+    {
+      "label": "Zeek DNS Log",
+      "path": "zeek/BF-M-005_dns.log"
+    },
+    {
+      "label": "Suricata Exfiltration Alerts",
+      "path": "suricata/BF-M-005_eve.json"
+    },
+    {
+      "label": "Endpoint Activity",
+      "path": "wazuh/BF-M-005_wazuh_alerts.log"
+    }
+  ],
+  "questions": [
+    {
+      "field": "exfil_source",
+      "label": "Which internal host performed the data exfiltration?",
+      "placeholder": "Example: 192.168.56.10"
+    },
+    {
+      "field": "exfil_domain",
+      "label": "Identify the exfiltration destination domain",
+      "placeholder": "Example: exfil.example.local"
+    },
+    {
+      "field": "exfil_ip",
+      "label": "Identify the destination IP",
+      "placeholder": "Example: 192.168.56.200"
+    },
+    {
+      "field": "archive",
+      "label": "What archive was created before exfiltration?",
+      "placeholder": "Example: data.tar.gz"
+    },
+    {
+      "field": "exfil_method",
+      "label": "Which protocol/method was used to exfiltrate the archive?",
+      "placeholder": "Example: HTTP POST"
+    },
+    {
+      "field": "attacker_ip",
+      "label": "Identify the original attacker IP",
+      "placeholder": "Example: 192.168.56.100"
+    },
+    {
+      "field": "initial_access",
+      "label": "How did the attacker first obtain authenticated access?",
+      "placeholder": "Example: SSH credential compromise"
+    },
+    {
+      "field": "persistence",
+      "label": "What persistence mechanism was established?",
+      "placeholder": "Example: Cron Job"
+    }
+  ]
+}

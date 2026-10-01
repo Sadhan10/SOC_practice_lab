@@ -1,0 +1,66 @@
+{
+  "id": "BF-H-002",
+  "level": "hard",
+  "title": "Identity Abuse and Lateral Movement",
+  "difficulty": "Hard",
+  "priority": "Critical",
+  "story": "The SOC observed administrative authentication activity across several internal systems. Some of the activity belongs to legitimate IT personnel, while other sessions may represent malicious use of stolen credentials. Determine whether the attacker moved laterally and reconstruct the pivot path.",
+  "objective": "Correlate authentication events, network connections and endpoint activity to distinguish legitimate administrator behaviour from malicious lateral movement.",
+  "tools": [
+    "Wazuh",
+    "Zeek",
+    "Authentication Logs",
+    "Endpoint Telemetry",
+    "Bash"
+  ],
+  "resources": [
+    {
+      "label": "Authentication Activity",
+      "path": "system/BF-H-002_auth.log"
+    },
+    {
+      "label": "Wazuh Endpoint Alerts",
+      "path": "wazuh/BF-H-002_wazuh_alerts.log"
+    },
+    {
+      "label": "Zeek Connection Log",
+      "path": "zeek/BF-H-002_conn.log"
+    },
+    {
+      "label": "Administrator Reference",
+      "path": "reports/BF-H-002_admin_reference.txt"
+    }
+  ],
+  "questions": [
+    {
+      "field": "compromised_account",
+      "label": "Which account was abused for lateral movement?",
+      "placeholder": "Username"
+    },
+    {
+      "field": "initial_host",
+      "label": "Identify the first compromised internal host",
+      "placeholder": "IPv4 address"
+    },
+    {
+      "field": "pivot_host",
+      "label": "Identify the host used as the pivot point",
+      "placeholder": "IPv4 address"
+    },
+    {
+      "field": "destination_host",
+      "label": "Identify the final lateral movement target",
+      "placeholder": "IPv4 address"
+    },
+    {
+      "field": "lateral_service",
+      "label": "Which service was primarily used for lateral movement?",
+      "placeholder": "Example: SMB"
+    },
+    {
+      "field": "legitimate_admin_ip",
+      "label": "Identify the legitimate administrator workstation",
+      "placeholder": "IPv4 address"
+    }
+  ]
+}

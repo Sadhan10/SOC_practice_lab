@@ -1,0 +1,429 @@
+{% extends "base.html" %}
+
+{% block title %}
+Evidence Viewer | Operation Black Falcon
+{% endblock %}
+
+{% block content %}
+
+<div
+    class="soc-page evidence-viewer-page"
+    data-evidence-extension="{{ evidence_extension }}"
+>
+
+    <section class="evidence-header">
+
+        <div class="evidence-heading">
+
+            <a
+                class="evidence-back-link"
+                href="{{ url_for('evidence.evidence') }}"
+            >
+                <span aria-hidden="true">&larr;</span>
+                Evidence Locker
+            </a>
+
+            <p class="soc-eyebrow">
+                DIGITAL EVIDENCE
+            </p>
+
+            <h1>
+                {{ evidence_name }}
+            </h1>
+
+            <p class="evidence-path">
+                {{ evidence_path }}
+            </p>
+
+        </div>
+
+        <div class="evidence-actions">
+
+            {% if preview_type == "text" and not preview_error %}
+
+                <label
+                    class="evidence-search-wrapper"
+                    for="evidence-search"
+                >
+                    <span
+                        class="evidence-search-icon"
+                        aria-hidden="true"
+                    >
+                        &#128269;
+                    </span>
+
+                    <input
+                        id="evidence-search"
+                        type="search"
+                        placeholder="Search evidence..."
+                        autocomplete="off"
+                        spellcheck="false"
+                    >
+                </label>
+
+                <button
+                    id="toggle-wrap"
+                    type="button"
+                    class="secondary-button evidence-action-button"
+                    aria-pressed="false"
+                >
+                    Word Wrap: Off
+                </button>
+
+            {% endif %}
+
+            {% if case_id %}
+
+                <a
+                    class="secondary-button evidence-action-button"
+                    href="{{ url_for(
+                        'soc_features.investigation_notes',
+                        case_id=case_id
+                    ) }}"
+                >
+                    Case Notes
+                </a>
+
+            {% endif %}
+
+            <a
+                class="primary-button evidence-download-button"
+                href="{{ url_for(
+                    'soc_features.download_evidence',
+                    path=evidence_path
+                ) }}"
+                download
+            >
+                <span aria-hidden="true">&#8681;</span>
+                Download Evidence
+            </a>
+
+        </div>
+
+    </section>
+
+    <section class="evidence-metadata-grid">
+
+        <article class="evidence-metadata-card">
+            <span>File type</span>
+            <strong>{{ evidence_type_label }}</strong>
+        </article>
+
+        <article class="evidence-metadata-card">
+            <span>File size</span>
+            <strong>{{ evidence_size }}</strong>
+        </article>
+
+        <article class="evidence-metadata-card">
+            <span>Preview mode</span>
+
+            <strong>
+                {% if preview_type == "text" %}
+                    Text viewer
+                {% elif preview_type == "image" %}
+                    Image viewer
+                {% elif preview_type == "pdf" %}
+                    PDF viewer
+                {% else %}
+                    Download only
+                {% endif %}
+            </strong>
+        </article>
+
+        <article class="evidence-metadata-card">
+            <span>Evidence state</span>
+            <strong class="evidence-read-only-status">
+                Read-only
+            </strong>
+        </article>
+
+    </section>
+
+    <section class="soc-panel evidence-panel">
+
+        <div class="evidence-information-bar">
+
+            <div class="evidence-file-status">
+
+                <span
+                    class="evidence-status-dot"
+                    aria-hidden="true"
+                ></span>
+
+                <span>
+                    Original evidence
+                </span>
+
+                <span class="evidence-information-divider">
+                    &middot;
+                </span>
+
+                <span>
+                    {{ evidence_mime_type }}
+                </span>
+
+            </div>
+
+            <div class="evidence-viewer-status">
+
+                {% if preview_type == "text" and not preview_error %}
+
+                    <span>
+                        {{ evidence_lines|length }}
+                        {% if evidence_lines|length == 1 %}
+                            line
+                        {% else %}
+                            lines
+                        {% endif %}
+                    </span>
+
+                    <span class="evidence-information-divider">
+                        &middot;
+                    </span>
+
+                    <span id="search-result-count">
+                        No search active
+                    </span>
+
+                {% elif preview_type == "image" %}
+
+                    <span>
+                        Image preview
+                    </span>
+
+                {% elif preview_type == "pdf" %}
+
+                    <span>
+                        PDF preview
+                    </span>
+
+                {% else %}
+
+                    <span>
+                        Preview unavailable
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        {% if preview_error %}
+
+            <div class="evidence-unavailable">
+
+                <div
+                    class="evidence-unavailable-icon"
+                    aria-hidden="true"
+                >
+                    &#9888;
+                </div>
+
+                <div>
+                    <p class="soc-eyebrow">
+                        PREVIEW UNAVAILABLE
+                    </p>
+
+                    <h2>
+                        This file cannot be displayed as text
+                    </h2>
+
+                    <p>
+                        {{ preview_error }}
+                    </p>
+
+                    <a
+                        class="primary-button"
+                        href="{{ url_for(
+                            'soc_features.download_evidence',
+                            path=evidence_path
+                        ) }}"
+                    >
+                        Download Original Evidence
+                    </a>
+                </div>
+
+            </div>
+
+        {% elif preview_type == "text" %}
+
+            <div
+                id="evidence-content"
+                class="evidence-content"
+                role="region"
+                aria-label="Evidence file content"
+                tabindex="0"
+            >
+
+                {% for line in evidence_lines %}
+
+                    <div
+                        class="evidence-line"
+                        data-line-number="{{ loop.index }}"
+                    >
+
+                        <span
+                            class="line-number"
+                            aria-hidden="true"
+                        >
+                            {{ loop.index }}
+                        </span>
+
+                        <code
+                            class="line-content"
+                            data-original="{{ line|e }}"
+                        >{{ line }}</code>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% elif preview_type == "image" %}
+
+            <div class="evidence-media-preview evidence-image-preview">
+
+                <div class="evidence-image-canvas">
+
+                    <img
+                        src="{{ url_for(
+                            'soc_features.evidence_raw',
+                            path=evidence_path
+                        ) }}"
+                        alt="Preview of {{ evidence_name }}"
+                    >
+
+                </div>
+
+                <p class="evidence-preview-help">
+                    The image is shown at a size that fits the viewer.
+                    Open or download the original file for full-resolution
+                    forensic inspection.
+                </p>
+
+            </div>
+
+        {% elif preview_type == "pdf" %}
+
+            <div class="evidence-media-preview evidence-pdf-preview">
+
+                <iframe
+                    class="evidence-pdf-frame"
+                    src="{{ url_for(
+                        'soc_features.evidence_raw',
+                        path=evidence_path
+                    ) }}#toolbar=1&navpanes=0&view=FitH"
+                    title="PDF preview of {{ evidence_name }}"
+                ></iframe>
+
+                <div class="evidence-pdf-fallback">
+
+                    <p>
+                        The PDF preview depends on the browser's built-in
+                        PDF viewer.
+                    </p>
+
+                    <a
+                        class="secondary-button"
+                        href="{{ url_for(
+                            'soc_features.evidence_raw',
+                            path=evidence_path
+                        ) }}"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        Open PDF in New Tab
+                    </a>
+
+                </div>
+
+            </div>
+
+        {% else %}
+
+            <div class="evidence-unavailable">
+
+                <div
+                    class="evidence-unavailable-icon evidence-binary-icon"
+                    aria-hidden="true"
+                >
+                    &#128190;
+                </div>
+
+                <div>
+                    <p class="soc-eyebrow">
+                        FORENSIC BINARY EVIDENCE
+                    </p>
+
+                    <h2>
+                        Download required for analysis
+                    </h2>
+
+                    <p>
+                        {{ evidence_name }} is a binary forensic artifact.
+                        It is intentionally not rendered in the browser
+                        because displaying it as text could alter its
+                        interpretation or produce unreadable output.
+                    </p>
+
+                    {% if evidence_extension in [".pcap", ".pcapng"] %}
+
+                        <p class="evidence-tool-hint">
+                            Recommended tool:
+                            <strong>Wireshark</strong>
+                            or
+                            <strong>tshark</strong>
+                        </p>
+
+                    {% elif evidence_extension == ".evtx" %}
+
+                        <p class="evidence-tool-hint">
+                            Recommended tool:
+                            <strong>Chainsaw</strong>,
+                            <strong>python-evtx</strong>, or
+                            <strong>EvtxECmd under Wine</strong>
+                        </p>
+
+                    {% elif evidence_extension in [
+                        ".zip",
+                        ".7z",
+                        ".rar",
+                        ".gz",
+                        ".tar",
+                        ".tgz"
+                    ] %}
+
+                        <p class="evidence-tool-hint">
+                            Download and extract the archive inside the
+                            investigation environment.
+                        </p>
+
+                    {% endif %}
+
+                    <a
+                        class="primary-button"
+                        href="{{ url_for(
+                            'soc_features.download_evidence',
+                            path=evidence_path
+                        ) }}"
+                    >
+                        Download Original Evidence
+                    </a>
+                </div>
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+    <p class="evidence-integrity-notice">
+        Evidence is served directly from the local OVA in read-only mode.
+        The downloaded file is the original stored artifact.
+    </p>
+
+</div>
+
+{% endblock %}

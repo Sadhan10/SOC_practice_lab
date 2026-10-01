@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Threat Intelligence | Operation Black Falcon</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="soc-shell">
+    {% include "_sidebar.html" %}
+
+    <main class="soc-main">
+        <header class="soc-topbar">
+            <div>
+                <h1>Threat Intelligence Feed</h1>
+                <p>IOC correlation for Operation Black Falcon</p>
+            </div>
+
+            <div class="analyst-box">
+                <span>Intel Source</span>
+                <strong>OpenCTI</strong>
+                <small>Simulated local feed</small>
+            </div>
+        </header>
+
+        <section class="intel-table">
+            <div class="intel-row header">
+                <span>Indicator</span>
+                <span>Type</span>
+                <span>Confidence</span>
+                <span>Case</span>
+                <span>Notes</span>
+            </div>
+
+            {% for ioc in iocs %}
+            <div class="intel-row intel-row-five">
+                <span>{{ ioc.indicator }}</span>
+                <span>{{ ioc.type }}</span>
+                <span>{{ ioc.confidence }}</span>
+                <span>{{ ioc.case }}</span>
+                <span>{{ ioc.notes }}</span>
+            </div>
+            {% endfor %}
+        </section>
+    </main>
+</div>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

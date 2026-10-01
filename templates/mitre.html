@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}
+MITRE ATT&CK | Operation Black Falcon
+{% endblock %}
+
+{% block content %}
+
+<div class="soc-page">
+
+    <section class="soc-hero compact-hero">
+
+        <div>
+            <p class="soc-eyebrow">
+                THREAT BEHAVIOUR
+            </p>
+
+            <h1>MITRE ATT&CK Mapping</h1>
+
+            <p>
+                Techniques become confirmed as their associated
+                investigations are completed.
+            </p>
+        </div>
+
+        <div class="mitre-counter">
+            <strong>
+                {{ unlocked_count }}/{{ total_count }}
+            </strong>
+
+            <span>
+                Techniques confirmed
+            </span>
+        </div>
+
+    </section>
+
+    <section class="mitre-grid">
+
+        {% for technique in techniques %}
+
+            <article class="mitre-card
+                {% if technique.unlocked %}
+                    unlocked
+                {% else %}
+                    locked
+                {% endif %}"
+            >
+
+                <div class="mitre-card-heading">
+
+                    <span class="mitre-id">
+                        {{ technique.id }}
+                    </span>
+
+                    <span class="panel-badge">
+                        {{ technique.level_label }}
+                    </span>
+
+                    {% if technique.unlocked %}
+
+                        <span class="status-tag resolved">
+                            Confirmed
+                        </span>
+
+                    {% else %}
+
+                        <span class="status-tag open">
+                            Pending
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+                <h2>
+                    {{ technique.name }}
+                </h2>
+
+                {% if technique.tactic %}
+                    <small>
+                        {{ technique.tactic }}
+                    </small>
+                {% endif %}
+
+                {% if technique.unlocked %}
+
+                    <p>
+                        {{ technique.description }}
+                    </p>
+
+                    <small>
+                        Confirmed through
+                        {{ technique.case_id }}
+                    </small>
+
+                {% else %}
+
+                    <p class="locked-description">
+                        Complete the associated investigation to
+                        reveal this technique.
+                    </p>
+
+                    <small>
+                        Investigation pending
+                    </small>
+
+                {% endif %}
+
+            </article>
+
+        {% endfor %}
+
+    </section>
+
+</div>
+
+{% endblock %}
+
