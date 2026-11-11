@@ -34,17 +34,17 @@
   "questions": [
     {
       "field": "attacker_ip",
-      "label": "Identify the hostile reconnaissance source",
+      "label": "Identify the hostile reconnaissance source IP",
       "placeholder": "IPv4 address"
     },
     {
       "field": "primary_target",
-      "label": "Identify the primary target host",
+      "label": "Identify the primary target IP",
       "placeholder": "IPv4 address"
     },
     {
       "field": "authorized_scanner",
-      "label": "Identify the authorized security scanner",
+      "label": "Identify the authorized scanner IP",
       "placeholder": "IPv4 address"
     },
     {
@@ -54,12 +54,12 @@
     },
     {
       "field": "secondary_target",
-      "label": "Which additional system was probed?",
+      "label": "Identify the secondary target IP",
       "placeholder": "IPv4 address"
     },
     {
       "field": "first_seen",
-      "label": "When did the hostile reconnaissance begin?",
+      "label": "Identify the first hostile activity time",
       "placeholder": "HH:MM:SS"
     }
   ]

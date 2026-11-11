@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-09",
+  "environment": "Windows, project Python 3.12 virtual environment, local Chrome",
+  "data_scope": "Disposable databases only; existing learner databases were not opened or modified",
+  "regression": {
+    "command": ".venv/Scripts/python.exe -m unittest discover -s tests -v",
+    "passed": true,
+    "tests": 188,
+    "log": "dist/registration-unittest.log"
+  },
+  "project_validation": {
+    "command": ".venv/Scripts/python.exe validate_project.py",
+    "passed": true,
+    "cases": 15,
+    "errors": 0,
+    "warnings": 0
+  },
+  "structural_audit": {
+    "command": ".venv/Scripts/python.exe audit_soc_integration.py",
+    "passed": true,
+    "checks": 74,
+    "errors": 0,
+    "warnings": ["Existing BF-H-005 cross-source timestamp discrepancy; release review remains required"]
+  },
+  "browser": {
+    "script": "tests/browser_certificate_smoke.py",
+    "mode": "--eligibility-only",
+    "passed": true,
+    "viewport_widths": [1280, 390, 320],
+    "centered_card_max_width": 560,
+    "horizontal_overflow": false,
+    "registration_with_and_without_usn": true,
+    "password_visibility_controls": true,
+    "common_password_rejected": true,
+    "validation_preserves_nonsecret_fields_and_clears_passwords": true,
+    "profile_usn_isolation": true,
+    "assessment_eligibility_and_account_isolation": true,
+    "legacy_account_and_progress_unchanged": true,
+    "pdf_conversion_calls": 0,
+    "certificate_records_created": 0,
+    "artifacts": "dist/registration-validation",
+    "log": "dist/registration-browser.log"
+  },
+  "limitations": [
+    "The common-password blocklist is a basic local safeguard; a comprehensive list remains recommended before production",
+    "Ubuntu and OVA deployment were not exercised",
+    "The existing certificate unit tests passed; this browser run did not perform PDF conversion or issuance"
+  ]
+}

@@ -39,43 +39,43 @@
   "questions": [
     {
       "field": "exfil_source",
-      "label": "Which internal host performed the data exfiltration?",
-      "placeholder": "Example: 192.168.56.10"
+      "label": "Identify the exfiltration source host",
+      "placeholder": "IPv4 address"
     },
     {
       "field": "exfil_domain",
-      "label": "Identify the exfiltration destination domain",
-      "placeholder": "Example: exfil.example.local"
+      "label": "Identify the exfiltration domain",
+      "placeholder": "Domain"
     },
     {
       "field": "exfil_ip",
-      "label": "Identify the destination IP",
-      "placeholder": "Example: 192.168.56.200"
+      "label": "Identify the exfiltration destination IP",
+      "placeholder": "IPv4 address"
     },
     {
       "field": "archive",
-      "label": "What archive was created before exfiltration?",
-      "placeholder": "Example: data.tar.gz"
+      "label": "Identify the staged archive",
+      "placeholder": "Filename"
     },
     {
       "field": "exfil_method",
-      "label": "Which protocol/method was used to exfiltrate the archive?",
-      "placeholder": "Example: HTTP POST"
+      "label": "Identify the data transfer method",
+      "placeholder": "Protocol / method"
     },
     {
       "field": "attacker_ip",
       "label": "Identify the original attacker IP",
-      "placeholder": "Example: 192.168.56.100"
+      "placeholder": "IPv4 address"
     },
     {
       "field": "initial_access",
-      "label": "How did the attacker first obtain authenticated access?",
-      "placeholder": "Example: SSH credential compromise"
+      "label": "Identify the initial access technique",
+      "placeholder": "Initial access technique"
     },
     {
       "field": "persistence",
-      "label": "What persistence mechanism was established?",
-      "placeholder": "Example: Cron Job"
+      "label": "Identify the persistence mechanism",
+      "placeholder": "Persistence mechanism"
     }
   ]
 }

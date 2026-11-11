@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block title %}
+SOC Assessment | Operation Black Falcon
+{% endblock %}
+
+{% block content %}
+
+<div class="soc-page">
+
+    <section class="soc-hero compact-hero">
+        <div>
+            <p class="soc-eyebrow">
+                SOC OPERATIONS / ASSESSMENT
+            </p>
+
+            <h1>Incident Assessment Center</h1>
+
+            <p>
+                Review investigation verification,
+                report completion and assessment progress.
+            </p>
+        </div>
+    </section>
+
+    <section class="siem-stats">
+
+        <div class="siem-stat-card">
+            <span>Total Investigations</span>
+            <strong>{{ total }}</strong>
+        </div>
+
+        <div class="siem-stat-card">
+            <span>Assessments Passed</span>
+            <strong>{{ passed }}</strong>
+        </div>
+
+        <div class="siem-stat-card">
+            <span>Remaining</span>
+            <strong>{{ remaining }}</strong>
+        </div>
+
+        <div class="siem-stat-card">
+            <span>Overall Progress</span>
+            <strong>{{ percentage }}%</strong>
+        </div>
+
+    </section>
+
+    <section class="soc-panel siem-panel">
+
+        <h2>Investigation Assessment Status</h2>
+
+        <p class="siem-disclaimer">
+            An assessment passes when the submitted report is
+            complete (at least {{ min_report_length }} characters per section) and Black Falcon has verified the
+            investigation findings and submitted flag. Free-text report accuracy requires instructor review.
+        </p>
+
+        <div class="siem-table-wrap" tabindex="0" role="region" aria-label="Investigation assessment status">
+
+            <table class="siem-table">
+
+                <thead>
+                    <tr>
+                        <th scope="col">Case ID</th>
+                        <th scope="col">Report Completion</th>
+                        <th scope="col">Findings</th>
+                        <th scope="col">Flag</th>
+                        <th scope="col">Assessment</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for item in cases %}
+                    <tr>
+
+                        <td>
+                            <strong>{{ item.case_id }}</strong>
+                        </td>
+
+                        <td>
+                            {{ item.report_completion }}%
+                        </td>
+
+                        <td>
+                            {% if item.findings_verified %}
+                                Verified
+                            {% else %}
+                                Pending
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if item.flag_verified %}
+                                Verified
+                            {% else %}
+                                Pending
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if item.assessment_passed %}
+                                <span class="siem-severity siem-low">
+                                    Passed
+                                </span>
+                            {% else %}
+                                <span class="siem-severity siem-medium">
+                                    In Progress
+                                </span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            <a href="{{ url_for(
+                                'operations.assessment',
+                                case_id=item.case_id
+                            ) }}">
+                                {% if item.report_submitted %}
+                                    Review Report
+                                {% else %}
+                                    Complete Report
+                                {% endif %}
+                            </a>
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}

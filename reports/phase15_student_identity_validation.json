@@ -1,0 +1,40 @@
+{
+  "date": "2026-11-07",
+  "python": "3.12.4",
+  "regression_tests": 177,
+  "regression_tests_passed": 177,
+  "registration_tests": 15,
+  "certificate_workflow_tests": 17,
+  "compile_check": "passed",
+  "project_validation": {
+    "configured_cases": 15,
+    "errors": 0,
+    "warnings": 0
+  },
+  "structural_audit": {
+    "checks": 74,
+    "errors": 0,
+    "warnings": ["Existing BF-H-005 Zeek/Suricata timestamp disagreement"]
+  },
+  "browser": {
+    "engine": "Chrome",
+    "identity_checklist_completed": 8,
+    "identity_checklist_total": 8,
+    "students_registered_through_ui": 2,
+    "assessment_score": 74,
+    "certificate_name_from_registered_profile": true,
+    "real_libreoffice_conversion": true,
+    "pdf_pages": 1,
+    "repeat_download_identical_after_relogin": true,
+    "cross_account_result_and_download_denied": true,
+    "original_ctf_progress_and_legacy_account_unchanged": true,
+    "pdf_sha256": "83d0ac476b8cc539255b78850f5d607d36fca6f96a8512aa26102ac6158b67ca",
+    "artifact_directory": "dist/student-identity-validation"
+  },
+  "remaining_release_tasks": [
+    "Instructor-controlled provisioning must replace known shared training credentials",
+    "Instructor name-correction workflow",
+    "Ubuntu and OVA validation with deployment fonts",
+    "Issuing-authority approval and existing evidence timestamp review"
+  ]
+}

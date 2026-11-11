@@ -4,6 +4,7 @@ from investigation_loader import load_investigation, validate_findings
 from level_config import get_case_level
 from models import (
     ensure_progress,
+    get_validated_findings,
     mark_findings_validated,
     save_validated_findings,
 )
@@ -34,7 +35,10 @@ def investigation_detail(investigation_id):
     validation_results = {}
     submitted_answers = {}
 
-    if request.method == "POST":
+    if progress["findings_validated"]:
+        submitted_answers = get_validated_findings(username, investigation_id)
+
+    if request.method == "POST" and not progress["findings_validated"]:
         submitted_answers = {
             question["field"]: request.form.get(question["field"], "").strip()
             for question in investigation.get("questions", [])

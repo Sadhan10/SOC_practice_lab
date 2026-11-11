@@ -18,24 +18,33 @@ IOC Notebook | Operation Black Falcon
             <h1>IOC Notebook</h1>
 
             <p>
-                Record and organise indicators discovered during
-                the investigation.
+                Record indicators discovered during analysis and
+                correlate them with individual investigations.
             </p>
         </div>
 
-        <form
-            method="post"
-            action="{{ url_for(
-                'soc_features.seed_iocs'
-            ) }}"
-        >
-            <button
-                type="submit"
-                class="secondary-button"
+        <div class="ioc-import-control">
+
+            <form
+                method="post"
+                action="{{ url_for(
+                    'soc_features.seed_iocs'
+                ) }}"
             >
-                Import Confirmed Case IOCs
-            </button>
-        </form>
+                <button
+                    type="submit"
+                    class="secondary-button"
+                >
+                    Import Confirmed Case IOCs
+                </button>
+            </form>
+
+            <p class="ioc-import-help">
+                Imports only indicators from investigations you
+                have already completed.
+            </p>
+
+        </div>
 
     </section>
 
@@ -103,7 +112,7 @@ IOC Notebook | Operation Black Falcon
 
                         {% for case in case_options %}
 
-                            <option value="{{ case.id }}">
+                            <option value="{{ case.id }}" {% if case.id == selected_case_id %}selected{% endif %}>
                                 {{ case.level_name }} &mdash;
                                 {{ case.id }} &mdash;
                                 {{ case.title }}
@@ -167,6 +176,7 @@ IOC Notebook | Operation Black Falcon
                                 <th>Value</th>
                                 <th>Case</th>
                                 <th>Description</th>
+                                <th>Recorded</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -189,11 +199,25 @@ IOC Notebook | Operation Black Falcon
                                     </td>
 
                                     <td>
-                                        {{ ioc.case_id }}
+
+                                        <a
+                                            class="case-reference-link"
+                                            href="{{ url_for(
+                                                'investigations.investigation_detail',
+                                                investigation_id=ioc.case_id
+                                            ) }}"
+                                        >
+                                            {{ ioc.case_id }}
+                                        </a>
+
                                     </td>
 
                                     <td>
                                         {{ ioc.description or "—" }}
+                                    </td>
+
+                                    <td class="ioc-recorded-time">
+                                        {{ ioc.created_at }}
                                     </td>
 
                                     <td>

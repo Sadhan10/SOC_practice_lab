@@ -43,32 +43,32 @@
   "questions": [
     {
       "field": "attacker_ip",
-      "label": "Identify the malicious source IP",
+      "label": "Identify the attacker IP",
       "placeholder": "IPv4 address"
     },
     {
       "field": "exploit_endpoint",
-      "label": "Which web endpoint triggered the compromise?",
-      "placeholder": "Example: /api/export"
+      "label": "Identify the exploited endpoint",
+      "placeholder": "Application path"
     },
     {
       "field": "exploit_type",
-      "label": "What vulnerability or technique resulted in host command execution?",
-      "placeholder": "Example: Command Injection"
+      "label": "Identify the exploit technique",
+      "placeholder": "Application vulnerability"
     },
     {
       "field": "executed_command",
-      "label": "Identify the first malicious operating-system command executed",
+      "label": "Identify the executed command",
       "placeholder": "Command"
     },
     {
       "field": "payload",
-      "label": "Identify the payload written to disk",
+      "label": "Identify the staged payload",
       "placeholder": "Filename"
     },
     {
       "field": "execution_user",
-      "label": "Under which account did the malicious process initially execute?",
+      "label": "Identify the command execution user",
       "placeholder": "Username"
     }
   ]

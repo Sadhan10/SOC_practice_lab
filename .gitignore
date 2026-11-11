@@ -94,3 +94,29 @@ desktop.ini
 build/
 dist/
 *.egg-info/
+
+
+# --------------------------------------------------
+# Instructor-only challenge data
+# --------------------------------------------------
+
+private/*
+!private/.gitkeep
+
+
+# --------------------------------------------------
+# Student deployment builds
+# --------------------------------------------------
+
+student_build/
+black_falcon_student_build/
+deployment_build/
+
+
+# --------------------------------------------------
+# Local validation artifacts
+# --------------------------------------------------
+
+*.coverage
+coverage.xml
+htmlcov/

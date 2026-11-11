@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Student Profile | Black Falcon{% endblock %}
+{% block content %}
+<div class="soc-page">
+    <section class="soc-hero compact-hero">
+        <div><p class="soc-eyebrow">ANALYST PROFILE</p><h1>Student Profile</h1></div>
+    </section>
+    <section class="soc-panel siem-panel">
+        {% if student %}
+        <h2>{{ student.full_name }}</h2>
+        <p><strong>Username:</strong> {{ student.username }}</p>
+        <p><strong>USN Number / USN ID:</strong> {{ student.usn or 'Not provided' }}</p>
+        <p><strong>Registration Date (UTC):</strong> {{ student.created_at[:10] }}</p>
+        <p><strong>Certificate Name:</strong> {{ student.full_name }}</p>
+        {% if student.name_locked %}<p>Your certificate identity is locked following issuance.</p>{% endif %}
+        <p>Contact your instructor if your registered details need correction.</p>
+        <a href="{{ url_for('soc_certificates.certificate_page') }}">View SOC Certificate</a>
+        {% else %}
+        <h2>Profile Not Available</h2>
+        <p>Your account was created before student profile registration. Contact your instructor to complete or verify your student profile before requesting a new certificate.</p>
+        {% endif %}
+    </section>
+</div>
+{% endblock %}

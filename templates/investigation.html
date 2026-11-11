@@ -37,7 +37,7 @@
 
             <a
                 class="workspace-link"
-                href="{{ url_for('soc_features.ioc_notebook') }}"
+                href="{{ url_for('soc_features.ioc_notebook', case_id=investigation.id) }}"
             >
                 IOC Notebook
             </a>
@@ -56,6 +56,10 @@
                     <h2>Incident Story</h2>
                     <p>{{ investigation.story }}</p>
                 </div>
+
+                {% if investigation.id == "BF-H-005" %}
+                    {% include "_bf_h_005_chronology_advisory.html" %}
+                {% endif %}
 
                 <div class="panel">
                     <h2>Investigation Resources</h2>
@@ -201,7 +205,7 @@
                         <h2>Validate Findings</h2>
                         <p>
                             Answer every prompt correctly to unlock the
-                            case token required by the Flag Submission Console.
+                            flag construction rule for this investigation.
                         </p>
                     {% endif %}
 
@@ -227,7 +231,11 @@
                                 name="{{ question.field }}"
                                 value="{{ submitted_answers.get(question.field, '') }}"
                                 placeholder="{{ question.placeholder }}"
-                                required
+                                {% if progress['findings_validated'] %}
+                                    readonly
+                                {% else %}
+                                    required
+                                {% endif %}
                             >
                             {% if validation_results %}
                                 <p class="answer-status {% if validation_results.get(question.field) %}answer-correct{% else %}answer-incorrect{% endif %}">
@@ -240,13 +248,25 @@
                             {% endif %}
                         {% endfor %}
 
-                        <button type="submit">
-                            {% if investigation.id == "BF-2026-005" %}
-                                Submit Executive Findings
-                            {% else %}
-                                Validate Findings
-                            {% endif %}
-                        </button>
+                        {% if not progress['findings_validated'] %}
+
+                            <button type="submit">
+
+                                {% if investigation.id == "BF-2026-005" %}
+                                    Submit Executive Findings
+                                {% else %}
+                                    Validate Findings
+                                {% endif %}
+
+                            </button>
+
+                        {% else %}
+
+                            <div class="validated-findings-notice">
+                                Findings locked after successful validation.
+                            </div>
+
+                        {% endif %}
                     </form>
                 </div>
 
@@ -285,7 +305,7 @@
 
                         <a
                             class="investigate-btn"
-                            href="{{ url_for('flags.submit_flag') }}"
+                            href="{{ url_for('flags.submit_flag', case_id=investigation.id) }}"
                         >
                             Open Flag Console
                         </a>
@@ -293,9 +313,42 @@
                 {% endif %}
 
                 <div class="action-row">
-                    <a class="investigate-btn" href="{{ url_for('bank.bank') }}">Open Bank Portal</a>
-                    <a class="investigate-btn" href="{{ url_for('evidence.evidence') }}">Review Evidence</a>
-                    <a class="investigate-btn" href="{{ url_for('flags.submit_flag') }}">Submit Flag</a>
+
+                    {% if "Black Falcon Bank Portal"
+                          in investigation.tools %}
+
+                        <a
+                            class="investigate-btn"
+                            href="{{ url_for('bank.bank') }}"
+                        >
+                            Open Bank Portal
+                        </a>
+
+                    {% endif %}
+
+
+                    <a
+                        class="investigate-btn"
+                        href="{{ url_for('evidence.evidence') }}"
+                    >
+                        Evidence Locker
+                    </a>
+
+
+                    {% if progress['findings_validated'] %}
+
+                        <a
+                            class="investigate-btn"
+                            href="{{ url_for(
+                                'flags.submit_flag',
+                                case_id=investigation.id
+                            ) }}"
+                        >
+                            Open Flag Console
+                        </a>
+
+                    {% endif %}
+
                 </div>
             </div>
 

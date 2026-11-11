@@ -4,12 +4,15 @@ from logging.handlers import RotatingFileHandler
 
 from flask import (
     Flask,
+    redirect,
     render_template,
     session,
+    url_for,
 )
 
 from config import Config
-from database import init_db
+from auth_limits import initialize_auth_limits
+from database import get_db, init_db
 from investigation_loader import (
     load_all_investigations,
 )
@@ -23,11 +26,18 @@ from models import (
 )
 
 from routes.auth import auth_bp
+from routes.alert_triage import alert_triage_bp, initialize_alert_triage
+from routes.final_soc_challenge import final_soc_bp, init_final_soc
 from routes.bank import bank_bp
 from routes.dashboard import dashboard_bp
 from routes.evidence import evidence_bp
 from routes.flags import flags_bp
 from routes.investigations import investigations_bp
+from routes.siem import siem_bp
+from routes.soc_labs import labs_bp
+from routes.soc_operations import operations_bp, initialize_operations
+from routes.soc_certificates import certificate_bp, initialize_certificates
+from routes.student_registration import registration_bp, initialize_student_profiles
 from soc_features import (
     initialise_soc_features,
     soc_features,
@@ -63,7 +73,9 @@ def create_app(test_config=None):
 
     if not app.config.get("SECRET_KEY"):
         raise RuntimeError(
-            "BLACK_FALCON_SECRET_KEY is not configured."
+            "BLACK_FALCON_SECRET_KEY is not configured. "
+            "Set it in the terminal environment before starting Flask; "
+            "see STUDENT_ACCOUNTS.md for Windows setup commands."
         )
 
     app.config.setdefault(
@@ -77,6 +89,13 @@ def create_app(test_config=None):
     with app.app_context():
         create_default_users()
         initialise_soc_features()
+        db = get_db()
+        initialize_operations(db)
+        initialize_alert_triage(db)
+        init_final_soc(db)
+        initialize_certificates(db)
+        initialize_student_profiles(db)
+        initialize_auth_limits(db)
 
     @app.context_processor
     def inject_navigation_context():
@@ -133,6 +152,21 @@ def create_app(test_config=None):
     app.register_blueprint(evidence_bp)
     app.register_blueprint(bank_bp)
     app.register_blueprint(soc_features)
+    app.register_blueprint(siem_bp)
+    app.register_blueprint(operations_bp)
+    app.register_blueprint(alert_triage_bp)
+    app.register_blueprint(final_soc_bp)
+    app.register_blueprint(certificate_bp)
+    app.register_blueprint(registration_bp)
+    app.register_blueprint(labs_bp)
+
+    @app.errorhandler(401)
+    def unauthorized(error):
+        del error
+
+        return redirect(
+            url_for("auth.login")
+        )
 
     @app.errorhandler(404)
     def not_found(error):
@@ -175,7 +209,7 @@ if __name__ == "__main__":
     )
 
     app.run(
-        host="0.0.0.0",
+        host=os.environ.get("BLACK_FALCON_HOST", "127.0.0.1"),
         port=5555,
         debug=debug_enabled,
     )

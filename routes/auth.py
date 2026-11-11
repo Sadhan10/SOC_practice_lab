@@ -1,5 +1,6 @@
 from flask import (
     Blueprint,
+    current_app,
     flash,
     redirect,
     render_template,
@@ -9,6 +10,7 @@ from flask import (
 )
 
 from models import get_user, verify_user_password
+from auth_limits import limit_attempts
 
 
 auth_bp = Blueprint("auth", __name__)
@@ -46,6 +48,11 @@ def login():
             "password",
             "",
         )
+
+        limit_attempts([
+            ("login_ip", request.remote_addr or "unknown", current_app.config["LOGIN_IP_RATE_LIMIT"]),
+            ("login_username", username[:128], current_app.config["LOGIN_USERNAME_RATE_LIMIT"]),
+        ])
 
         user = get_user(username)
 

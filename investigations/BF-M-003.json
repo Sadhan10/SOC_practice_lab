@@ -34,33 +34,33 @@
   "questions": [
     {
       "field": "attacker_ip",
-      "label": "Identify the malicious source IP",
-      "placeholder": "Example: 192.168.56.100"
+      "label": "Identify the attacker IP",
+      "placeholder": "IPv4 address"
     },
     {
       "field": "attack_type",
-      "label": "What web exploitation technique was used?",
-      "placeholder": "Example: SQL Injection"
+      "label": "Identify the web attack technique",
+      "placeholder": "Attack technique"
     },
     {
       "field": "target_endpoint",
-      "label": "Which application endpoint was exploited?",
-      "placeholder": "Example: /search"
+      "label": "Identify the targeted endpoint",
+      "placeholder": "Application path"
     },
     {
       "field": "admin_endpoint",
-      "label": "Which restricted administrative endpoint was discovered?",
-      "placeholder": "Example: /admin"
+      "label": "Identify the restricted administration endpoint",
+      "placeholder": "Application path"
     },
     {
       "field": "uploaded_file",
-      "label": "Identify the suspicious uploaded filename",
-      "placeholder": "Example: payload.php"
+      "label": "Identify the uploaded malicious file",
+      "placeholder": "Filename"
     },
     {
       "field": "execution_command",
-      "label": "What command was executed through the suspicious file?",
-      "placeholder": "Example: whoami"
+      "label": "Identify the command executed through the web shell",
+      "placeholder": "Command"
     }
   ]
 }

@@ -1,0 +1,57 @@
+{
+  "case_id": "BF-H-005",
+  "zeek_records": 30,
+  "candidate_comparisons": 9,
+  "unanchored_records": 21,
+  "evidence_unchanged": true,
+  "method": "Exact Unix epochs converted to UTC and IST (+05:30). All deltas are Zeek minus reference. Year alignment is hypothetical analysis only. Candidate correlations do not prove event identity. Unanchored rows are not independently verified. No corrected timestamps are produced.",
+  "grading_chronology": "Use Wazuh and Suricata. System logs without timezone/year remain as supplied; no timezone or year is inferred for them.",
+  "sources": [
+    {
+      "path": "evidence/zeek/BF-H-005_conn.log",
+      "size_bytes": 1460,
+      "sha256_before": "960a79ff6a2cdca06d7c833de2209ab5c33f9ca4ac756927d0897ff92ddf4eec",
+      "sha256_after": "960a79ff6a2cdca06d7c833de2209ab5c33f9ca4ac756927d0897ff92ddf4eec"
+    },
+    {
+      "path": "evidence/zeek/BF-H-005_dns.log",
+      "size_bytes": 1006,
+      "sha256_before": "1120f132cc9736a5142266bc0e360fccebb1de9a5b8c8ad595fb789030692804",
+      "sha256_after": "1120f132cc9736a5142266bc0e360fccebb1de9a5b8c8ad595fb789030692804"
+    },
+    {
+      "path": "evidence/zeek/BF-H-005_http.log",
+      "size_bytes": 1145,
+      "sha256_before": "f49d87bb7a6b2f29a7486fd71789f27fdf5e1fb0fe69111e098f520d56e8ba72",
+      "sha256_after": "f49d87bb7a6b2f29a7486fd71789f27fdf5e1fb0fe69111e098f520d56e8ba72"
+    },
+    {
+      "path": "evidence/suricata/BF-H-005_eve.json",
+      "size_bytes": 907,
+      "sha256_before": "0784d61d08192e4f5b7d78470ddc5049c177a9d693cb2f1f5ef7c82022068ca7",
+      "sha256_after": "0784d61d08192e4f5b7d78470ddc5049c177a9d693cb2f1f5ef7c82022068ca7"
+    },
+    {
+      "path": "evidence/wazuh/BF-H-005_wazuh_alerts.log",
+      "size_bytes": 1163,
+      "sha256_before": "95eb257fef0e23ede5372760f4c2ca8e84bfd97af8196c2e9d1bdc508a49c2bc",
+      "sha256_after": "95eb257fef0e23ede5372760f4c2ca8e84bfd97af8196c2e9d1bdc508a49c2bc"
+    },
+    {
+      "path": "evidence/system/BF-H-005_auth.log",
+      "size_bytes": 1141,
+      "sha256_before": "81050f28d321a2432911b76df6a498fa4c35976721a6eeef2b2a25b5f92552f9",
+      "sha256_after": "81050f28d321a2432911b76df6a498fa4c35976721a6eeef2b2a25b5f92552f9"
+    },
+    {
+      "path": "evidence/system/BF-H-005_process.log",
+      "size_bytes": 1839,
+      "sha256_before": "0bb4d57150526abd374a98f2134c0fcc3ed90dcfa4e0db624345fb80440f1c67",
+      "sha256_after": "0bb4d57150526abd374a98f2134c0fcc3ed90dcfa4e0db624345fb80440f1c67"
+    }
+  ],
+  "report": {
+    "path": "reports/BF-H-005_timestamp_reconciliation.csv",
+    "sha256": "abc297f58021636c9b7ccea0f3ebb60ee4ec11c91013b349afbcb479c8674cb3"
+  }
+}

@@ -43,7 +43,7 @@
   "questions": [
     {
       "field": "compromised_host",
-      "label": "Identify the host communicating with the malicious C2 infrastructure",
+      "label": "Identify the compromised host",
       "placeholder": "IPv4 address"
     },
     {
@@ -58,22 +58,22 @@
     },
     {
       "field": "beacon_interval",
-      "label": "Approximately how often does the malicious beacon occur?",
-      "placeholder": "Example: 90 seconds"
+      "label": "Identify the beacon interval",
+      "placeholder": "Interval in seconds"
     },
     {
       "field": "staging_directory",
-      "label": "Identify the directory used to stage collected data",
+      "label": "Identify the data staging directory",
       "placeholder": "Directory path"
     },
     {
       "field": "staged_archive",
-      "label": "Identify the archive created for staging",
+      "label": "Identify the staged archive",
       "placeholder": "Filename"
     },
     {
       "field": "collected_data",
-      "label": "Which sensitive dataset was included in the staged archive?",
+      "label": "Identify the collected data",
       "placeholder": "Filename"
     }
   ]

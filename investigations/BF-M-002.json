@@ -29,33 +29,33 @@
   "questions": [
     {
       "field": "attacker_ip",
-      "label": "Identify the malicious source IP",
-      "placeholder": "Example: 192.168.56.100"
+      "label": "Identify the malicious authentication source IP",
+      "placeholder": "IPv4 address"
     },
     {
       "field": "compromised_user",
-      "label": "Which privileged account was compromised?",
-      "placeholder": "Example: administrator"
+      "label": "Identify the compromised user account",
+      "placeholder": "Username"
     },
     {
       "field": "service",
-      "label": "Which service was attacked?",
-      "placeholder": "Example: SSH"
+      "label": "Identify the targeted service",
+      "placeholder": "Remote-access service"
     },
     {
       "field": "attack_type",
-      "label": "What authentication attack technique was used?",
-      "placeholder": "Example: Password Spraying"
+      "label": "Identify the credential attack type",
+      "placeholder": "Attack technique"
     },
     {
       "field": "successful_login",
-      "label": "At what time did the malicious login succeed?",
-      "placeholder": "Example: 15:05:31"
+      "label": "Identify the successful malicious login time",
+      "placeholder": "HH:MM:SS"
     },
     {
       "field": "legitimate_admin_ip",
       "label": "Identify the legitimate administrator IP",
-      "placeholder": "Example: 192.168.56.100"
+      "placeholder": "IPv4 address"
     }
   ]
 }

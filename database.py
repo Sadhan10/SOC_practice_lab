@@ -124,11 +124,12 @@ def init_db(app):
         app.config["LOG_DIR"]
     )
 
+    # Register cleanup before the initialization context opens a connection.
+    app.teardown_appcontext(
+        close_db
+    )
+
     with app.app_context():
         db = get_db()
 
         create_tables(db)
-
-    app.teardown_appcontext(
-        close_db
-    )

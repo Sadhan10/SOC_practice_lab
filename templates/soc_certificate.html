@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}SOC Certificate | Operation Black Falcon{% endblock %}
+
+{% block content %}
+<div class="soc-page">
+    <section class="soc-hero compact-hero">
+        <div>
+            <p class="soc-eyebrow">OPERATION BLACK FALCON / CERTIFICATION</p>
+            <h1>Certificate of Completion</h1>
+            <p>Receive your personalized certificate after passing the Final SOC Assessment with at least 70%.</p>
+        </div>
+    </section>
+
+    {% if error %}
+    <p class="soc-panel siem-panel" role="alert">{{ error }}</p>
+    {% endif %}
+
+    {% if certificate %}
+    <section class="soc-panel siem-panel">
+        <h2>Certificate Issued</h2>
+        <p>Your certificate is saved. You can download the same PDF whenever you sign in.</p>
+        <div class="siem-table-wrap">
+            <table class="siem-table">
+                <tbody>
+                    <tr><th>Student Name</th><td>{{ certificate.student_name }}</td></tr>
+                    <tr><th>Course</th><td>{{ certificate.course_name }}</td></tr>
+                    <tr><th>Score</th><td>{{ certificate.score }}/100</td></tr>
+                    <tr><th>Certificate ID</th><td>{{ certificate.certificate_id }}</td></tr>
+                    <tr><th>Issued On (UTC)</th><td>{{ certificate.issued_at }}</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p><a class="soc-action-button" href="{{ url_for('soc_certificates.download_certificate') }}">Download Certificate (PDF)</a></p>
+    </section>
+
+    {% elif preview %}
+    <section class="soc-panel siem-panel">
+        <h2>Preview Certificate Details</h2>
+        <p>Review the name from your registered student profile before issuing your certificate. These details will be saved with your PDF.</p>
+        <div class="siem-table-wrap">
+            <table class="siem-table">
+                <tbody>
+                    <tr><th>Student Name</th><td>{{ preview.student_name }}</td></tr>
+                    <tr><th>Course</th><td>{{ course_name }}</td></tr>
+                    <tr><th>Verified Score</th><td>{{ preview.score }}/100</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p>A unique certificate ID and the date of issue will be assigned when you confirm.</p>
+        <form method="post" action="{{ url_for('soc_certificates.issue_certificate') }}" class="soc-report-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <input type="hidden" name="preview_token" value="{{ preview.token }}">
+            <button type="submit" class="soc-action-button">Confirm and Issue Certificate</button>
+        </form>
+        <p><a href="{{ url_for('registration.profile') }}">View Student Profile</a></p>
+    </section>
+
+    {% elif qualifying_result %}
+    <section class="soc-panel siem-panel">
+        <h2>Certificate Eligibility Confirmed</h2>
+        <p><strong>Verified Score:</strong> {{ qualifying_result.score }}/100</p>
+        <p><strong>Course:</strong> {{ course_name }}</p>
+        <p>Your highest qualifying assessment score will be used.</p>
+        {% if profile %}
+        <form method="post" action="{{ url_for('soc_certificates.preview_certificate') }}" class="soc-report-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <p><strong>Certificate Name:</strong> {{ profile.full_name }}</p>
+            <p class="siem-disclaimer">This name comes from your registered student profile.</p>
+            <button type="submit" class="soc-action-button">Preview Certificate Details</button>
+        </form>
+        {% else %}
+        <p>Your student profile is not configured. Contact your instructor before requesting a new certificate.</p>
+        {% endif %}
+    </section>
+
+    {% else %}
+    <section class="soc-panel siem-panel">
+        <h2>Certificate Locked</h2>
+        <p>You must pass the Final SOC Assessment with at least 70% to receive your Certificate of Completion.</p>
+        <a href="{{ url_for('final_soc.challenge') }}">Open Final SOC Assessment</a>
+    </section>
+    {% endif %}
+</div>
+{% endblock %}

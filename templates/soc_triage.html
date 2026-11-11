@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}Alert Triage | Black Falcon{% endblock %}
+
+{% block content %}
+<div class="soc-page">
+
+    <section class="soc-hero compact-hero">
+        <div>
+            <p class="soc-eyebrow">SOC OPERATIONS</p>
+            <h1>Security Alert Triage</h1>
+            <p>
+                Classify security alerts, determine priority,
+                investigate evidence, and record response decisions.
+            </p>
+        </div>
+    </section>
+
+    {% for error in errors %}
+    <p class="siem-warning" role="alert">{{ error }}</p>
+    {% endfor %}
+
+    {% for case_id in cases %}
+    {% set item = saved.get(case_id, {}) %}
+
+    <section class="soc-panel siem-panel" id="{{ case_id }}">
+        <h2>{{ case_id }}</h2>
+
+        <p class="soc-operations-links">
+            <a href="{{ url_for('siem.search_events', case=case_id) }}">Search case events</a>
+            <a href="{{ url_for('investigations.investigation_detail', investigation_id=case_id) }}">Open challenge evidence</a>
+            <a href="{{ url_for('operations.assessment', case_id=case_id) }}">Write incident report</a>
+        </p>
+
+        <p>
+            Status:
+            <strong>{{ item.get("status", "Not reviewed") }}</strong>
+        </p>
+
+        <form method="post"
+              action="{{ url_for('operations.save_triage',
+                                  case_id=case_id) }}"
+              class="soc-operations-form">
+
+            <input type="hidden"
+                   name="csrf_token"
+                   value="{{ token }}">
+
+            <label>
+                Alert Severity
+                <select name="severity" required>
+                    <option value="" disabled {% if not item.get('severity') %}selected{% endif %}>Choose severity</option>
+                    {% for value in severities %}
+                    <option value="{{ value }}"
+                        {% if item.get("severity") == value %}
+                        selected{% endif %}>
+                        {{ value }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </label>
+
+            <label>
+                Alert Classification
+                <select name="verdict" required>
+                    <option value="" disabled {% if not item.get('verdict') %}selected{% endif %}>Choose classification</option>
+                    {% for value in verdicts %}
+                    <option value="{{ value }}"
+                        {% if item.get("verdict") == value %}
+                        selected{% endif %}>
+                        {{ value }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </label>
+
+            <label>
+                Investigation Status
+                <select name="status" required>
+                    {% for value in statuses %}
+                    <option value="{{ value }}"
+                        {% if item.get("status") == value %}
+                        selected{% endif %}>
+                        {{ value }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </label>
+
+            <label>
+                Recommended Response
+                <select name="response" required>
+                    <option value="" disabled {% if not item.get('response') %}selected{% endif %}>Choose response</option>
+                    {% for value in responses %}
+                    <option value="{{ value }}"
+                        {% if item.get("response") == value %}
+                        selected{% endif %}>
+                        {{ value }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </label>
+
+            <label class="soc-wide-field">
+                Investigation Findings
+                <textarea name="findings"
+                          rows="5"
+                          maxlength="3000"
+                          required
+                          placeholder="Explain the evidence, suspicious activity and justification for your decision.">{{ item.get("findings", "") }}</textarea>
+            </label>
+
+            <div class="soc-wide-field">
+                <button type="submit" class="soc-action-button">
+                    Save Alert Triage
+                </button>
+            </div>
+
+        </form>
+    </section>
+
+    {% endfor %}
+
+</div>
+{% endblock %}

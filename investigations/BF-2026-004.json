@@ -37,54 +37,53 @@
   "questions": [
     {
       "field": "compromised_host",
-      "label": "Compromised Host IP",
+      "label": "Identify the compromised host",
       "placeholder": "Internal IP address"
     },
     {
       "field": "persistence",
-      "label": "System Persistence Mechanism",
+      "label": "Identify the persistence mechanism",
       "placeholder": "Persistence method created after compromise"
     },
     {
       "field": "malware",
-      "label": "Associated Malware Family",
+      "label": "Identify the malware family",
       "placeholder": "Malware name"
     },
     {
       "field": "malware_hash",
-      "label": "Malware SHA-256",
+      "label": "Identify the malware SHA-256 hash",
       "placeholder": "64-character SHA-256 value"
     },
     {
       "field": "threat_actor",
-      "label": "Associated Threat Actor",
+      "label": "Identify the associated threat actor",
       "placeholder": "Intrusion-set name"
     },
     {
       "field": "c2_domain",
-      "label": "Command-and-Control Domain",
+      "label": "Identify the command-and-control domain",
       "placeholder": "C2 domain"
     },
     {
       "field": "exfiltration_domain",
-      "label": "Exfiltration Domain",
+      "label": "Identify the exfiltration domain",
       "placeholder": "Domain receiving outbound data"
     },
     {
       "field": "exfiltration_ip",
-      "label": "Exfiltration Destination IP",
+      "label": "Identify the exfiltration destination IP",
       "placeholder": "Destination IPv4 address"
     },
     {
       "field": "exploited_cve",
-      "label": "Relevant Critical Web Vulnerability",
+      "label": "Identify the critical vulnerability (CVE)",
       "placeholder": "CVE-YYYY-NNNN"
     },
     {
       "field": "exfiltration_technique",
-      "label": "Exfiltration Technique",
+      "label": "Identify the exfiltration technique",
       "placeholder": "How data left the environment"
     }
-  ],
-  "level": "beginner"
+  ]
 }

@@ -1,0 +1,47 @@
+{
+  "date": "2026-11-07",
+  "timezone": "Asia/Calcutta",
+  "python": "3.12.4",
+  "syntax_check": "passed",
+  "regression_tests": {"run": 182, "passed": 182, "exit_code": 0},
+  "project_validation": {"configured_cases": 15, "errors": 0, "warnings": 0, "exit_code": 0},
+  "structural_audit": {
+    "checks": 74,
+    "errors": 0,
+    "warnings": ["Existing BF-H-005 Zeek/Suricata timestamp disagreement"],
+    "exit_code": 0,
+    "strict_release_review_required": true
+  },
+  "browser": {
+    "passed": true,
+    "mode": "eligibility-only",
+    "engine": "Chrome",
+    "registered_students": 2,
+    "failing_score": 64,
+    "passing_score": 74,
+    "below_70_locked": true,
+    "passing_profile_name_preview": true,
+    "account_isolation": true,
+    "forged_marks_and_cross_account_preview_denied": true,
+    "eligibility_persists_after_relogin": true,
+    "original_ctf_progress_and_legacy_account_unchanged": true,
+    "pdf_conversion_calls": 0,
+    "certificate_records_created": 0,
+    "artifacts": "dist/windows-eligibility-validation"
+  },
+  "evidence": {
+    "files_checked": 7,
+    "all_hashes_match_original_manifest": true,
+    "manifest": "reports/BF-H-005_timestamp_reconciliation_sources.json",
+    "grading_chronology": "Wazuh and Suricata"
+  },
+  "routes": {
+    "registration": "/register",
+    "profile": "/profile",
+    "final_assessment": "/soc/final",
+    "assessment_certificate": "/soc/final/certificate",
+    "original_overall_certificate": "/soc/certificate"
+  },
+  "release_password_rotation_executed": false,
+  "deferred": ["Actual PDF conversion and issuance on Ubuntu", "Ubuntu deployment", "OVA export"]
+}

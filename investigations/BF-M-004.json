@@ -35,32 +35,32 @@
     {
       "field": "compromised_host",
       "label": "Identify the compromised host",
-      "placeholder": "Example: 192.168.56.10"
+      "placeholder": "IPv4 address"
     },
     {
       "field": "persistence",
-      "label": "What persistence mechanism was established?",
-      "placeholder": "Example: Cron Job"
+      "label": "Identify the persistence mechanism",
+      "placeholder": "Persistence mechanism"
     },
     {
       "field": "malware",
-      "label": "Identify the suspicious payload or malware name",
-      "placeholder": "Example: payload.sh"
+      "label": "Identify the malware family",
+      "placeholder": "Payload or malware name"
     },
     {
       "field": "c2_domain",
       "label": "Identify the command-and-control domain",
-      "placeholder": "Example: c2.example.local"
+      "placeholder": "Domain"
     },
     {
       "field": "c2_ip",
       "label": "Identify the C2 server IP",
-      "placeholder": "Example: 192.168.56.200"
+      "placeholder": "IPv4 address"
     },
     {
       "field": "beacon_interval",
-      "label": "Approximately how often does the compromised host beacon to the C2 server?",
-      "placeholder": "Example: 60 seconds"
+      "label": "Identify the beacon interval",
+      "placeholder": "Interval in seconds"
     }
   ]
 }

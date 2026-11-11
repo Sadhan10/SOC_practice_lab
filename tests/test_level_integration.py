@@ -86,10 +86,9 @@ class LevelIntegrationTests(unittest.TestCase):
                     PROJECT_ROOT,
                     "evidence",
                 ),
-                "SOLUTION_STORE_PATH": os.path.join(
-                    PROJECT_ROOT,
-                    "private",
-                    "solutions.json",
+                "SOLUTION_STORE_PATH": os.environ.get(
+                    "BLACK_FALCON_SOLUTION_STORE",
+                    os.path.join(PROJECT_ROOT, "private", "solutions.json"),
                 ),
             }
         )
@@ -131,7 +130,7 @@ class LevelIntegrationTests(unittest.TestCase):
         # Isolate submission behavior using already validated recipe fields.
         findings = {
             "BF-M-001": {"attacker_ip": "192.168.56.104", "target_host": "192.168.56.10"},
-            "BF-M-005": {"exfil_domain": "upload.blackfalcon-c2.local", "exfil_ip": "192.168.56.201"},
+            "BF-M-005": {"exfil_domain": "exfil.blackfalcon-c2.local", "exfil_ip": "192.168.56.201"},
             "BF-H-001": {"attacker_ip": "192.168.56.104", "primary_target": "192.168.56.10", "secondary_target": "192.168.56.20"},
             "BF-H-005": {"compromised_account": "admin", "c2_domain": "api.blackfalcon-c2.local", "exfil_destination": "192.168.56.201"},
         }[case_id]
@@ -838,22 +837,50 @@ class LevelIntegrationTests(unittest.TestCase):
             403,
         )
 
-    def test_final_certificate_requires_all_fifteen_cases(self):
+    def test_final_certificate_requires_all_cases_and_report(
+        self,
+    ):
         all_cases = get_all_cases()
-        self.complete_cases(all_cases[:-1])
+        self.complete_cases(
+            all_cases[:-1]
+        )
 
         locked = self.client.get(
             "/soc/certificate"
         )
-        self.assertEqual(locked.status_code, 403)
+        self.assertEqual(
+            locked.status_code,
+            403,
+        )
 
-        self.complete_cases([all_cases[-1]])
+        self.complete_cases(
+            [all_cases[-1]]
+        )
 
-        response = self.client.get(
+        # Completing all fifteen cases alone should
+        # not yet unlock the overall certificate.
+        report_required = self.client.get(
             "/soc/certificate"
         )
-        page = response.get_data(as_text=True)
+        self.assertEqual(
+            report_required.status_code,
+            403,
+        )
 
+        # The final report is now available.
+        report = self.client.get(
+            "/soc/report"
+        )
+        self.assertEqual(report.status_code, 200)
+        submitted = self.client.post(
+            "/soc/report",
+            follow_redirects=True,
+        )
+        self.assertEqual(submitted.status_code, 200)
+        self.assertIn(b"Final report submitted", submitted.data)
+
+        response = self.client.get("/soc/certificate")
+        page = response.get_data(as_text=True)
         self.assertEqual(response.status_code, 200)
         self.assertIn(
             "ADVANCED SOC INVESTIGATION PROGRAM",

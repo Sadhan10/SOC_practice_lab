@@ -24,34 +24,33 @@
   "questions": [
     {
       "field": "exploited_weakness",
-      "label": "Transaction Search Weakness",
-      "placeholder": "Name of the application weakness"
+      "label": "Identify the weakness exploited in the transaction search",
+      "placeholder": "Application vulnerability"
     },
     {
       "field": "injection_payload",
-      "label": "SQL Injection Payload Used",
-      "placeholder": "Enter the SQL injection payload used"
+      "label": "Identify the SQL injection payload used",
+      "placeholder": "Enter the observed payload"
     },
     {
       "field": "hidden_admin_path",
-      "label": "Exposed Administration Path",
-      "placeholder": "/bank/..."
+      "label": "Identify the hidden administration path",
+      "placeholder": "Application path"
     },
     {
       "field": "uploaded_payload",
-      "label": "Suspicious Uploaded Filename",
-      "placeholder": "filename.extension"
+      "label": "Identify the uploaded malicious filename",
+      "placeholder": "Filename"
     },
     {
       "field": "payload_hash",
-      "label": "Uploaded File MD5",
+      "label": "Identify the MD5 hash of the uploaded file",
       "placeholder": "32-character MD5 value"
     },
     {
       "field": "web_shell_parameter",
-      "label": "Web Shell Command Parameter",
-      "placeholder": "Example: cmd"
+      "label": "Identify the web shell command parameter",
+      "placeholder": "Command parameter name"
     }
-  ],
-  "level": "beginner"
+  ]
 }

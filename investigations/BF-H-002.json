@@ -34,32 +34,32 @@
   "questions": [
     {
       "field": "compromised_account",
-      "label": "Which account was abused for lateral movement?",
+      "label": "Identify the compromised account",
       "placeholder": "Username"
     },
     {
       "field": "initial_host",
-      "label": "Identify the first compromised internal host",
+      "label": "Identify the initial compromised host",
       "placeholder": "IPv4 address"
     },
     {
       "field": "pivot_host",
-      "label": "Identify the host used as the pivot point",
+      "label": "Identify the pivot host",
       "placeholder": "IPv4 address"
     },
     {
       "field": "destination_host",
-      "label": "Identify the final lateral movement target",
+      "label": "Identify the destination host",
       "placeholder": "IPv4 address"
     },
     {
       "field": "lateral_service",
-      "label": "Which service was primarily used for lateral movement?",
-      "placeholder": "Example: SMB"
+      "label": "Identify the lateral movement service",
+      "placeholder": "Service name"
     },
     {
       "field": "legitimate_admin_ip",
-      "label": "Identify the legitimate administrator workstation",
+      "label": "Identify the legitimate administrator IP",
       "placeholder": "IPv4 address"
     }
   ]

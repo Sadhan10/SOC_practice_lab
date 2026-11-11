@@ -280,12 +280,22 @@ def render_submit_flag(
     username,
 ):
 
+    progress_map = get_progress(username)
+    requested_case_id = (
+        request.form.get("investigation_id", "").strip()
+        or request.args.get("case_id", "").strip()
+    )
+    available_case_ids = {
+        investigation["id"] for investigation in investigations
+    }
+    if requested_case_id not in available_case_ids:
+        requested_case_id = ""
+
     return render_template(
         "submit_flag.html",
         investigations=investigations,
-        progress_map=get_progress(
-            username
-        ),
+        progress_map=progress_map,
+        selected_case_id=requested_case_id,
     )
 
 

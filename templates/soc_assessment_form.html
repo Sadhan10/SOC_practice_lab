@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}
+Incident Report | Black Falcon
+{% endblock %}
+
+{% block content %}
+<div class="soc-page">
+
+    <section class="soc-hero compact-hero">
+        <div>
+            <p class="soc-eyebrow">FINAL SOC INVESTIGATION</p>
+            <h1>Incident Report — {{ case_id }}</h1>
+            <p>
+                Reconstruct the incident using evidence from
+                SIEM, Evidence Locker and Threat Intelligence.
+            </p>
+        </div>
+    </section>
+
+    <p class="soc-operations-links">
+        <a href="{{ url_for('operations.assessment_dashboard') }}">All assessments</a>
+        <a href="{{ url_for('operations.triage_dashboard', _anchor=case_id) }}">Alert triage</a>
+        <a href="{{ url_for('siem.search_events', case=case_id) }}">Search case events</a>
+        <a href="{{ url_for('investigations.investigation_detail', investigation_id=case_id) }}">Open challenge evidence</a>
+    </p>
+
+    {% for error in errors %}
+    <p class="siem-warning" role="alert">{{ error }}</p>
+    {% endfor %}
+
+    {% if case_id == "BF-H-005" %}
+        {% include "_bf_h_005_chronology_advisory.html" %}
+    {% endif %}
+
+    {% if saved %}
+    <section class="soc-panel siem-panel">
+        <h2>Saved Assessment</h2>
+        <p>{{ saved.status }} · Report completion: {{ saved.completion_score }}% · Evidence accuracy:
+            {% if saved.accuracy_score is not none %}{{ saved.accuracy_score }}%{% else %}Unavailable{% endif %}
+        </p>
+        <p class="siem-disclaimer">Saved {{ saved.updated_at }}. Scores reflect the last save. Evidence accuracy measures the factual checks below; narrative reasoning and response recommendations require instructor review.</p>
+        {% if saved.accuracy_score is none %}
+        <p class="siem-warning">The protected answer rubric is incomplete or unavailable. Your report is saved; accuracy has not been graded. Ask the instructor to restore the rubric, then save again.</p>
+        {% endif %}
+        {% if feedback %}
+        <ul>
+            {% for item in feedback %}
+            <li>{{ item.label }}: {{ item.result }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </section>
+    {% endif %}
+
+    {% set labels = {
+        "incident_summary": "Incident Summary",
+        "entry_point": "Initial Entry Point",
+        "affected_assets": "Affected Systems & Accounts",
+        "indicators": "Indicators of Compromise",
+        "attack_sequence": "Attack Timeline & Sequence",
+        "impact": "Business & Security Impact",
+        "containment": "Containment Recommendations",
+        "recovery": "Recovery & Prevention"
+    } %}
+
+    <section class="soc-panel siem-panel">
+
+        <form method="post" class="soc-report-form">
+
+            <input type="hidden"
+                   name="csrf_token"
+                   value="{{ token }}">
+
+            <h2>Incident Reconstruction</h2>
+            <p class="siem-disclaimer">Each of the eight report sections must contain at least {{ min_report_length }} characters after trimming surrounding whitespace. This checks completion; narrative accuracy still requires instructor review. You can save a draft at any time.</p>
+
+            {% for field in fields %}
+            <label>
+                {{ labels[field] }}
+
+                <textarea
+                    name="{{ field }}"
+                    rows="5"
+                    maxlength="3000"
+                    minlength="{{ min_report_length }}"
+                    required
+                    placeholder="Provide evidence-based findings.">{{ report.get(field, "") }}</textarea>
+            </label>
+            {% endfor %}
+
+            <h2>Evidence-backed Findings</h2>
+            <p class="siem-disclaimer">Answer the case-specific factual questions using the evidence. Each check has equal weight and uses the challenge's accepted answer variants. Completing the narrative alone does not earn evidence accuracy credit.</p>
+            {% for question in questions %}
+            <label>
+                {{ question.label }}
+                <input type="text" name="answer_{{ question.field }}" maxlength="3000" required
+                       placeholder="{{ question.get('placeholder', 'Evidence-based answer') }}"
+                       value="{{ answers.get(question.field, '') }}">
+            </label>
+            {% endfor %}
+
+            <div class="soc-operations-links">
+            <button type="submit" name="action" value="draft" formnovalidate class="soc-action-button">
+                Save Draft
+            </button>
+            <button type="submit" name="action" value="submit" class="soc-action-button">
+                Submit Investigation Report
+            </button>
+            </div>
+
+        </form>
+
+    </section>
+</div>
+{% endblock %}

@@ -23,34 +23,33 @@
   "questions": [
     {
       "field": "compromised_account",
-      "label": "Compromised Account",
-      "placeholder": "Username used in the successful login"
+      "label": "Identify the compromised account",
+      "placeholder": "Username"
     },
     {
       "field": "recovered_password",
-      "label": "Recovered Password",
-      "placeholder": "Password captured by the honeypot"
+      "label": "Identify the recovered password",
+      "placeholder": "Recovered credential"
     },
     {
       "field": "attacker_ip",
-      "label": "Source IP Address",
-      "placeholder": "Example: 192.168.1.50"
+      "label": "Identify the source IP address",
+      "placeholder": "IPv4 address"
     },
     {
       "field": "target_service",
-      "label": "Targeted Remote Service",
-      "placeholder": "Name of the remote-access service"
+      "label": "Identify the targeted remote service",
+      "placeholder": "Remote-access service"
     },
     {
       "field": "login_method",
-      "label": "Initial Access Technique",
-      "placeholder": "Technique that caused the compromise"
+      "label": "Identify the initial access technique",
+      "placeholder": "Initial access technique"
     },
     {
       "field": "successful_login_time",
-      "label": "Successful Login Time",
+      "label": "Identify the successful login time",
       "placeholder": "HH:MM:SS"
     }
-  ],
-  "level": "beginner"
+  ]
 }

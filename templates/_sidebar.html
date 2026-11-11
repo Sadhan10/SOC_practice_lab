@@ -26,6 +26,55 @@
     >Bank Environment</a>
 
     <a
+        {% if request.endpoint == 'siem.search_events' %}
+            class="active"
+        {% endif %}
+        href="{{ url_for('siem.search_events') }}"
+    >SIEM Event Search</a>
+
+    <a
+        {% if request.endpoint in ('operations.triage_dashboard', 'operations.save_triage') %}
+            class="active"
+        {% endif %}
+        href="{{ url_for('operations.triage_dashboard') }}"
+    >Alert Triage</a>
+
+    <a
+        {% if request.endpoint and request.endpoint.startswith('alert_triage.') %}
+            class="active"
+        {% endif %}
+        href="{{ url_for('alert_triage.alert_queue') }}"
+    >Individual Alert Triage</a>
+
+    <a
+        {% if request.endpoint and request.endpoint.startswith('final_soc.') %}
+            class="active"
+        {% endif %}
+        href="{{ url_for('final_soc.challenge') }}"
+    >Final SOC Challenge</a>
+
+    <a
+        {% if request.endpoint and request.endpoint.startswith('soc_certificates.') %}
+            class="active"
+        {% endif %}
+        href="{{ url_for('soc_certificates.certificate_page') }}"
+    >SOC Completion Certificate</a>
+
+    <a
+        {% if request.endpoint in ('operations.assessment_dashboard', 'operations.assessment') %}
+            class="active"
+        {% endif %}
+        href="{{ url_for('operations.assessment_dashboard') }}"
+    >Incident Assessment</a>
+
+    <a
+        {% if request.endpoint and request.endpoint.startswith('labs.') %}
+            class="active"
+        {% endif %}
+        href="{{ url_for('labs.index') }}"
+    >SOC Practical Labs</a>
+
+    <a
         {% if request.endpoint == 'evidence.evidence' %}
             class="active"
         {% endif %}
@@ -80,6 +129,11 @@
         {% endif %}
         href="{{ url_for('flags.submit_flag') }}"
     >Submit Flag</a>
+
+    <a
+        {% if request.endpoint == 'registration.profile' %}class="active"{% endif %}
+        href="{{ url_for('registration.profile') }}"
+    >My Profile</a>
 
     <a href="{{ url_for('auth.logout') }}">Logout</a>
 </aside>

@@ -52,17 +52,17 @@
     },
     {
       "field": "compromised_account",
-      "label": "Identify the compromised privileged account",
+      "label": "Identify the compromised account",
       "placeholder": "Username"
     },
     {
       "field": "pivot_path",
-      "label": "Reconstruct the internal lateral movement path",
-      "placeholder": "Example: 10.0.0.1 > 10.0.0.2 > 10.0.0.3"
+      "label": "Identify the lateral movement pivot path",
+      "placeholder": "IPv4 addresses in order, separated by >"
     },
     {
       "field": "host_execution",
-      "label": "What technique provided operating-system command execution?",
+      "label": "Identify the host execution technique",
       "placeholder": "Technique"
     },
     {
@@ -72,12 +72,12 @@
     },
     {
       "field": "staged_archive",
-      "label": "Identify the archive prepared for exfiltration",
+      "label": "Identify the staged archive",
       "placeholder": "Filename"
     },
     {
       "field": "exfil_destination",
-      "label": "Identify the final exfiltration destination IP",
+      "label": "Identify the exfiltration destination IP",
       "placeholder": "IPv4 address"
     },
     {
@@ -87,7 +87,7 @@
     },
     {
       "field": "incident_start",
-      "label": "At what time did the first confirmed hostile activity begin?",
+      "label": "Identify the incident start time",
       "placeholder": "HH:MM:SS"
     }
   ]

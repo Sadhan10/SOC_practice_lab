@@ -317,17 +317,35 @@ Operation Black Falcon | SOC Dashboard
                             <div class="timeline-details">
 
                                 <div>
+
                                     <strong>
-                                        {{ item.time }}
+                                        {% if item.completed %}
+                                            {{ item.time }}
+                                        {% else %}
+                                            --:--
+                                        {% endif %}
                                     </strong>
 
+
                                     <span>
-                                        {{ item.technique }}
+                                        {% if item.completed %}
+                                            {{ item.technique }}
+                                        {% else %}
+                                            Technique pending
+                                        {% endif %}
                                     </span>
+
                                 </div>
 
+
                                 <p>
-                                    {{ item.title }}
+
+                                    {% if item.completed %}
+                                        {{ item.title }}
+                                    {% else %}
+                                        Investigation pending
+                                    {% endif %}
+
                                 </p>
 
                                 <small>

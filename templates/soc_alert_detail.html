@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+
+{% block title %}
+Alert Investigation | Black Falcon
+{% endblock %}
+
+{% block content %}
+
+<div class="soc-page">
+
+    <section class="soc-hero compact-hero">
+        <div>
+            <p class="soc-eyebrow">
+                SECURITY ALERT INVESTIGATION
+            </p>
+
+            <h1>Alert Triage</h1>
+
+            <p>
+                {{ case_id }} —
+                {{ event.source|upper }}
+            </p>
+        </div>
+    </section>
+
+    {% for error in errors %}
+    <p class="siem-warning" role="alert">{{ error }}</p>
+    {% endfor %}
+
+    <section class="soc-panel siem-panel">
+
+        <h2>Alert Evidence</h2>
+
+        <p>
+            <strong>Event ID:</strong>
+            <code>{{ event.alert_id }}</code>
+        </p>
+
+        <p>
+            <strong>Timestamp:</strong>
+            {{ event.timestamp }}
+        </p>
+
+        <p>
+            <strong>Detected Severity:</strong>
+            {{ event.severity }}
+        </p>
+
+        <p>
+            <strong>Source IP:</strong>
+            {{ event.source_ip or 'Unknown' }}
+        </p>
+
+        <p>
+            <strong>Destination IP:</strong>
+            {{ event.destination_ip or 'Unknown' }}
+        </p>
+
+        <p>
+            <strong>Evidence File:</strong>
+            {{ event.file }}
+        </p>
+
+        <p>
+            <strong>Line:</strong>
+            {{ event.line }}
+        </p>
+
+        <h3>Raw Security Event</h3>
+        <pre class="soc-alert-raw">{{ event.raw }}</pre>
+
+        <a href="{{ url_for(
+            'evidence.download_evidence',
+            filename=event.relative_path
+        ) }}">
+            Download Original Evidence
+        </a>
+
+    </section>
+
+    <section class="soc-panel siem-panel">
+
+        <h2>Analyst Triage Decision</h2>
+
+        <form method="post" class="soc-operations-form">
+
+            <input type="hidden"
+                   name="csrf_token"
+                   value="{{ token }}">
+
+            <label>
+                Classification
+                <select name="verdict" required>
+                    <option value="" disabled {% if not saved.get('verdict') %}selected{% endif %}>Choose classification</option>
+                    {% for value in verdicts %}
+                    <option value="{{ value }}"
+                        {% if saved.get('verdict') == value %}
+                        selected{% endif %}>
+                        {{ value }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </label>
+
+            <label>
+                Priority
+                <select name="priority" required>
+                    <option value="" disabled {% if not saved.get('priority') %}selected{% endif %}>Choose priority</option>
+                    {% for value in priorities %}
+                    <option value="{{ value }}"
+                        {% if saved.get('priority') == value %}
+                        selected{% endif %}>
+                        {{ value }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </label>
+
+            <label>
+                Investigation Status
+                <select name="status" required>
+                    {% for value in statuses %}
+                    <option value="{{ value }}"
+                        {% if saved.get('status') == value %}
+                        selected{% endif %}>
+                        {{ value }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </label>
+
+            <label>
+                Recommended Action
+                <select name="response_action" required>
+                    <option value="" disabled {% if not saved.get('response_action') %}selected{% endif %}>Choose response</option>
+                    {% for value in actions %}
+                    <option value="{{ value }}"
+                        {% if saved.get('response_action') == value %}
+                        selected{% endif %}>
+                        {{ value }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </label>
+
+            <label class="soc-wide-field">
+                Investigation Findings
+                <textarea name="findings"
+                          rows="7"
+                          minlength="20"
+                          maxlength="3000"
+                          required
+                          placeholder="Explain the evidence and justify your classification.">{{ saved.get('findings', '') }}</textarea>
+            </label>
+
+            <div class="soc-wide-field">
+                <button type="submit"
+                        class="soc-action-button">
+                    Save Alert Triage
+                </button>
+            </div>
+
+        </form>
+
+    </section>
+
+    <a href="{{ url_for(
+        'alert_triage.alert_queue',
+        case=case_id
+    ) }}">
+        ← Return to Alert Queue
+    </a>
+
+</div>
+{% endblock %}

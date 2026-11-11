@@ -126,23 +126,45 @@ Operation Black Falcon | Complete
         <div class="completion-actions">
 
             <a
-                href="{{ url_for('soc_features.executive_report') }}"
+                href="{{ url_for(
+                    'soc_features.executive_report'
+                ) }}"
                 class="level-button secondary"
             >
-                VIEW FINAL REPORT
-                <span aria-hidden="true">&rarr;</span>
+
+                {% if report_submitted %}
+                    VIEW FINAL REPORT
+                {% else %}
+                    REVIEW &amp; SUBMIT FINAL REPORT
+                {% endif %}
+
+                <span aria-hidden="true">
+                    &rarr;
+                </span>
+
             </a>
 
-            <a
-                href="{{ url_for('soc_features.certificate') }}"
-                class="level-button secondary"
-            >
-                VIEW FINAL CERTIFICATE
-                <span aria-hidden="true">&rarr;</span>
-            </a>
+            {% if report_submitted %}
+
+                <a
+                    href="{{ url_for(
+                        'soc_features.certificate'
+                    ) }}"
+                    class="level-button secondary"
+                >
+                    VIEW FINAL CERTIFICATE
+
+                    <span aria-hidden="true">
+                        &rarr;
+                    </span>
+                </a>
+
+            {% endif %}
 
             <a
-                href="{{ url_for('dashboard.levels') }}"
+                href="{{ url_for(
+                    'dashboard.levels'
+                ) }}"
                 class="level-button"
             >
 
@@ -155,6 +177,20 @@ Operation Black Falcon | Complete
             </a>
 
         </div>
+
+        {% if not report_submitted %}
+
+            <div class="final-operation-message">
+
+                <p>
+                    Review and submit the final Executive
+                    Incident Report to unlock the overall
+                    Operation Black Falcon certificate.
+                </p>
+
+            </div>
+
+        {% endif %}
 
     </section>
 

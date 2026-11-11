@@ -27,10 +27,11 @@ Investigation Notes | {{ case_id }}
         <a
             class="secondary-button"
             href="{{ url_for(
-                'soc_features.dashboard'
+                'investigations.investigation_detail',
+                investigation_id=case_id
             ) }}"
         >
-            Return to Dashboard
+            Return to Investigation
         </a>
 
     </section>

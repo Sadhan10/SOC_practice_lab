@@ -22,14 +22,14 @@
                 <h1>Flag Submission Console</h1>
 
                 <p>
-                    Recover flags from validated investigation
-                    findings and submit them here.
+                    Construct the CTF flag from your validated
+                    investigation findings and submit it here.
                 </p>
             </div>
 
             <div class="analyst-box">
                 <span>Flag Format</span>
-                <strong>32-character token</strong>
+                <strong>FLAG{...}</strong>
                 <small>Evidence-derived values only</small>
             </div>
 
@@ -77,6 +77,17 @@
                         required
                     >
 
+                        <option
+                            value=""
+                            disabled
+                            {% if not selected_case_id %}
+                                selected
+                            {% endif %}
+                        >
+                            Select a validated investigation
+                        </option>
+
+
                         {% for investigation in investigations %}
 
                             {% set item_progress =
@@ -86,16 +97,39 @@
                                 )
                             %}
 
-                            <option value="{{ investigation.id }}">
+                            {% set ready =
+                                item_progress.get(
+                                    'findings_validated'
+                                )
+                            %}
+
+                            {% set completed =
+                                item_progress.get(
+                                    'completed'
+                                )
+                            %}
+
+                            <option
+                                value="{{ investigation.id }}"
+
+                                {% if investigation.id
+                                      == selected_case_id %}
+                                    selected
+                                {% endif %}
+
+                                {% if not ready %}
+                                    disabled
+                                {% endif %}
+                            >
 
                                 {{ investigation.id }}
                                 -
                                 {{ investigation.title }}
 
-                                {% if item_progress.get('completed') %}
+                                {% if completed %}
                                     (Completed)
 
-                                {% elif item_progress.get('findings_validated') %}
+                                {% elif ready %}
                                     (Ready for submission)
 
                                 {% else %}
@@ -108,13 +142,14 @@
 
                     </select>
 
-                    <label>Case Token</label>
+                    <label>Investigation Flag</label>
 
                     <input
                         type="text"
                         name="flag"
-                        placeholder="Enter the 32-character case token"
+                        placeholder="Enter flag in FLAG{...} format"
                         autocomplete="off"
+                        spellcheck="false"
                         required
                     >
 
@@ -136,8 +171,8 @@
                     </li>
 
                     <li>
-                        Recover the case token from the validated
-                        investigation.
+                        Construct the flag using the rule displayed
+                        after your findings are validated.
                     </li>
 
                     <li>

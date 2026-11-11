@@ -88,34 +88,33 @@
   "questions": [
     {
       "field": "attacker_ip",
-      "label": "Initial Attacker IP",
+      "label": "Identify the initial attacker IP",
       "placeholder": "Source IPv4 address"
     },
     {
       "field": "initial_access",
-      "label": "Initial Access Method",
+      "label": "Identify the initial access technique",
       "placeholder": "How did the attacker gain access?"
     },
     {
       "field": "web_compromise",
-      "label": "Banking Application Compromise Technique",
+      "label": "Identify the web compromise technique",
       "placeholder": "Web attack technique"
     },
     {
       "field": "persistence",
-      "label": "Persistence Mechanism",
+      "label": "Identify the persistence mechanism",
       "placeholder": "How was persistence established?"
     },
     {
       "field": "c2_infrastructure",
-      "label": "Command-and-Control Infrastructure",
+      "label": "Identify the C2 infrastructure",
       "placeholder": "C2 domain"
     },
     {
       "field": "exfiltration",
-      "label": "Final Exfiltration Activity",
+      "label": "Identify the final exfiltration activity",
       "placeholder": "How was data exfiltrated?"
     }
-  ],
-  "level": "beginner"
+  ]
 }

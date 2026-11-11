@@ -1,0 +1,354 @@
+/* OPERATION BLACK FALCON — SIEM WORKSPACE */
+.soc-lab-links { display: flex; flex-wrap: wrap; gap: 14px; }
+.soc-lab-activities li { margin-bottom: 14px; }
+
+.siem-panel {
+    padding: 22px;
+    margin-bottom: 18px;
+}
+
+.siem-search-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: end;
+}
+
+.siem-search-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 180px;
+    flex: 1;
+    color: var(--soc-text, #e6f2f7);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.siem-search-form input,
+.siem-search-form select {
+    background: #071018;
+    color: #e6f2f7;
+    border: 1px solid #345061;
+    border-radius: 7px;
+    padding: 11px;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 13px;
+}
+
+.siem-search-form input:focus,
+.siem-search-form select:focus {
+    outline: 2px solid #43d9b0;
+    outline-offset: 1px;
+}
+
+.siem-search-form button {
+    background: #43d9b0;
+    color: #071018;
+    border: 0;
+    border-radius: 7px;
+    padding: 12px 20px;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.siem-search-form button:hover { background: #6ff0cf; }
+.siem-disclaimer {
+    margin-top: 12px;
+    color: var(--soc-muted, #8da4b2);
+    font-size: 12px;
+}
+.siem-table-wrap { overflow-x: auto; margin-top: 18px; }
+.siem-table { border-collapse: collapse; width: 100%; font-size: 13px; }
+.siem-table th,
+.siem-table td {
+    padding: 12px;
+    border-bottom: 1px solid #203847;
+    text-align: left;
+    vertical-align: top;
+}
+.siem-table th { color: #8da4b2; font-weight: 700; white-space: nowrap; }
+.siem-table td { color: #d9e8ef; }
+.siem-table tbody tr:hover { background: rgba(67, 217, 176, 0.05); }
+.siem-table strong { font-weight: 600; overflow-wrap: anywhere; }
+.siem-table details { margin-top: 8px; }
+.siem-table summary { color: #43d9b0; cursor: pointer; font-size: 12px; }
+.siem-table pre {
+    max-width: 630px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    color: #b9cbd6;
+    background: #071018;
+    border: 1px solid #203847;
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 12px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+.siem-table a { color: #43d9b0; text-decoration: none; overflow-wrap: anywhere; }
+.siem-table a:hover { text-decoration: underline; }
+
+@media (max-width: 768px) {
+    .siem-search-form { flex-direction: column; align-items: stretch; }
+    .siem-search-form label { width: 100%; min-width: 0; }
+    .siem-search-form button { width: 100%; }
+    .siem-panel { padding: 16px; }
+}
+
+/* Advanced SIEM — Statistics */
+
+.siem-stats {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.siem-stat-card {
+    padding: 20px;
+    background: #101e29;
+    border: 1px solid #284253;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.siem-stat-card span {
+    color: #98afbc;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.siem-stat-card strong {
+    color: #eaf4f8;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+/* Severity indicators */
+
+.siem-severity {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 5px 10px;
+    border-radius: 5px;
+    white-space: nowrap;
+}
+
+.siem-critical {
+    color: #ff9292;
+    background: rgba(255, 70, 70, .15);
+}
+
+.siem-high {
+    color: #ffb16d;
+    background: rgba(255, 144, 55, .14);
+}
+
+.siem-medium {
+    color: #f1d778;
+    background: rgba(255, 205, 60, .12);
+}
+
+.siem-low {
+    color: #8acbf9;
+    background: rgba(70, 165, 245, .12);
+}
+
+.siem-informational,
+.siem-unknown {
+    color: #bacbd5;
+    background: rgba(140, 160, 175, .12);
+}
+
+.siem-warning {
+    color: #f1d778;
+    margin: 12px 0;
+    font-size: 13px;
+}
+
+@media (max-width: 1100px) {
+    .siem-stats {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .siem-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* SOC Triage and Incident Assessment */
+
+.soc-operations-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: center;
+}
+
+.soc-operations-links a { color: #43d9b0; }
+
+.soc-operations-form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 20px;
+}
+
+.soc-report-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.soc-operations-form label,
+.soc-report-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    color: #d9e8ef;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.soc-wide-field {
+    grid-column: 1 / -1;
+}
+
+.soc-operations-form select,
+.soc-operations-form textarea,
+.soc-report-form input,
+.soc-report-form textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    color: #e6f2f7;
+    background: #071018;
+    border: 1px solid #345061;
+    border-radius: 7px;
+    font: inherit;
+}
+
+.soc-operations-form textarea,
+.soc-report-form textarea {
+    resize: vertical;
+    line-height: 1.6;
+}
+
+.soc-operations-form select:focus,
+.soc-operations-form textarea:focus,
+.soc-report-form input:focus,
+.soc-report-form textarea:focus {
+    outline: 2px solid #43d9b0;
+    outline-offset: 1px;
+}
+
+.soc-action-button {
+    background: #43d9b0;
+    color: #071018;
+    border: none;
+    border-radius: 7px;
+    padding: 12px 22px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.soc-action-button:hover {
+    background: #6ff0cf;
+}
+
+@media (max-width: 768px) {
+    .soc-operations-form {
+        grid-template-columns: 1fr;
+    }
+
+    .soc-wide-field {
+        grid-column: auto;
+    }
+}
+.soc-alert-raw {
+    background: #071018;
+    border: 1px solid #284253;
+    border-radius: 8px;
+    color: #c5dce8;
+    padding: 18px;
+    font-size: 12px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    overflow: auto;
+    max-height: 380px;
+}
+
+.soc-panel code {
+    overflow-wrap: anywhere;
+}
+
+
+/* Final SOC Assessment */
+
+.soc-final-question {
+    border: 1px solid #284253;
+    border-radius: 10px;
+    background: #0a1720;
+    padding: 22px;
+    margin-bottom: 22px;
+}
+
+.soc-final-question legend {
+    color: #43d9b0;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 0 10px;
+}
+
+.soc-final-question p {
+    color: #e0edf3;
+    margin-bottom: 18px;
+}
+
+.soc-final-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    color: #d5e6ed;
+    padding: 12px;
+    margin: 7px 0;
+    border: 1px solid #294253;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+.soc-final-option:hover {
+    border-color: #43d9b0;
+    background: rgba(67, 217, 176, 0.05);
+}
+
+.soc-final-option input {
+    margin-top: 3px;
+    accent-color: #43d9b0;
+}
+
+.soc-final-feedback {
+    padding: 16px;
+    border-bottom: 1px solid #284253;
+    margin-bottom: 14px;
+}
+
+.soc-final-feedback h3 {
+    color: #43d9b0;
+    margin-bottom: 14px;
+}
+
+.soc-final-feedback p {
+    color: #d9e8ef;
+    line-height: 1.6;
+}

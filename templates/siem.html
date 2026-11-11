@@ -1,0 +1,302 @@
+{% extends "base.html" %}
+
+{% block title %}
+Advanced SIEM | Operation Black Falcon
+{% endblock %}
+
+{% block content %}
+
+<div class="soc-page">
+
+    <section class="soc-hero compact-hero">
+        <div>
+            <p class="soc-eyebrow">
+                SOC ANALYST WORKSPACE
+            </p>
+            <h1>Advanced SIEM Investigation</h1>
+            <p>
+                Search, filter and correlate security
+                evidence across multiple log sources.
+            </p>
+        </div>
+    </section>
+
+    <!-- SEARCH PANEL -->
+
+    <section class="soc-panel siem-panel">
+
+        <h2>Security Event Search</h2>
+
+        <form method="get"
+              action="{{ url_for('siem.search_events') }}"
+              class="siem-search-form">
+
+            <label>
+                Keyword / IP / Indicator
+                <input type="text"
+                       name="q"
+                       value="{{ query }}"
+                       placeholder="Search events"
+                       maxlength="120">
+            </label>
+
+            <label>
+                Log Source
+                <select name="source">
+                    <option value="">All Sources</option>
+
+                    {% for item in sources %}
+                    <option value="{{ item }}"
+                        {% if source == item %}selected{% endif %}>
+                        {{ item|upper }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </label>
+
+            <label>
+                Challenge ID
+                <input name="case" maxlength="11"
+                       value="{{ case }}"
+                       placeholder="BF-M-001">
+            </label>
+
+            <label>
+                Severity
+                <select name="severity">
+                    <option value="">All Severities</option>
+
+                    {% for item in severities %}
+                    <option value="{{ item }}"
+                        {% if severity == item %}selected{% endif %}>
+                        {{ item }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </label>
+
+            <label>
+                Start Date
+                <input type="date"
+                       name="start_date"
+                       value="{{ start_date }}">
+            </label>
+
+            <label>
+                End Date
+                <input type="date"
+                       name="end_date"
+                       value="{{ end_date }}">
+            </label>
+
+            <button type="submit">
+                Search Events
+            </button>
+
+        </form>
+
+        <p class="siem-disclaimer">
+            Read-only offline SIEM simulation using
+            the included evidence. Date filters exclude
+            records with unrecognized timestamps. Timestamps with offsets are shown in UTC. Timestamps without a timezone preserve the lab clock time; missing years are not inferred.
+        </p>
+
+    </section>
+
+    {% for error in filter_errors %}
+    <p class="siem-warning" role="alert">{{ error }}</p>
+    {% endfor %}
+
+    <!-- EVENT STATISTICS -->
+
+    <section class="siem-stats">
+
+        <div class="siem-stat-card">
+            <span>Matching Events (displayed)</span>
+            <strong>{{ results|length }}</strong>
+        </div>
+
+        <div class="siem-stat-card">
+            <span>Critical Events</span>
+            <strong>
+                {{ severity_counts.get('Critical', 0) }}
+            </strong>
+        </div>
+
+        <div class="siem-stat-card">
+            <span>High Severity</span>
+            <strong>
+                {{ severity_counts.get('High', 0) }}
+            </strong>
+        </div>
+
+        <div class="siem-stat-card">
+            <span>Log Sources</span>
+            <strong>{{ source_counts|length }}</strong>
+        </div>
+
+        <div class="siem-stat-card">
+            <span>Correlated IPs</span>
+            <strong>{{ correlations|length }}</strong>
+        </div>
+
+    </section>
+
+    <!-- EVENT RESULTS -->
+
+    <section class="soc-panel siem-panel">
+
+        <h2>
+            Investigation Events
+            <small>({{ results|length }} displayed, maximum {{ limit }})</small>
+        </h2>
+
+        {% if limited %}
+        <p class="siem-warning">
+            Search or display limit reached.
+            {% if truncated %}Results exceeded the {{ limit }} event limit.
+            {% else %}The evidence scan limit was reached.{% endif %}
+            Refine your search for more focused results.
+            Statistics and correlations reflect only the
+            displayed events.
+        </p>
+        {% endif %}
+
+        <div class="siem-table-wrap" tabindex="0" role="region" aria-label="Investigation results">
+
+            <table class="siem-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Timestamp</th>
+                        <th scope="col">Source</th>
+                        <th scope="col">Severity</th>
+                        <th scope="col">Source IP</th>
+                        <th scope="col">Destination IP</th>
+                        <th scope="col">Case</th>
+                        <th scope="col">Event Details</th>
+                        <th scope="col">Evidence</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for row in results %}
+                    <tr>
+                        <td>{{ row.timestamp_display }}</td>
+
+                        <td>{{ row.source|upper }}</td>
+
+                        <td>
+                            <span class="siem-severity
+                                siem-{{ row.severity|lower }}">
+                                {{ row.severity }}
+                            </span>
+                        </td>
+
+                        <td>
+                            {{ row.source_ip or 'â€”' }}
+                        </td>
+
+                        <td>
+                            {{ row.destination_ip or 'â€”' }}
+                        </td>
+
+                        <td>{{ row.case }}</td>
+
+                        <td>
+                            <strong>{{ row.summary }}</strong>
+
+                            <details>
+                                <summary>
+                                    View Raw Event
+                                    â€” Line {{ row.line }}
+                                </summary>
+
+                                <pre>{{ row.raw }}</pre>
+                            </details>
+                        </td>
+
+                        <td>
+                            <a href="{{ url_for(
+                                'evidence.download_evidence',
+                                filename=row.relative_path
+                            ) }}">
+                                {{ row.file }}
+                            </a>
+                        </td>
+                    </tr>
+
+                    {% else %}
+                    <tr>
+                        <td colspan="8">
+                            No matching security events found.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+
+    </section>
+
+    <!-- CORRELATION RESULTS -->
+
+    <section class="soc-panel siem-panel">
+
+        <h2>Cross-Source IP Correlation</h2>
+
+        <p class="siem-disclaimer">
+            Identifies IP addresses appearing in events
+            from two or more security evidence sources.
+            These are investigative leads, not confirmed
+            incidents.
+        </p>
+
+        <div class="siem-table-wrap">
+            <table class="siem-table">
+                <thead>
+                    <tr>
+                        <th scope="col">IP Address</th>
+                        <th scope="col">Evidence Sources</th>
+                        <th scope="col">Related Events</th>
+                        <th scope="col">Investigate</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for item in correlations %}
+                    <tr>
+                        <td>{{ item.ip }}</td>
+                        <td>{{ item.sources }}</td>
+                        <td>{{ item.event_count }}</td>
+                        <td>
+                            <a href="{{ url_for(
+                                'siem.search_events',
+                                q=item.ip,
+                                case=case,
+                                severity=severity,
+                                start_date=start_date,
+                                end_date=end_date
+                            ) }}">
+                                Investigate IP
+                            </a>
+                        </td>
+                    </tr>
+
+                    {% else %}
+                    <tr>
+                        <td colspan="4">
+                            No cross-source IP correlations
+                            found in the displayed events.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}

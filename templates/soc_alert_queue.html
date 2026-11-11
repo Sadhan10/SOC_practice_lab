@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block title %}
+Alert Queue | Operation Black Falcon
+{% endblock %}
+
+{% block content %}
+
+<div class="soc-page">
+
+    <section class="soc-hero compact-hero">
+        <div>
+            <p class="soc-eyebrow">SOC OPERATIONS</p>
+            <h1>Security Alert Queue</h1>
+            <p>
+                Investigate individual Wazuh and Suricata
+                events, prioritise alerts and record
+                analyst decisions.
+            </p>
+        </div>
+    </section>
+
+    <p class="siem-disclaimer">Event IDs identify evidence entries; they do not establish malicious activity or validate an analyst's classification. Wazuh alerts include their complete multiline evidence and original starting line.</p>
+
+    <section class="soc-panel siem-panel">
+
+        <h2>Alert Filters</h2>
+
+        <form method="get"
+              action="{{ url_for('alert_triage.alert_queue') }}"
+              class="siem-search-form">
+
+            <label>
+                Investigation
+                <select name="case">
+                    {% for case in cases %}
+                    <option value="{{ case }}"
+                        {% if case == case_id %}selected{% endif %}>
+                        {{ case }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </label>
+
+            <label>
+                Log Source
+                <select name="source">
+                    <option value="">All Alert Sources</option>
+                    <option value="wazuh"
+                        {% if source == 'wazuh' %}selected{% endif %}>
+                        Wazuh
+                    </option>
+                    <option value="suricata"
+                        {% if source == 'suricata' %}selected{% endif %}>
+                        Suricata
+                    </option>
+                </select>
+            </label>
+
+            <button type="submit">Load Alerts</button>
+        </form>
+
+    </section>
+
+    <section class="soc-panel siem-panel">
+
+        <h2>Security Events</h2>
+
+        {% if limited %}
+        <p class="siem-warning" role="status">The display or evidence scan limit was reached. Additional entries may exist. Filter by source to narrow the results.</p>
+        {% endif %}
+
+        <p class="siem-disclaimer">
+            Showing up to {{ limit }} evidence entries.
+            Select an event to investigate it individually.
+        </p>
+
+        <div class="siem-table-wrap">
+            <table class="siem-table">
+                <thead>
+                    <tr>
+                        <th>Event ID</th>
+                        <th>Source</th>
+                        <th>Timestamp</th>
+                        <th>Detected Severity</th>
+                        <th>Source IP</th>
+                        <th>Event</th>
+                        <th>Triage Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for event in events %}
+                    {% set item = saved.get(event.alert_id, {}) %}
+                    <tr>
+                        <td>
+                            <code>{{ event.alert_id[:12] }}</code>
+                        </td>
+
+                        <td>{{ event.source|upper }}</td>
+                        <td>{{ event.timestamp }}</td>
+                        <td>{{ event.severity }}</td>
+                        <td>{{ event.source_ip or '—' }}</td>
+                        <td>{{ event.summary }}</td>
+
+                        <td>
+                            {{ item.get('status', 'Not reviewed') }}
+                        </td>
+
+                        <td>
+                            <a href="{{ url_for(
+                                'alert_triage.alert_detail',
+                                case_id=case_id,
+                                alert_id=event.alert_id
+                            ) }}">
+                                Investigate
+                            </a>
+                        </td>
+                    </tr>
+
+                    {% else %}
+                    <tr>
+                        <td colspan="8">
+                            No matching events found for this
+                            investigation and source.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</div>
+{% endblock %}

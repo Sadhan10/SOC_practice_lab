@@ -1,3 +1,6 @@
+import hashlib
+import hmac
+
 from flask import (
     Blueprint,
     flash,
@@ -12,10 +15,56 @@ from flask import (
 bank_bp = Blueprint("bank", __name__)
 
 
+BANK_ADMIN_DISCOVERY_KEY = (
+    "bank_admin_discovered"
+)
+
+OBSERVED_SQLI_PAYLOAD = (
+    "' OR 1=1 --"
+)
+
+
+BANK_PASSWORD_ITERATIONS = 310_000
 BANK_USERS = {
-    "admin": "falconadmin",
-    "customer": "bank123",
+    "admin": {
+        "salt": "black-falcon-bank-admin-v1",
+        "password_hash": (
+            "228127b9df6e0c174ea6c87b957ebcee"
+            "3fb29e7ccdafc130b31d3dab331db6b2"
+        ),
+    },
+    "customer": {
+        "salt": "black-falcon-bank-customer-v1",
+        "password_hash": (
+            "3f61678208e2c932ca1513fe81448d0e"
+            "f776ca0fce6b1a089a379b83a813cae9"
+        ),
+    },
 }
+
+
+def verify_bank_password(
+    username,
+    submitted_password,
+):
+    """
+    Verify a simulated banking credential without storing
+    the plaintext password in the application source.
+    """
+    account = BANK_USERS.get(username)
+    if not account:
+        return False
+
+    calculated_hash = hashlib.pbkdf2_hmac(
+        "sha256",
+        submitted_password.encode("utf-8"),
+        account["salt"].encode("utf-8"),
+        BANK_PASSWORD_ITERATIONS,
+    ).hex()
+    return hmac.compare_digest(
+        calculated_hash,
+        account["password_hash"],
+    )
 
 
 TRANSACTIONS = [
@@ -75,38 +124,38 @@ def require_bank_login():
     return session.get("bank_authenticated") is True
 
 
+def require_admin_discovery():
+    """
+    Return True after the analyst has reproduced the
+    transaction-search anomaly that exposes the hidden
+    administration path.
+    """
+
+    return (
+        session.get(
+            BANK_ADMIN_DISCOVERY_KEY
+        )
+        is True
+    )
+
+
 def looks_like_sql_injection(value):
     """
-    Detect common SQL injection patterns used in the
-    simulated Black Falcon Bank training challenge.
+    Reproduce the SQL injection payload observed in the
+    Black Falcon Bank incident evidence.
 
-    No SQL is executed here. The function only recognizes
-    training payloads and reproduces the behavior of an
-    intentionally vulnerable transaction search.
+    This training application does not execute SQL.
+    It only simulates the behaviour recorded in the
+    investigation evidence.
     """
+
     normalized = " ".join(
-        value.strip().lower().split()
+        value.strip().split()
     )
 
-    suspicious_patterns = (
-        "' or 1=1",
-        "\" or 1=1",
-        "' or '1'='1",
-        "\" or \"1\"=\"1",
-        "' or 'a'='a",
-        "\" or \"a\"=\"a",
-        "union select",
-        "' union select",
-        "\" union select",
-        "'--",
-        "\"--",
-        "' #",
-        "\" #",
-    )
-
-    return any(
-        pattern in normalized
-        for pattern in suspicious_patterns
+    return (
+        normalized.casefold()
+        == OBSERVED_SQLI_PAYLOAD.casefold()
     )
 
 
@@ -124,6 +173,19 @@ def redirect_to_bank_login():
     return redirect(url_for("bank.bank_login"))
 
 
+def redirect_to_bank_search():
+    flash(
+        "The restricted banking resource has not yet "
+        "been identified. Review the transaction-search "
+        "behaviour first.",
+        "error",
+    )
+
+    return redirect(
+        url_for("bank.bank_search")
+    )
+
+
 @bank_bp.route("/bank")
 def bank():
     if not require_login():
@@ -133,6 +195,7 @@ def bank():
         "bank.html",
         bank_authenticated=require_bank_login(),
         bank_username=session.get("bank_username"),
+        admin_discovered=require_admin_discovery(),
     )
 
 
@@ -145,7 +208,7 @@ def bank_login():
         return redirect_to_soc_login()
 
     if require_bank_login():
-        return redirect(url_for("bank.bank_admin"))
+        return redirect(url_for("bank.bank"))
 
     if request.method == "POST":
         username = request.form.get(
@@ -158,21 +221,21 @@ def bank_login():
             "",
         ).strip()
 
-        expected_password = BANK_USERS.get(username)
-
-        if (
-            expected_password is not None
-            and password == expected_password
+        if verify_bank_password(
+            username,
+            password,
         ):
             session["bank_authenticated"] = True
             session["bank_username"] = username
 
             flash(
-                "Banking authentication successful.",
+                "Banking authentication successful. "
+                "Continue reviewing the banking application "
+                "to reconstruct the intrusion.",
                 "success",
             )
 
-            return redirect(url_for("bank.bank_admin"))
+            return redirect(url_for("bank.bank"))
 
         session.pop("bank_authenticated", None)
         session.pop("bank_username", None)
@@ -231,6 +294,7 @@ def bank_search():
 
         elif looks_like_sql_injection(query):
             injection_detected = True
+            session[BANK_ADMIN_DISCOVERY_KEY] = True
 
             # Simulate the information disclosure caused by
             # an injectable transaction-search query.
@@ -321,6 +385,9 @@ def bank_admin():
     if not require_bank_login():
         return redirect_to_bank_login()
 
+    if not require_admin_discovery():
+        return redirect_to_bank_search()
+
     return render_template(
         "bank_admin.html",
         bank_username=session.get("bank_username"),
@@ -335,6 +402,9 @@ def bank_backup():
     if not require_bank_login():
         return redirect_to_bank_login()
 
+    if not require_admin_discovery():
+        return redirect_to_bank_search()
+
     return render_template("bank_backup.html")
 
 
@@ -346,6 +416,9 @@ def bank_uploads():
     if not require_bank_login():
         return redirect_to_bank_login()
 
+    if not require_admin_discovery():
+        return redirect_to_bank_search()
+
     return render_template("bank_uploads.html")
 
 
@@ -356,5 +429,8 @@ def bank_shell():
 
     if not require_bank_login():
         return redirect_to_bank_login()
+
+    if not require_admin_discovery():
+        return redirect_to_bank_search()
 
     return render_template("bank_shell.html")

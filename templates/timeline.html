@@ -1,117 +1,139 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
+{% block title %}
+Attack Timeline | Operation Black Falcon
+{% endblock %}
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
 
-    <title>
-        Attack Timeline | Operation Black Falcon
-    </title>
+{% block content %}
 
-    <link
-        rel="stylesheet"
-        href="{{ url_for(
-            'static',
-            filename='css/style.css'
-        ) }}"
-    >
+<div class="soc-page">
 
-    <link
-        rel="stylesheet"
-        href="{{ url_for(
-            'static',
-            filename='css/soc_features.css'
-        ) }}"
-    >
-</head>
+    <section class="soc-hero compact-hero">
 
-<body class="timeline-page">
+        <div>
 
-<div class="soc-shell">
-    {% include "_sidebar.html" %}
+            <p class="soc-eyebrow">
+                INCIDENT RECONSTRUCTION
+            </p>
 
-    <main class="soc-main">
+            <h1>
+                Attack Timeline
+            </h1>
 
-        <header class="soc-topbar">
+            <p>
+                Reconstruct the Black Falcon intrusion as
+                investigation stages are confirmed.
+            </p>
 
-            <div>
-                <h1>Attack Timeline</h1>
+        </div>
 
-                <p>
-                    Five-stage chronological reconstruction of
-                    the Black Falcon incident
-                </p>
-            </div>
+        <div class="analyst-box">
 
-            <div class="analyst-box">
-                <span>Attack Chain</span>
+            <span>
+                Attack Chain
+            </span>
 
-                <strong>
-                    {{ timeline_events|length }}
-                    Investigations
-                </strong>
+            <strong>
+                {{ timeline_events|length }}
+                Stages
+            </strong>
 
-                <small>
-                    One timeline stage per case
-                </small>
-            </div>
+            <small>
+                Beginner incident reconstruction
+            </small>
 
-        </header>
+        </div>
 
-        <section class="timeline-introduction">
+    </section>
 
-            <div>
-                <span class="timeline-introduction-label">
-                    INCIDENT OVERVIEW
-                </span>
 
-                <h2>
-                    Operation Black Falcon Attack Chain
-                </h2>
+    <section class="timeline-introduction">
 
-                <p>
-                    Each timeline stage corresponds directly to
-                    one investigation. Open the related case to
-                    examine its evidence and confirm the findings.
-                </p>
-            </div>
+        <div>
 
-        </section>
+            <span class="timeline-introduction-label">
+                INCIDENT OVERVIEW
+            </span>
 
-        <section class="attack-timeline">
+            <h2>
+                Operation Black Falcon Attack Chain
+            </h2>
 
-            {% for event in timeline_events %}
+            <p>
+                Timeline details are revealed only after the
+                corresponding investigation has been completed.
+            </p>
 
-                <article class="timeline-block">
+        </div>
 
-                    <div class="timeline-marker">
+    </section>
+
+
+    <section class="attack-timeline">
+
+        {% for event in timeline_events %}
+
+            <article
+                class="
+                    timeline-block
+                    {% if not event.unlocked %}
+                        timeline-locked
+                    {% endif %}
+                "
+            >
+
+                <div class="timeline-marker">
+
+                    {% if event.unlocked %}
+                        &#10003;
+                    {% else %}
                         {{ event.sequence }}
-                    </div>
+                    {% endif %}
 
-                    <div class="timeline-event-content">
+                </div>
 
-                        <div class="timeline-event-header">
 
-                            <div>
-                                <span class="timeline-case-id">
-                                    {{ event.case }}
-                                </span>
+                <div class="timeline-event-content">
 
-                                <span class="timeline-time">
+                    <div class="timeline-event-header">
+
+                        <div>
+
+                            <span class="timeline-case-id">
+                                {{ event.case }}
+                            </span>
+
+
+                            <span class="timeline-time">
+
+                                {% if event.unlocked %}
                                     {{ event.time }}
-                                </span>
-                            </div>
+                                {% else %}
+                                    --:--
+                                {% endif %}
 
-                            <span class="timeline-investigation-label">
-                                {{ event.status }}
                             </span>
 
                         </div>
+
+
+                        <span
+                            class="timeline-investigation-label"
+                        >
+
+                            {% if event.unlocked %}
+                                Confirmed
+                            {% else %}
+                                Pending
+                            {% endif %}
+
+                        </span>
+
+                    </div>
+
+
+                    {% if event.unlocked %}
 
                         <h3>
                             {{ event.title }}
@@ -120,6 +142,7 @@
                         <p>
                             {{ event.description }}
                         </p>
+
 
                         <div class="timeline-event-footer">
 
@@ -137,6 +160,43 @@
                                     investigation_id=event.case
                                 ) }}"
                             >
+                                Review Investigation
+                                <span aria-hidden="true">
+                                    &rarr;
+                                </span>
+                            </a>
+
+                        </div>
+
+                    {% else %}
+
+                        <h3>
+                            Investigation Pending
+                        </h3>
+
+                        <p>
+                            Complete this investigation to reveal
+                            the confirmed incident stage, time and
+                            MITRE ATT&amp;CK mapping.
+                        </p>
+
+
+                        <div class="timeline-event-footer">
+
+                            <span>
+                                MITRE ATT&amp;CK
+                            </span>
+
+                            <strong>
+                                Pending
+                            </strong>
+
+                            <a
+                                href="{{ url_for(
+                                    'investigations.investigation_detail',
+                                    investigation_id=event.case
+                                ) }}"
+                            >
                                 Open Investigation
                                 <span aria-hidden="true">
                                     &rarr;
@@ -145,24 +205,16 @@
 
                         </div>
 
-                    </div>
+                    {% endif %}
 
-                </article>
+                </div>
 
-            {% endfor %}
+            </article>
 
-        </section>
+        {% endfor %}
 
-    </main>
+    </section>
 
 </div>
 
-<script
-    src="{{ url_for(
-        'static',
-        filename='js/app.js'
-    ) }}"
-></script>
-
-</body>
-</html>
+{% endblock %}

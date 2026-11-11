@@ -16,6 +16,9 @@ from models import (
     get_overall_progress,
     get_progress,
 )
+from soc_features import (
+    get_report_status,
+)
 
 
 dashboard_bp = Blueprint(
@@ -82,6 +85,9 @@ def operation_complete():
     return render_template(
         "operation_complete.html",
         progress=progress,
+        report_submitted=(
+            get_report_status()
+        ),
     )
 
 

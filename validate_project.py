@@ -26,10 +26,13 @@ EVIDENCE_DIR = os.path.join(
 SOURCE_SOLUTION_FILE = os.path.join(
     BASE_DIR,
     "private",
-    "solutions.json"
+    "solutions.json",
 )
 
-SOLUTION_FILE = SOURCE_SOLUTION_FILE
+SOLUTION_FILE = os.environ.get(
+    "BLACK_FALCON_SOLUTION_STORE",
+    SOURCE_SOLUTION_FILE,
+)
 
 
 try:

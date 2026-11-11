@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+
+{% block title %}
+Final SOC Challenge | Black Falcon
+{% endblock %}
+
+{% block content %}
+
+<div class="soc-page">
+
+    <section class="soc-hero compact-hero">
+        <div>
+            <p class="soc-eyebrow">
+                FINAL SOC ASSESSMENT
+            </p>
+
+            <h1>End-to-End SOC Investigation</h1>
+
+            <p>
+                Investigate the complete security incident,
+                correlate evidence and submit your findings.
+            </p>
+        </div>
+    </section>
+
+    <section class="soc-panel siem-panel">
+
+        <h2>Assessment Instructions</h2>
+        <p><strong>Mode:</strong> {{ 'Practice' if show_answers else 'Assessment' }}.
+            {{ 'Expected answers and evidence are shown after submission.' if show_answers
+               else 'Results show your answers, marks and correctness without revealing the answer key.' }}</p>
+
+        <p>
+            <strong>Investigation:</strong>
+            {{ case_id }}
+        </p>
+
+        <p>
+            <strong>Total Questions:</strong>
+            {{ questions|length }}
+        </p>
+
+        <p>
+            <strong>Total Marks:</strong> 100
+        </p>
+
+        <p>
+            <strong>Passing Score:</strong> {{ pass_percentage }}%
+        </p>
+
+        <p>
+            Examine the investigation's network logs,
+            endpoint alerts, application activity and
+            incident evidence before answering.
+        </p>
+
+
+        <p>
+            <strong>Assessment Components:</strong>
+            Security event investigation, attack timeline
+            reconstruction and incident response decisions.
+        </p>
+        <p>
+            <strong>Evidence Sources:</strong>
+            Wazuh, Suricata, Zeek, authentication records
+            and endpoint logs.
+        </p>
+        <p>
+            <strong>Assessment Method:</strong>
+            Seven automatically graded questions. Total score: 100 marks.
+            Questions 1-5 are worth 16 marks each; questions 6-7 are worth 10 marks each.
+        </p>
+        {% include "_bf_h_005_chronology_advisory.html" %}
+
+        <div class="soc-lab-links">
+            <a href="{{ url_for('evidence.evidence') }}">Open Evidence Locker</a>
+            <a href="{{ url_for(
+                'siem.search_events',
+                case=case_id
+            ) }}">
+                Open SIEM Investigation
+            </a>
+
+            <a href="{{ url_for(
+                'alert_triage.alert_queue',
+                case=case_id
+            ) }}">
+                Review Security Alerts
+            </a>
+        </div>
+
+    </section>
+
+    {% if latest %}
+    <section class="soc-panel siem-panel">
+        <h2>Previous Attempt</h2>
+
+        <p>
+            Score: <strong>{{ latest.score }}/100</strong>
+        </p>
+
+        <p>
+            Result:
+            <strong>
+                {{ 'Passed' if latest.passed else 'Not Passed' }}
+            </strong>
+        </p>
+
+        <a href="{{ url_for(
+            'final_soc.result',
+            result_id=latest.id
+        ) }}">
+            View Previous Result
+        </a>
+    </section>
+    {% endif %}
+
+    {% if attempts %}
+    <section class="soc-panel siem-panel">
+        <h2>Attempt History</h2>
+        <div class="siem-table-wrap">
+            <table class="siem-table">
+                <thead><tr><th>Attempt</th><th>Submitted (UTC)</th><th>Score</th><th>Result</th></tr></thead>
+                <tbody>
+                    {% for attempt in attempts %}
+                    <tr>
+                        <td><a href="{{ url_for('final_soc.result', result_id=attempt.id) }}">{{ attempt.id }}</a></td>
+                        <td>{{ attempt.submitted_at }}</td>
+                        <td>{{ attempt.score }}/100</td>
+                        <td>{{ 'Passed' if attempt.passed else 'Not Passed' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <a href="{{ url_for('final_soc.export_results') }}">Export My Assessment Results (CSV)</a>
+    </section>
+    {% endif %}
+
+    {% for error in errors %}
+    <p class="siem-warning" role="alert">{{ error }}</p>
+    {% endfor %}
+
+    <section class="soc-panel siem-panel">
+
+        <h2>Final Investigation Questions</h2>
+
+        <form method="post"
+              action="{{ url_for('final_soc.submit') }}">
+
+            <input type="hidden"
+                   name="csrf_token"
+                   value="{{ csrf_token }}">
+
+            {% for question in questions %}
+            <fieldset class="soc-final-question">
+
+                <legend>
+                    Question {{ loop.index }} —
+                    {{ question.title }}
+                </legend>
+
+                <p>{{ question.prompt }}</p>
+                <p><strong>Marks available:</strong> {{ question.weight }}</p>
+
+                {% for value, label in question.options %}
+                <label class="soc-final-option">
+
+                    <input
+                        type="radio"
+                        name="{{ question.id }}"
+                        value="{{ value }}"
+                        {% if answers.get(question.id) == value %}checked{% endif %}
+                        required
+                    >
+
+                    <span>{{ label }}</span>
+
+                </label>
+                {% endfor %}
+
+            </fieldset>
+            {% endfor %}
+
+            <button
+                class="soc-action-button"
+                type="submit">
+                Submit Final Assessment
+            </button>
+
+        </form>
+
+    </section>
+
+    <p class="siem-disclaimer">Retakes are allowed and previous attempts retain their original scores and marks distribution. This assessment grades selected observations, chronological reconstruction and response decisions, rather than a full written incident report. It does not unlock the original hard-level certificate or change CTF progress. CSV import requirements depend on your LMS.</p>
+</div>
+
+{% endblock %}

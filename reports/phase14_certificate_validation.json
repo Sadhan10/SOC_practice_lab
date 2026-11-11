@@ -1,0 +1,37 @@
+{
+  "date": "2026-11-07",
+  "python": "3.12.4",
+  "certificate_page": "/soc/final/certificate",
+  "regression_tests": 159,
+  "certificate_tests": 22,
+  "project_validation": {
+    "configured_cases": 15,
+    "errors": 0,
+    "warnings": 0
+  },
+  "structural_audit": {
+    "checks": 65,
+    "errors": 0,
+    "warnings": ["Existing BF-H-005 Zeek/Suricata timestamp disagreement"]
+  },
+  "browser": {
+    "engine": "Chrome",
+    "real_libreoffice_conversion": true,
+    "verified_assessment_submission": true,
+    "name_preview_and_confirmed_issuance": true,
+    "pdf_pages": 1,
+    "pdf_orientation": "landscape",
+    "repeat_download_identical_after_relogin": true,
+    "cross_account_download_denied": true,
+    "pdf_sha256": "3da6898ad49f082b23dd8aa801ebeca2c447f1d6e47a9b96eb0950c335876282"
+  },
+  "visual_review": {
+    "fields_logo_signature_and_director_visible": true,
+    "certificate_id_signature_overlap_corrected": true,
+    "artifact": "dist/certificate-validation/browser-certificate.pdf"
+  },
+  "deployment_limits": [
+    "Ubuntu and OVA rendering still require validation with deployment fonts",
+    "Individual learner accounts and issuing authority approval are required before distribution"
+  ]
+}

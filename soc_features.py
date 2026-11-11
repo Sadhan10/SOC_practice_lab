@@ -140,23 +140,23 @@ INCIDENT_TIMELINE = [
     {
         "sequence": 4,
         "time": "10:09",
-        "title": "Internal Compromise and Exfiltration",
+        "title": "Persistence and Command & Control",
         "case_id": "BF-2026-004",
-        "technique": "T1053.003 / T1071.001 / T1041",
+        "technique": "T1053.003 / T1071.001",
         "description": (
-            "Persistence, command-and-control activity and data "
-            "exfiltration are identified on the compromised host."
+            "Persistence and command-and-control activity "
+            "are identified on the compromised host."
         ),
     },
     {
         "sequence": 5,
-        "time": "12:15",
-        "title": "Executive Incident Reconstruction",
+        "time": "10:15",
+        "title": "Data Exfiltration",
         "case_id": "BF-2026-005",
-        "technique": "Incident Response",
+        "technique": "T1041",
         "description": (
-            "The complete attack chain is reconstructed and "
-            "documented in the final executive report."
+            "The final reconstruction confirms data "
+            "exfiltration from the affected environment."
         ),
     },
 ]
@@ -471,6 +471,12 @@ IOC_SEED_DATA = [
 
 
 def feature_database_path() -> str:
+    configured = current_app.config.get("SOC_FEATURE_DATABASE_PATH")
+    if configured:
+        destination = Path(configured)
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        return str(destination)
+
     instance_path = Path(
         current_app.instance_path
     )
@@ -893,6 +899,32 @@ def get_report_status() -> bool:
     return bool(
         row["submitted"]
     )
+
+
+def format_display_timestamp(value):
+    if not value:
+        return None
+    try:
+        timestamp = datetime.fromisoformat(str(value))
+        return timestamp.strftime("%d %B %Y, %I:%M %p")
+    except ValueError:
+        return str(value)
+
+
+def get_completion_date_for_cases(username, case_ids):
+    """Return the date on which the final supplied case was completed."""
+    progress = get_progress(username)
+    completion_times = []
+    for case_id in case_ids:
+        completed_at = progress.get(case_id, {}).get("completed_at")
+        if completed_at:
+            try:
+                completion_times.append(datetime.fromisoformat(str(completed_at)))
+            except ValueError:
+                continue
+    if not completion_times:
+        return None
+    return max(completion_times).strftime("%d %B %Y")
 
 
 def build_dashboard_context() -> dict[str, Any]:
@@ -1901,6 +1933,14 @@ def ioc_notebook():
 
     error = None
 
+    selected_case_id = request.args.get(
+        "case_id",
+        "",
+    ).strip().upper()
+
+    if selected_case_id not in CASE_IDS:
+        selected_case_id = ""
+
     if request.method == "POST":
         ioc_type = request.form.get(
             "ioc_type",
@@ -2012,6 +2052,7 @@ def ioc_notebook():
             for row in rows
         ],
         case_options=case_options,
+        selected_case_id=selected_case_id,
         error=error,
     )
 
@@ -2257,15 +2298,17 @@ def executive_report():
             """
         ).fetchone()
 
+        report_submitted_at_display = format_display_timestamp(
+            report_row["submitted_at"]
+        )
+
     context = build_dashboard_context()
     context.update(
         {
             "report_submitted": bool(
                 report_row["submitted"]
             ),
-            "report_submitted_at": report_row[
-                "submitted_at"
-            ],
+            "report_submitted_at": report_submitted_at_display,
             "can_submit": set(CASE_IDS).issubset(
                 completed
             ),
@@ -2316,6 +2359,15 @@ def certificate(level_name):
                 ),
             )
 
+        if not get_report_status():
+            abort(
+                403,
+                (
+                    "Submit the final executive report "
+                    "to unlock the final certificate."
+                ),
+            )
+
         return render_template(
             "certificate.html",
             analyst=get_analyst_profile(),
@@ -2332,8 +2384,11 @@ def certificate(level_name):
             hard_progress=overall["levels"][
                 "hard"
             ],
-            completion_date=datetime.now().strftime(
-                "%d %B %Y"
+            completion_date=(
+                get_completion_date_for_cases(
+                    username,
+                    get_all_cases(),
+                )
             ),
         )
 
@@ -2366,8 +2421,13 @@ def certificate(level_name):
         completed_count=progress["completed"],
         total_cases=progress["total"],
         score=progress["percentage"],
-        completion_date=datetime.now().strftime(
-            "%d %B %Y"
+        completion_date=(
+            get_completion_date_for_cases(
+                username,
+                get_level_cases(
+                    level_name
+                ),
+            )
         ),
     )
 

@@ -24,6 +24,35 @@ def require_login():
     return session.get("logged_in") is True
 
 
+def format_evidence_size(size_in_bytes):
+    size = float(size_in_bytes)
+    for unit in ("bytes", "KB", "MB", "GB"):
+        if size < 1024 or unit == "GB":
+            if unit == "bytes":
+                return f"{int(size)} {unit}"
+            return f"{size:.2f} {unit}"
+        size /= 1024
+    return f"{size_in_bytes} bytes"
+
+
+def get_evidence_file_metadata(file_name):
+    extension = os.path.splitext(file_name)[1].lower()
+    type_labels = {
+        ".log": "Log file", ".txt": "Text document",
+        ".json": "JSON document", ".xml": "XML document",
+        ".csv": "CSV document", ".tsv": "TSV document",
+        ".html": "HTML source", ".htm": "HTML source",
+        ".pdf": "PDF document", ".png": "PNG image",
+        ".jpg": "JPEG image", ".jpeg": "JPEG image",
+        ".gif": "GIF image", ".webp": "WebP image",
+        ".pcap": "Packet capture", ".pcapng": "Packet capture",
+    }
+    return {
+        "type_label": type_labels.get(extension, "Evidence file"),
+        "badge": extension[1:].upper() or "FILE",
+    }
+
+
 def get_evidence_files():
     evidence_root = current_app.config[
         "EVIDENCE_DIR"
@@ -33,6 +62,8 @@ def get_evidence_files():
         "wazuh": [],
         "suricata": [],
         "zeek": [],
+        "system": [],
+        "web": [],
         "cowrie": [],
         "openvas": [],
         "opencti": [],
@@ -45,10 +76,8 @@ def get_evidence_files():
             category,
         )
 
-        os.makedirs(
-            category_path,
-            exist_ok=True,
-        )
+        if not os.path.isdir(category_path):
+            continue
 
         for file_name in sorted(
             os.listdir(category_path)
@@ -61,11 +90,14 @@ def get_evidence_files():
             if not os.path.isfile(file_path):
                 continue
 
+            size = os.path.getsize(file_path)
             categories[category].append(
                 {
                     "name": file_name,
                     "path": f"{category}/{file_name}",
-                    "size": os.path.getsize(file_path),
+                    "size": size,
+                    "size_label": format_evidence_size(size),
+                    **get_evidence_file_metadata(file_name),
                 }
             )
 
@@ -236,78 +268,91 @@ def timeline():
             url_for("auth.login")
         )
 
+    username = session["username"]
+
+    progress = get_progress(
+        username
+    )
+
+    completed = {
+        case_id
+        for case_id, item in progress.items()
+        if item["completed"]
+    }
+
     timeline_events = [
         {
             "sequence": 1,
-            "time": "08:45 AM",
+            "time": "08:45",
             "case": "BF-2026-001",
             "title": "External Reconnaissance",
             "description": (
-                "Suricata and Zeek detect scanning activity "
-                "against the public Black Falcon Bank server. "
-                "The attacker enumerates exposed services and "
-                "identifies possible entry points."
+                "Suricata and Zeek identify coordinated "
+                "reconnaissance against the public banking "
+                "server."
             ),
             "technique": "TA0043",
-            "status": "Investigation 1",
         },
+
         {
             "sequence": 2,
-            "time": "09:35 AM",
+            "time": "09:35",
             "case": "BF-2026-002",
             "title": "Credential Compromise",
             "description": (
-                "Repeated SSH authentication failures are "
-                "followed by a successful login using the "
-                "administrator account, confirming that the "
-                "attacker obtained valid credentials."
+                "Authentication evidence confirms that "
+                "reconnaissance progressed into account "
+                "compromise."
             ),
             "technique": "T1110",
-            "status": "Investigation 2",
         },
+
         {
             "sequence": 3,
-            "time": "10:02 AM",
+            "time": "10:02",
             "case": "BF-2026-003",
             "title": "Banking Application Compromise",
             "description": (
-                "The attacker exploits the banking application's "
-                "transaction search, accesses the hidden "
-                "administration area and uploads a malicious "
-                "web-shell file."
+                "Web telemetry identifies exploitation of "
+                "the banking application and subsequent "
+                "server-side compromise."
             ),
             "technique": "T1190 / T1505.003",
-            "status": "Investigation 3",
         },
+
         {
             "sequence": 4,
-            "time": "10:09 AM",
+            "time": "10:09",
             "case": "BF-2026-004",
-            "title": "Internal Compromise and Exfiltration",
+            "title": "Persistence and Command & Control",
             "description": (
-                "Host and network evidence reveals persistence, "
-                "malware execution, command-and-control traffic "
-                "and the transfer of data outside the bank "
-                "environment."
+                "Endpoint and network evidence confirms "
+                "persistence and command-and-control "
+                "activity on the compromised host."
             ),
-            "technique": "T1053.003 / T1071.001 / T1041",
-            "status": "Investigation 4",
+            "technique": (
+                "T1053.003 / T1071.001"
+            ),
         },
+
         {
             "sequence": 5,
-            "time": "12:15 PM",
+            "time": "10:15",
             "case": "BF-2026-005",
-            "title": "Executive Incident Reconstruction",
+            "title": "Data Exfiltration",
             "description": (
-                "The lead SOC analyst correlates findings from "
-                "all previous investigations, reconstructs the "
-                "complete attack chain and prepares the final "
-                "executive incident report."
+                "The final reconstruction confirms that "
+                "data left the affected environment through "
+                "attacker-controlled infrastructure."
             ),
-            "technique": "Incident Response",
-            "status": "Investigation 5",
+            "technique": "T1041",
         },
     ]
+
+    for event in timeline_events:
+        event["unlocked"] = (
+            event["case"] in completed
+        )
 
     return render_template(
         "timeline.html",

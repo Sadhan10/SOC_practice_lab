@@ -1,0 +1,32 @@
+{
+  "date": "2026-11-07",
+  "regression_tests": 182,
+  "regression_tests_passed": 182,
+  "template_tests": 4,
+  "release_account_utility": {
+    "created": true,
+    "syntax_checked": true,
+    "executed": false,
+    "development_analyst_password_changed": false,
+    "startup_preserves_rotated_password_test": "passed using a disposable database"
+  },
+  "preview": {
+    "path": "reports/certificate_preview.pdf",
+    "real_libreoffice_conversion": true,
+    "database_or_issuance_records_created": false,
+    "pages": 1,
+    "orientation": "landscape",
+    "page_size_points": [792, 612],
+    "bytes": 121118,
+    "sha256": "315442718fcb4e25607cf346d5a7a8da40f27e4c163bd0166d4b1fba458e7338",
+    "all_five_fields_verified": true,
+    "logo_signature_and_director_designation_visually_verified": true,
+    "template_modified": false
+  },
+  "project_validation": {"cases": 15, "errors": 0, "warnings": 0},
+  "structural_audit": {
+    "checks": 74,
+    "errors": 0,
+    "warnings": ["Existing BF-H-005 Zeek/Suricata timestamp disagreement"]
+  }
+}

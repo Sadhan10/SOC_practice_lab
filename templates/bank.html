@@ -20,8 +20,21 @@
         <a href="{{ url_for('bank.bank') }}">Home</a>
         <a href="{{ url_for('bank.bank_search') }}">Search</a>
         {% if bank_authenticated %}
-            <a href="{{ url_for('bank.bank_admin') }}">Internal Banking</a>
-            <a href="{{ url_for('bank.bank_logout') }}">End Banking Session</a>
+
+            {% if admin_discovered %}
+                <a href="{{ url_for(
+                    'bank.bank_admin'
+                ) }}">
+                    Internal Banking
+                </a>
+            {% endif %}
+
+            <a href="{{ url_for(
+                'bank.bank_logout'
+            ) }}">
+                End Banking Session
+            </a>
+
         {% else %}
             <a href="{{ url_for('bank.bank_login') }}">Internet Banking</a>
         {% endif %}
@@ -37,19 +50,47 @@
             loans and secure customer services.
         </p>
         {% if bank_authenticated %}
-            <a
-                class="investigate-btn"
-                href="{{ url_for('bank.bank_admin') }}"
-            >
-                Open Internal Banking
-            </a>
+
+            {% if admin_discovered %}
+
+                <a
+                    class="investigate-btn"
+                    href="{{ url_for(
+                        'bank.bank_admin'
+                    ) }}"
+                >
+                    Open Internal Banking
+                </a>
+
+            {% else %}
+
+                <a
+                    class="investigate-btn"
+                    href="{{ url_for(
+                        'bank.bank_search'
+                    ) }}"
+                >
+                    Continue Investigation
+                </a>
+
+                <p class="bank-muted">
+                    Banking credentials are valid. Continue
+                    examining the public application behaviour
+                    to identify restricted resources.
+                </p>
+
+            {% endif %}
+
 
             <a
                 class="secondary-btn"
-                href="{{ url_for('bank.bank_logout') }}"
+                href="{{ url_for(
+                    'bank.bank_logout'
+                ) }}"
             >
                 End Banking Session
             </a>
+
         {% else %}
             <a
                 class="investigate-btn"

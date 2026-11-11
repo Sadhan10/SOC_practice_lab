@@ -46,6 +46,17 @@ Executive Incident Report | Operation Black Falcon
 
                 </form>
 
+            {% elif report_submitted %}
+
+                <a
+                    class="primary-button"
+                    href="{{ url_for(
+                        'soc_features.certificate'
+                    ) }}"
+                >
+                    View Final Certificate
+                </a>
+
             {% endif %}
 
         </div>

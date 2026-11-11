@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}SOC Practical Labs | Black Falcon{% endblock %}
+
+{% block content %}
+<div class="soc-page">
+    <section class="soc-hero compact-hero">
+        <div>
+            <p class="soc-eyebrow">SOC TRAINING ENVIRONMENT</p>
+            <h1>SOC Practical Labs</h1>
+            <p>Four guided practical exercises and a fifth, graded final investigation covering security log analysis,
+                SIEM investigation, alert triage and incident reconstruction.</p>
+        </div>
+    </section>
+
+    {% for lab_id, lab in labs.items() %}
+    <section class="soc-panel siem-panel">
+        <p class="soc-eyebrow">PRACTICAL LAB {{ lab_id }} / UNGRADED</p>
+        <h2>{{ lab.title }}</h2>
+        <p>{{ lab.objective }}</p>
+        <p><strong>Investigation:</strong> {{ lab.case_id }}</p>
+        <p><strong>Tools:</strong> {{ lab.tools | join(", ") }}</p>
+        <a href="{{ url_for('labs.view_lab', lab_id=lab_id) }}">Open Practical Lab &rarr;</a>
+    </section>
+    {% endfor %}
+    <section class="soc-panel siem-panel">
+        <p class="soc-eyebrow">PRACTICAL LAB 5 / GRADED</p>
+        <h2>End-to-End SOC Investigation</h2>
+        <p>Investigate BF-H-005 using Wazuh, Zeek and Suricata evidence. Answer seven weighted questions, including timeline reconstruction and incident response, for a score out of 100. Use Wazuh and Suricata for the graded chronology.</p>
+        <a href="{{ url_for('final_soc.challenge') }}">Open Final SOC Challenge &rarr;</a>
+    </section>
+</div>
+{% endblock %}

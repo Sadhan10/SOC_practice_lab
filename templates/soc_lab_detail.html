@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Lab {{ lab_id }} | Black Falcon{% endblock %}
+
+{% block content %}
+<div class="soc-page">
+    <section class="soc-hero compact-hero">
+        <div>
+            <p class="soc-eyebrow">SOC PRACTICAL / LAB {{ lab_id }}</p>
+            <h1>{{ lab.title }}</h1>
+            <p>{{ lab.objective }}</p>
+            <a href="{{ url_for('labs.index') }}">All Practical Labs</a>
+        </div>
+    </section>
+
+    <section class="soc-panel siem-panel">
+        <h2>Lab Information</h2>
+        <p><strong>Associated Case:</strong> {{ lab.case_id }}</p>
+        <p><strong>Assessment:</strong> Ungraded</p>
+        <p><strong>Security Tools:</strong> {{ lab.tools | join(", ") }}</p>
+    </section>
+
+    <section class="soc-panel siem-panel">
+        <h2>Practical Instructions</h2>
+        <ol class="soc-lab-activities">
+            {% for activity in lab.activities %}
+            <li>{{ activity }}</li>
+            {% endfor %}
+        </ol>
+    </section>
+
+    <section class="soc-panel siem-panel">
+        <h2>Investigation Workspace</h2>
+        <p>Open the following tools to complete the practical investigation.</p>
+        <div class="soc-lab-links">
+            <a href="{{ url_for('investigations.investigation_detail', investigation_id=lab.case_id) }}">Open Investigation</a>
+            <a href="{{ url_for('siem.search_events', case=lab.case_id) }}">SIEM Search</a>
+            <a href="{{ url_for('evidence.evidence') }}">Evidence Locker</a>
+            <a href="{{ url_for('operations.triage_dashboard') }}">Alert Triage</a>
+            {% if lab_id == 3 %}
+            <a href="{{ url_for('alert_triage.alert_queue', case=lab.case_id) }}">Individual Alert Triage</a>
+            {% endif %}
+            <a href="{{ url_for('evidence.timeline') }}">Attack Timeline</a>
+        </div>
+    </section>
+
+    <section class="soc-panel siem-panel">
+        <h2>Expected Learning Outcome</h2>
+        <p>After completing this exercise, learners should be able to explain
+            their observations, support findings with security evidence and
+            describe an appropriate investigation or response procedure.</p>
+        <p class="siem-disclaimer">This practical is ungraded. It does not
+            modify the existing CTF challenge score. Submitting a flag in the
+            linked investigation still follows the normal CTF scoring rules.</p>
+    </section>
+</div>
+{% endblock %}

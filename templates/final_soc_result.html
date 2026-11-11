@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}
+Assessment Result | Black Falcon
+{% endblock %}
+
+{% block content %}
+
+<div class="soc-page">
+
+    <section class="soc-hero compact-hero">
+        <div>
+            <p class="soc-eyebrow">
+                FINAL SOC ASSESSMENT
+            </p>
+
+            <h1>Investigation Results</h1>
+            <p>
+                Your investigation responses have
+                been evaluated.
+            </p>
+        </div>
+    </section>
+
+    <section class="siem-stats">
+
+        <div class="siem-stat-card">
+            <span>Final Score</span>
+            <strong>{{ result.score }}/100</strong>
+        </div>
+
+        <div class="siem-stat-card">
+            <span>Percentage</span>
+            <strong>{{ result.percentage }}%</strong>
+        </div>
+
+        <div class="siem-stat-card">
+            <span>Assessment Status</span>
+            <strong>
+                {{ 'Passed' if result.passed else 'Retry' }}
+            </strong>
+        </div>
+
+    </section>
+
+    <section class="soc-panel siem-panel">
+
+        <h2>Question-Level Feedback</h2>
+        {% if legacy_assessment %}
+        <p>This historical attempt used the original five-question assessment, worth 20 marks per question. Its saved score is unchanged.</p>
+        {% endif %}
+
+        {% for item in feedback %}
+
+        <div class="soc-final-feedback">
+
+            <h3>{{ item.title }}</h3>
+
+            <p>
+                <strong>Your Answer:</strong>
+                {{ item.selected }}
+            </p>
+
+            <p>
+                <strong>Result:</strong>
+                {{ 'Correct' if item.correct else 'Incorrect' }}
+            </p>
+
+            {% if item.marks_available is defined %}
+            <p>
+                <strong>Marks Awarded:</strong>
+                {{ item.marks_awarded }} / {{ item.marks_available }}
+            </p>
+            {% endif %}
+
+            {% if show_answers %}
+            <p>
+                <strong>Expected Answer:</strong>
+                {{ item.expected }}
+            </p>
+
+            <p>
+                <strong>Supporting Evidence:</strong>
+                {{ item.evidence }}
+            </p>
+            <ul>
+                {% for file in item.files %}
+                <li><a href="{{ url_for('evidence.download_evidence', filename=file) }}">{{ file }}</a></li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+        </div>
+
+        {% endfor %}
+
+    </section>
+
+    <section class="soc-panel siem-panel">
+
+        <a href="{{ url_for('final_soc.challenge') }}">
+            Return to Final Assessment
+        </a>
+
+        <p>
+            <a href="{{ url_for('final_soc.export_results') }}">
+                Export My Assessment Results (CSV)
+            </a>
+        </p>
+
+    </section>
+
+    {% if result.passed and result.percentage >= 70 %}
+    <section class="soc-panel siem-panel">
+        <h2>Certificate of Completion</h2>
+        <p>You are eligible for your personalized Final SOC Assessment certificate.</p>
+        <a href="{{ url_for('soc_certificates.certificate_page') }}">View / Generate Certificate</a>
+    </section>
+    {% endif %}
+
+</div>
+
+{% endblock %}

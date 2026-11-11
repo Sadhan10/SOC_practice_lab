@@ -31,32 +31,32 @@
     {
       "field": "attacker_ip",
       "label": "Identify the hostile reconnaissance source IP",
-      "placeholder": "Example: 192.168.56.100"
+      "placeholder": "IPv4 address"
     },
     {
       "field": "legitimate_scanner",
-      "label": "Identify the authorized vulnerability scanner IP",
-      "placeholder": "Example: 192.168.56.100"
+      "label": "Identify the authorized scanner IP",
+      "placeholder": "IPv4 address"
     },
     {
       "field": "target_host",
-      "label": "Identify the primary reconnaissance target",
-      "placeholder": "Example: 192.168.56.10"
+      "label": "Identify the primary target IP",
+      "placeholder": "IPv4 address"
     },
     {
       "field": "targeted_ports",
-      "label": "Identify the ports probed by the hostile host",
-      "placeholder": "Example: 22 80 443"
+      "label": "Identify the targeted destination ports",
+      "placeholder": "Enter ports in ascending order"
     },
     {
       "field": "scan_type",
-      "label": "What reconnaissance technique was observed?",
-      "placeholder": "Example: TCP SYN Scan"
+      "label": "Identify the reconnaissance technique",
+      "placeholder": "Reconnaissance technique"
     },
     {
       "field": "first_seen",
-      "label": "At what time did the hostile reconnaissance begin?",
-      "placeholder": "Example: 14:32:10"
+      "label": "Identify the first hostile activity time",
+      "placeholder": "HH:MM:SS"
     }
   ]
 }

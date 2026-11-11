@@ -41,8 +41,8 @@ LEVELS = {
             "Suricata",
             "Zeek",
             "Wazuh",
-            "PCAP",
-            "Bash",
+            "Log Correlation",
+            "Incident Analysis",
         ],
     },
     "hard": {
@@ -64,9 +64,9 @@ LEVELS = {
         "tools": [
             "Suricata",
             "Zeek",
-            "PCAP",
-            "Wireshark",
+            "Wazuh",
             "Threat Hunting",
+            "Attack Reconstruction",
         ],
     },
 }
